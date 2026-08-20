@@ -46,9 +46,15 @@
   function chemistryLab() { return `<section class="concept-lab science-lab"><header class="concept-lab-head"><div class="eyebrow">化學實驗室｜以 pH 判斷，不靠感覺</div><h2>酸鹼光譜與中和路徑</h2><p>拖動 pH 值，指示紙與粒子比例會同步改變。先以 7 為基準，再說強弱與中和。</p></header><div class="lab-grid"><div class="chem-stage"><div class="ph-scale"><div class="ph-marker" data-ph-marker></div></div><div class="ph-number" data-ph-number>pH 3</div><div class="particle-field" data-particles></div></div><aside class="lab-controls"><div class="slider-card"><label>溶液 pH <output data-ph-value>3</output></label><input data-ph type="range" min="0" max="14" step="1" value="3"></div><div class="lab-insight" data-ph-insight></div><button class="lab-challenge" data-neutralize>加入鹼性溶液，向 pH 7 中和</button></aside></div><div class="lab-activity"><p><b>判斷練習：</b>pH 3 與 pH 6 都是酸性嗎？哪一個酸性較強？</p><button class="lab-challenge" data-ph-check>顯示原理</button><p class="activity-result" data-ph-result></p></div></section>`; }
   function biologyLab() { return `<section class="concept-lab science-lab"><header class="concept-lab-head"><div class="eyebrow">生物實驗室｜族群不是單一個體</div><h2>天擇與保護色模擬</h2><p>改變環境顏色，讓你看見某一種特徵如何在多個世代後變得常見；不是生物「努力想變」就會改變。</p></header><div class="lab-activity"><div class="habitat" data-habitat><span class="bug light">●</span><span class="bug dark">●</span><span class="bug light">●</span><span class="bug dark">●</span><span class="bug light">●</span><span class="bug dark">●</span></div><div class="choice-board" data-habitat-buttons><button data-habitat-choice="light">淺色岩地</button><button data-habitat-choice="dark">深色岩地</button></div><div class="timeline-detail" data-bio-detail>請選擇環境，預測哪一種甲蟲較不容易被發現。</div></div></section>`; }
   function earthLab() { return `<section class="concept-lab science-lab"><header class="concept-lab-head"><div class="eyebrow">地科實驗室｜改變地軸朝向，不是距離</div><h2>四季日照角度觀察台</h2><p>點選北半球的季節。地球繞太陽公轉時，地軸傾斜方向大致不變；日照角度與白晝長度才是關鍵。</p></header><div class="lab-activity"><div class="season-visual"><div class="sun">☀</div><div class="earth" data-earth>🌍<i></i></div><div class="sun-rays"></div></div><div class="choice-board" data-season-buttons><button data-season="summer">北半球夏季</button><button data-season="winter">北半球冬季</button><button data-season="equinox">春／秋分</button></div><div class="timeline-detail" data-season-detail>點選季節，觀察哪一半球較傾向太陽。</div></div></section>`; }
+  function unitStudyLab(subject, unit, d) {
+    const icons = {國文:'✎',英文:'Aa',數學:'∿',自然:'◉',社會:'◷'};
+    return `<section class="concept-lab unit-study-lab" aria-label="${unit}分節互動教材"><header class="concept-lab-head"><div class="eyebrow">每一節都要親手走一次</div><h2>${icons[subject] || '◆'} ${unit}｜互動概念路徑</h2><p>點選三個節點，讓抽象規則形成可追蹤的關係；最後用本單元情境做一次判斷，而不是直接看答案。</p></header><div class="unit-map" data-unit-map>${d.ideas.map((idea, i) => `<button type="button" class="unit-node ${i === 0 ? 'active' : ''}" data-unit-step="${i}"><span>${i + 1}</span><b>${['先建立畫面','找關係與條件','用情境驗證'][i]}</b><small>${idea}</small></button>`).join('')}</div><div class="unit-explainer" data-unit-explainer><b>第 1 節｜先建立畫面</b><p>${d.ideas[0]}</p><p><strong>想一想：</strong>${d.overview}</p></div><div class="unit-practice"><div><div class="eyebrow">互動檢核</div><h3>這個例子應該連到哪一節？</h3><p>${d.example}</p></div><div class="unit-check-buttons" data-unit-check>${d.ideas.map((idea,i)=>`<button type="button" data-unit-answer="${i}">${i+1}．${['概念','關係','應用'][i]}</button>`).join('')}</div><p class="activity-result" data-unit-result>先選一個節點，再看你是否能說出「因為……所以……」。</p></div><div class="unit-recall"><b>遮住後重述：</b>${d.check}</div></section>`;
+  }
 
   function insert() {
-    if (q('.concept-lab')) return;
+    if (q('.unit-study-lab')) return;
+    const [subject, unit] = meta().split(' · '); const d = window.TEXTBOOK_CONTENT?.[`${window.__lessonGrade || 7}|${subject}|${unit}`];
+    if (!d) return;
     let markup = '';
     if (has('二次函數與圖形')) markup = quadraticLab();
     else if (has('力、運動、能量與電') || has('電磁、能源與科技')) markup = physicsLab();
@@ -58,9 +64,11 @@
     else if (has('現在式與進行式')) markup = englishLab();
     else if (has('記敘、說明、議論文本')) markup = chineseLab();
     else if (has('臺灣史、中國史與世界史')) markup = socialLab();
-    if (!markup) return;
+    markup += unitStudyLab(subject, unit, d);
     const slot = document.createElement('div'); slot.innerHTML = markup;
     const lab = slot.firstElementChild; (q('.heart-lab') || q('.visual-box') || q('.concept'))?.after(lab);
+    const unitLab = q('.unit-study-lab', slot) || (lab.classList.contains('unit-study-lab') ? lab : null);
+    if (unitLab && lab !== unitLab) lab.after(unitLab);
     if (lab.classList.contains('quadratic-lab')) renderQuadratic(lab);
     if (lab.querySelector('.physics-stage')) renderPhysics(lab);
     if (lab.querySelector('.chem-stage')) renderChemistry(lab);
@@ -74,6 +82,8 @@
     if (event.target.closest('[data-neutralize]')) { const slider = q('[data-ph]', lab); slider.value = Math.min(7, +slider.value + 1); renderChemistry(lab); return; }
     if (event.target.closest('[data-ph-check]')) { q('[data-ph-result]', lab).className = 'activity-result good'; q('[data-ph-result]', lab).textContent = '兩者都小於 7，因此都是酸性；pH 3 比 pH 6 更酸。先比較與 7 的位置，不要把酸鹼性和安全性混為一談。'; return; }
     const answer = event.target.closest('[data-quad-choices] button'); if (answer) { const good = answer.dataset.answer === 'direction'; q('[data-quad-result]', lab).className = `activity-result ${good ? 'good' : 'bad'}`; q('[data-quad-result]', lab).textContent = good ? '正確：改變 a 的正負，你已親眼看到開口翻轉。' : '先拖動 h：虛線會左右移動；拖動 k：頂點會上下移動。'; return; }
+    const unitStep = event.target.closest('[data-unit-step]'); if (unitStep) { const i = +unitStep.dataset.unitStep, unitLab = unitStep.closest('.unit-study-lab'), idea = unitStep.querySelector('small').textContent; unitLab.querySelectorAll('[data-unit-step]').forEach(x => x.classList.toggle('active', x === unitStep)); q('[data-unit-explainer]', unitLab).innerHTML = `<b>第 ${i + 1} 節｜${['先建立畫面','找關係與條件','用情境驗證'][i]}</b><p>${idea}</p><p><strong>帶著做：</strong>${i === 0 ? '先把規則用圖、箭頭、數線或自己的例子畫出來。' : i === 1 ? '圈出題目條件，逐一連回剛才建立的概念。' : '用下方例子說出「因為……所以……」，確認不是只記住句子。'}</p>`; return; }
+    const unitAnswer = event.target.closest('[data-unit-answer]'); if (unitAnswer) { const unitLab = unitAnswer.closest('.unit-study-lab'), picked = +unitAnswer.dataset.unitAnswer; unitLab.querySelectorAll('[data-unit-answer]').forEach(x => x.classList.toggle('active', x === unitAnswer)); q('[data-unit-result]', unitLab).className = 'activity-result good'; q('[data-unit-result]', unitLab).textContent = `你選擇第 ${picked + 1} 節。重點不是背標籤：請用例子補完「因為題目有……，所以我先用……來判斷」。`; return; }
     const tense = event.target.closest('[data-tense-value]'); if (tense) { q('[data-tense-value].active', lab)?.classList.remove('active'); tense.classList.add('active'); const now = tense.dataset.tenseValue === 'now'; q('[data-sentence-output]', lab).textContent = now ? 'Amy is reading now.' : 'Amy reads after school every day.'; q('[data-sentence-note]', lab).innerHTML = now ? '「now」指向正在發生，所以結構是 <b>is + reading</b>。' : '這是反覆的習慣，所以用現在簡單式：<b>reads</b>。'; return; }
     const evidence = event.target.closest('[data-evidence] button'); if (evidence) { evidence.classList.toggle('selected'); return; }
     if (event.target.closest('[data-evidence-check]')) { const selected = [...lab.querySelectorAll('[data-evidence].selected')]; const correct = selected.length === 2 && selected.every(x => x.dataset.evidence === 'true'); lab.querySelectorAll('[data-evidence] button').forEach(x => x.classList.add(x.dataset.evidence === 'true' ? 'correct' : 'wrong')); q('[data-evidence-result]', lab).className = `activity-result ${correct ? 'good' : 'bad'}`; q('[data-evidence-result]', lab).textContent = correct ? '答對：這兩句提供了垃圾量與試辦結果，能直接支持「應設置」的主張。' : '證據必須能回答「為什麼要設置」。喜好本身不足以支持政策；垃圾量與試辦成果才是可檢驗的理由。'; return; }
