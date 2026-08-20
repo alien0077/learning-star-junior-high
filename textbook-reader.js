@@ -72,7 +72,7 @@
     if (!meta || !title) return;
     const [subject, unit] = meta.textContent.split(" · "); const d = D[`${window.__lessonGrade || 7}|${subject}|${unit}`]; if (!d) return;
     const s = document.createElement("section"); s.className = "textbook-chapter";
-    s.innerHTML = `<div class="eyebrow">課本式閱讀</div><h2>${title.textContent}：完整概念說明</h2><p class="chapter-overview">${d.overview}</p><h3>本章必懂的三件事</h3><ol>${d.ideas.map(x=>`<li>${x}</li>`).join("")}</ol><div class="chapter-example"><b>課本情境例子</b><p>${d.example}</p></div><div class="chapter-check"><b>讀完後，請自己回答：</b>${d.check}</div>`;
+    s.innerHTML = `<div class="eyebrow">完整單元教材</div><h2>${title.textContent}：從觀念到會考應用</h2><section class="chapter-stage"><h3>1．核心概念</h3><p class="chapter-overview">${d.overview}</p></section><section class="chapter-stage"><h3>2．觀念拆解</h3><ol>${d.ideas.map(x=>`<li>${x}</li>`).join("")}</ol></section><section class="chapter-stage chapter-example"><h3>3．老師帶你做一題</h3><p>${d.example}</p><p><b>解題步驟：</b>先圈出已知條件，再把它連回上方三個觀念；最後檢查答案是否真的回應題目。</p></section><section class="chapter-stage"><h3>4．基礎演練</h3><p><b>不看筆記試著說明：</b>${d.check}</p><p>能說出理由後，再回到本節立即驗證題；若答錯，請標出是哪一個觀念或條件沒有連起來。</p></section><section class="chapter-stage chapter-check"><h3>5．會考素養讀法</h3><p>會考常把本章概念放進生活情境、圖表或多段資料。作答順序：<b>讀任務 → 圈資料 → 對應概念 → 排除超出證據的選項</b>。</p></section>`;
     (app.querySelector(".course-reader") || app.querySelector(".heart-lab") || app.querySelector(".concept"))?.after(s);
   };
   new MutationObserver(render).observe(app,{childList:true,subtree:true}); render();
