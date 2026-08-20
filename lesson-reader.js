@@ -1,7 +1,7 @@
 /* 原創整理為重點、步驟、易錯的筆記式教材；參考會考素養題常用的概念連結法，不重製他人筆記。 */
 (() => {
   const D = {};
-  const add = (s,u,f,m,t,n) => D[`${s}|${u}`] = {f,m,t,n};
+  const add = (g,s,u,f,m,t,n) => D[`${g}|${s}|${u}`] = {f,m,t,n};
   const rows = [
     ["國文","字音字形與詞義","詞義一定回到語境；同音字不能只聽讀音。","圈字→看部首與搭配→代回整句。","只選看起來最熟的字。","做『字形／詞義／例句』三欄。"],
     ["國文","修辭與句型判讀","修辭看手法如何服務語意與情感。","找描述對象→標結構→說效果。","看到『像』就判成譬喻。","答題寫『手法＋效果』。"],
@@ -64,14 +64,18 @@
     ["社會","民主政治與公共參與","參與與監督需查證、理由、程序與尊重。","分事實意見→查來源→提理由→守程序。","人身攻擊替代論證。","每主張至少附一項證據。"],
     ["社會","永續發展與跨科素養","永續兼顧環境、社會公平、經濟可行。","列三面利弊→找證據→提折衷。","只看短期價格。","跨科資料先分自然、數據、公共價值。"]
   ];
-  rows.forEach(r => add(...r));
+  rows.forEach((r,i) => add(i < 20 ? 7 : i < 40 ? 8 : 9, ...r));
+  document.addEventListener("click", e => {
+    const unit = e.target.closest("[data-grade-open]");
+    if (unit) window.__lessonGrade = unit.dataset.gradeOpen;
+  }, true);
   const app = document.querySelector("#app");
   const render = () => {
     if (!app || app.querySelector(".course-reader")) return;
     const meta = app.querySelector(".lesson-layout .eyebrow"), title = app.querySelector(".lesson-title");
     if (!meta || !title) return;
     const [subject, unit] = meta.textContent.split(" · ");
-    const d = D[`${subject}|${unit}`]; if (!d) return;
+    const d = D[`${window.__lessonGrade || 7}|${subject}|${unit}`]; if (!d) return;
     const s = document.createElement("section"); s.className = "course-reader detailed-reader";
     s.innerHTML = `<div class="eyebrow">筆記式重點整理</div><h2>${title.textContent}：理解後才記得住</h2><div class="reader-grid"><div><b>★ 核心重點</b><p>${d.f}</p></div><div><b>解題／閱讀流程</b><p>${d.m}</p></div><div><b>常見失誤</b><p>${d.t}</p></div><div><b>連結式筆記</b><p>${d.n}</p></div></div><p class="reader-prompt"><b>自我檢查：</b>遮住上方內容後，能否用自己的例子說出核心重點與一個常見失誤？</p>`;
     (app.querySelector(".heart-lab") || app.querySelector(".visual-box") || app.querySelector(".concept"))?.after(s);
