@@ -22,7 +22,7 @@
     const grouped = ["國文","英文","數學","自然","社會"].map(subject => {
       const units=rows.filter(([k])=>k.split("|")[1]===subject);
       const unitCards = units.map(([key,d]) => { const unit=key.split("|")[2]; return `<article><h3>${unit}</h3><p>${d.overview}</p><ul>${d.ideas.map(x=>`<li>${x}</li>`).join("")}</ul><p class="year-check"><b>複習檢核：</b>${d.check}</p></article>`; }).join("");
-      return `<section class="year-subject"><h2>${subject}</h2>${unitCards}<details class="official-exam"><summary>嵌入練習：114 年國中會考 ${subject} 科官方題本</summary><p>請在題本中選擇與本學年單元相符的題組作答；題目直接嵌入本頁，完成後回到對應單元閱讀解題步驟。</p><iframe title="114年國中會考${subject}科官方題本" src="${official[subject]}" loading="lazy"></iframe></details></section>`;
+      return `<section class="year-subject"><h2>${subject}</h2>${unitCards}<section class="official-exam"><h3>114 年國中會考 ${subject} 科｜官方歷屆真題</h3><p>以下為直接嵌入的官方題本，不是外部連結。請完成與本學年單元相關的題目，再回上方教材比對概念與解法。</p><iframe title="114年國中會考${subject}科官方題本" src="${official[subject]}" loading="lazy"></iframe></section></section>`;
     }).join("");
     app.innerHTML=`<button class="crumb" data-close-year-review>← 回到課程地圖</button><section class="year-review"><div class="eyebrow">${grade} 年級 · 一頁總複習</div><h1>一年課程，連成一張理解地圖</h1><p>依五科連續閱讀全年 20 個單元；每科末尾直接嵌入官方 114 年國中教育會考題本，作答後可回對應單元複習。</p>${grouped}</section>`;
   };
