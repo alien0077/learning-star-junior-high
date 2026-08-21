@@ -52,40 +52,8 @@
     const resetThreeD = event.target.closest("[data-heart-reset-view]");
     if (resetThreeD) {
       const model = document.querySelector("[data-heart-3d-object]");
-      if (model) {
-        model.dataset.heartYaw = "0";
-        model.style.setProperty("--heart-yaw", "0deg");
-      }
+      if (model) model.setAttribute("camera-orbit", "0deg 75deg 105%");
     }
   });
 
-  let rotateStartX = null;
-  let rotateStartAngle = 0;
-  const horizontalStage = document.querySelector("[data-heart-horizontal-rotate]");
-  const heartObject = document.querySelector("[data-heart-3d-object]");
-  const currentYaw = () => Number.parseFloat(heartObject?.dataset.heartYaw || "0");
-  const applyYaw = value => {
-    if (!heartObject) return;
-    const yaw = Math.max(-28, Math.min(28, value));
-    heartObject.dataset.heartYaw = String(yaw);
-    heartObject.style.setProperty("--heart-yaw", `${yaw}deg`);
-  };
-  horizontalStage?.addEventListener("pointerdown", event => {
-    rotateStartX = event.clientX;
-    rotateStartAngle = currentYaw();
-    horizontalStage.setPointerCapture?.(event.pointerId);
-  });
-  horizontalStage?.addEventListener("pointermove", event => {
-    if (rotateStartX === null) return;
-    applyYaw(rotateStartAngle + (event.clientX - rotateStartX) * .22);
-  });
-  const stopHorizontalRotate = () => { rotateStartX = null; };
-  horizontalStage?.addEventListener("pointerup", stopHorizontalRotate);
-  horizontalStage?.addEventListener("pointercancel", stopHorizontalRotate);
-  horizontalStage?.addEventListener("keydown", event => {
-    if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
-      event.preventDefault();
-      applyYaw(currentYaw() + (event.key === "ArrowLeft" ? -6 : 6));
-    }
-  });
 })();
