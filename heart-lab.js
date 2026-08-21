@@ -52,7 +52,7 @@
     const resetThreeD = event.target.closest("[data-heart-reset-view]");
     if (resetThreeD) {
       const model = document.querySelector("[data-heart-3d-object]");
-      if (model) model.setAttribute("camera-orbit", "0deg 75deg 105%");
+      if (model) model.src = model.src;
     }
   });
 
