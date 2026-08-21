@@ -77,7 +77,33 @@
     const math=q('[data-math-visual]',lab);
     if(math){const buttons=[...math.querySelectorAll('[data-math-step]')];let step=0;const messages=['圈出已知條件。','把相同的量建立關係。','代回圖像驗證結果。'];const show=()=>{if(step>=buttons.length){clearInterval(lab._replayTimer);lab._replayTimer=null;return;}buttons.forEach((button,index)=>button.classList.toggle('is-active',index===step));q('[data-math-status]',math).textContent=`播放第 ${step+1} 步：${messages[step]}`;step+=1;};show();lab._replayTimer=setInterval(show,850);}
   }
+  function taiwanEnvironmentLab(){
+    return `<div class="interactive-visual taiwan-lab" data-taiwan-lab><div class="math-model-label">拖曳圖層：同一個地點，環境條件會改變人的選擇</div><div class="layer-controls" role="group" aria-label="臺灣環境圖層"><button class="is-active" data-taiwan-layer="terrain">地形</button><button data-taiwan-layer="climate">氣候</button><button data-taiwan-layer="hazard">災害風險</button></div><svg class="taiwan-map-svg" data-taiwan-map viewBox="0 0 380 310" role="img" aria-label="可切換地形、氣候與災害資訊的臺灣地圖"></svg><div class="visual-status" data-taiwan-status>地形圖層：中央山脈使東、西側的生活與交通條件不同。</div></div>`;
+  }
+  function renderTaiwanLab(lab,mode='terrain'){
+    const svg=q('[data-taiwan-map]',lab), status=q('[data-taiwan-status]',lab);
+    const layers={
+      terrain:{title:'地形｜山脈與平原',paths:`<path class="tw-land tw-west" d="M154 39 121 98l7 70 22 74 37 39 17-88-17-91z"/><path class="tw-land tw-mountain" d="M173 42 205 102l17 91-17 88-18-42-22-74z"/><path class="tw-land tw-east" d="M205 102 232 111l14 54-20 72-21 42 17-88z"/>`,labels:`<text x="102" y="150">西部平原</text><text x="190" y="138">中央山脈</text><text x="268" y="180">東部</text>`,note:'地形圖層：中央山脈使東、西側的生活與交通條件不同。'},
+      climate:{title:'氣候｜雨量與季風',paths:`<path class="tw-land tw-north-rain" d="M154 39 173 42 205 102 182 119 149 91z"/><path class="tw-land tw-east-rain" d="M205 102 232 111l14 54-20 72-21 42 17-88z"/><path class="tw-land tw-south-dry" d="M149 91 182 119l23 162-18 0-37-39-22-74z"/>`,labels:`<text x="125" y="74">冬季較濕</text><text x="273" y="154">迎風多雨</text><text x="117" y="231">南部較乾</text>`,note:'氣候圖層：季風、緯度與地形共同影響雨量；東側與北部常較濕。'},
+      hazard:{title:'災害｜先看地形再判斷',paths:`<path class="tw-land tw-slope" d="M173 42 205 102l17 91-17 88-18-42-22-74z"/><path class="tw-land tw-flood" d="M154 39 173 42l9 77-33-28-21 77-7-70z"/><path class="tw-land tw-coast" d="M205 102 232 111l14 54-20 72-21 42 17-88z"/>`,labels:`<text x="188" y="144">坡地崩塌</text><text x="100" y="167">淹水</text><text x="275" y="194">颱風強風</text>`,note:'災害圖層：山區注意坡地災害；低窪平原注意淹水；沿海需面對颱風與強風。'}
+    }[mode];
+    svg.innerHTML=`<text class="tw-title" x="190" y="24">${layers.title}</text><path class="tw-outline" d="M154 39 173 42 205 102 232 111 246 165 226 237 205 281 187 281 150 242 128 168 121 98z"/>${layers.paths}${layers.labels}<circle class="tw-pin" cx="184" cy="172" r="8"/><text class="tw-hint" x="190" y="302">點選其他圖層，比較同一座島的不同資訊</text>`;
+    status.textContent=layers.note;
+  }
+  function photosynthesisLab(){
+    return `<div class="interactive-visual photosynthesis-lab" data-photo-lab><div class="math-model-label">調整原料：哪一種不足會卡住光合作用？</div><div class="photo-controls"><label>光 <input type="range" min="0" max="10" value="7" data-photo-light><output data-photo-light-out>7</output></label><label>水 <input type="range" min="0" max="10" value="5" data-photo-water><output data-photo-water-out>5</output></label><label>二氧化碳 <input type="range" min="0" max="10" value="8" data-photo-co2><output data-photo-co2-out>8</output></label></div><svg class="photo-svg" data-photo-svg viewBox="0 0 420 250" role="img" aria-label="可調整光、水與二氧化碳的光合作用模擬"></svg><div class="photo-result" data-photo-result></div></div>`;
+  }
+  function renderPhotosynthesisLab(lab){
+    const light=Number(q('[data-photo-light]',lab).value),water=Number(q('[data-photo-water]',lab).value),co2=Number(q('[data-photo-co2]',lab).value),rate=Math.min(light,water,co2),limiting=[['光',light],['水',water],['二氧化碳',co2]].filter(([,value])=>value===rate).map(([name])=>name).join('、');
+    q('[data-photo-light-out]',lab).textContent=light;q('[data-photo-water-out]',lab).textContent=water;q('[data-photo-co2-out]',lab).textContent=co2;
+    const oxygen=Array.from({length:rate},(_,i)=>`<circle class="oxygen-bubble" cx="${292+(i%4)*20}" cy="${110-Math.floor(i/4)*22}" r="7"/>`).join('');
+    const co2Dots=Array.from({length:co2},(_,i)=>`<circle class="co2-dot" cx="${26+(i%5)*18}" cy="${90+Math.floor(i/5)*18}" r="6"/>`).join('');
+    const svg=q('[data-photo-svg]',lab);svg.innerHTML=`<circle class="photo-sun" cx="79" cy="54" r="${14+light*2}"/><text x="79" y="59">光</text>${co2Dots}<text x="54" y="170">CO₂</text><path class="water-flow" d="M205 232v-58" style="stroke-width:${4+water*1.8}"/><text x="205" y="246">水</text><path class="leaf" d="M190 167C195 60 325 59 326 161c-60 50-109 21-136 6z" style="filter:saturate(${.35+rate/10})"/><path class="leaf-vein" d="M202 162 291 96m-50 47 19-42m-52 65-1-43"/><text x="258" y="148">葉綠體</text><path class="photo-arrow" d="M108 78 185 119"/><path class="photo-arrow" d="M122 119 190 139"/><text x="290" y="55">氧氣</text>${oxygen}<rect class="sugar" x="268" y="180" width="${20+rate*6}" height="24" rx="7"/><text x="289" y="198">養分</text>`;
+    q('[data-photo-result]',lab).textContent=`目前產量：${rate}/10。限制因子是「${limiting}」；即使其他原料很多，缺少它時養分與氧氣也無法再增加。`;
+  }
   function conceptVisual(subject,kind,title,sequence){
+    if(title==='臺灣的自然環境') return taiwanEnvironmentLab();
+    if(title==='植物如何製造養分') return photosynthesisLab();
     const labels={cell:['細胞膜','細胞核','細胞質'],body:['輸入','運輸／調節','結果'],experiment:['改變的變因','保持不變','量測結果'],physics:['作用','方向','結果'],earth:['地球內部／板塊','相對運動','地表現象'],timeline:['過去','現在','未來／結果'],sentence:['主詞','動詞','補充資訊'],reading:['題目任務','文本線索','有據答案'],word:['字形／詞義','前後語境','正確用法'],text:['主張／中心','證據／詞句','判讀結果'],map:['位置','空間條件','人地影響'],civic:['角色','權利／規則','程序結果']};
     const parts=labels[kind]||['條件','關係','結果'];
     let diagram='';
@@ -212,6 +238,8 @@
     (q('.heart-lab')||q('.visual-box')||q('.concept'))?.after(section);
     const absLab=q('[data-absolute-lab]',section); if(absLab) renderAbsolute(absLab);
     const integerLab=q('[data-integer-lab]',section); if(integerLab) renderInteger(integerLab);
+    const taiwanLab=q('[data-taiwan-lab]',section); if(taiwanLab) renderTaiwanLab(taiwanLab);
+    const photoLab=q('[data-photo-lab]',section); if(photoLab) renderPhotosynthesisLab(photoLab);
   }
   app.addEventListener('click',e=>{
     const lab=e.target.closest('.chapter-lab'); if(!lab)return;
@@ -220,7 +248,8 @@
     const node=e.target.closest('[data-visual-node]'); if(node){const visual=node.closest('[data-visual]');const nodes=[...visual.querySelectorAll('[data-visual-node]')];const current=Number(node.dataset.visualNode);nodes.forEach((item,index)=>item.classList.toggle('is-active',index<=current));q('[data-visual-status]',visual).textContent=`第 ${current+1} 步已亮起：${node.textContent.trim()}。現在請說出它如何連到下一步。`;}
     const mathStep=e.target.closest('[data-math-step]'); if(mathStep){const visual=mathStep.closest('[data-math-visual]');const messages=['先把題目的數、圖形或條件圈出來。','把同一類量連線：確認符號、單位或對應關係。','把答案代回原條件或圖像，檢查是否合理。'];visual.querySelectorAll('[data-math-step]').forEach((button,index)=>button.classList.toggle('is-active',index===Number(mathStep.dataset.mathStep)));q('[data-math-status]',visual).textContent=messages[Number(mathStep.dataset.mathStep)];}
     const conceptOption=e.target.closest('[data-concept-option]');if(conceptOption){const visual=conceptOption.closest('[data-concept-visual]'),options=[...visual.querySelectorAll('[data-concept-option]')],index=Number(conceptOption.dataset.conceptOption);options.forEach((button,i)=>button.classList.toggle('is-active',i===index));q('[data-concept-status]',visual).textContent=`已選取「${conceptOption.textContent}」：請在圖中找出它，接著再點下一個步驟。`;q('[data-concept-diagram]',visual).dataset.step=String(index);}
+    const layer=e.target.closest('[data-taiwan-layer]');if(layer){const visual=layer.closest('[data-taiwan-lab]');visual.querySelectorAll('[data-taiwan-layer]').forEach(button=>button.classList.toggle('is-active',button===layer));renderTaiwanLab(visual,layer.dataset.taiwanLayer);}
   });
-  app.addEventListener('input',e=>{const abs=e.target.closest('[data-absolute-lab]');if(abs&&e.target.matches('[data-absolute-slider]'))renderAbsolute(abs);const integer=e.target.closest('[data-integer-lab]');if(integer&&e.target.matches('[data-integer-start],[data-integer-change]'))renderInteger(integer);});
+  app.addEventListener('input',e=>{const abs=e.target.closest('[data-absolute-lab]');if(abs&&e.target.matches('[data-absolute-slider]'))renderAbsolute(abs);const integer=e.target.closest('[data-integer-lab]');if(integer&&e.target.matches('[data-integer-start],[data-integer-change]'))renderInteger(integer);const photo=e.target.closest('[data-photo-lab]');if(photo&&e.target.matches('[data-photo-light],[data-photo-water],[data-photo-co2]'))renderPhotosynthesisLab(photo);});
   new MutationObserver(render).observe(app,{childList:true,subtree:true}); render();
 })();
