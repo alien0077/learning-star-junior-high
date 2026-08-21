@@ -23,5 +23,11 @@
       return;
     }
     if (event.target.closest("[data-heart-reveal]")) document.querySelector("#heartReveal").hidden = false;
+    const viewButton = event.target.closest("[data-heart-view]");
+    if (viewButton) {
+      document.querySelectorAll("[data-heart-view]").forEach(button => button.classList.toggle("active", button === viewButton));
+      const diagram = document.querySelector(".anatomical-heart");
+      if (diagram) diagram.classList.toggle("is-surface", viewButton.dataset.heartView === "surface");
+    }
   });
 })();
