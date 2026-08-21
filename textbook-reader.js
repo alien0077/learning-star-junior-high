@@ -105,6 +105,16 @@
     return {overview:`「${unit}」的目標是：${goal} ${topic}`,ideas:guide.ideas,example:guide.example,check:guide.check};
   };
   const app = document.querySelector("#app");
+  const guideChapter = (subject, unit, goal) => {
+    const facts = window.CHAPTER_STUDY_GUIDES?.[subject]?.[unit];
+    if (!Array.isArray(facts) || facts.length < 4) return null;
+    return {
+      overview: `本節先要看懂這件事：${facts[0]}`,
+      ideas: facts.slice(0,4),
+      example: `把題目的條件逐一對回本節概念：${facts[1]} 接著檢查：${facts[2]}`,
+      check: `${facts[3]} 現在請用自己的話說明：題目中的哪一個條件能讓你判斷這件事？`
+    };
+  };
   const render = () => {
     if (!app || app.querySelector(".textbook-chapter")) return;
     const meta = app.querySelector(".lesson-layout .eyebrow"), title = app.querySelector(".lesson-title");
@@ -112,9 +122,11 @@
     const [subject, unit] = meta.textContent.split(" · ");
     const grade=window.__lessonGrade || decodeURIComponent(location.hash).match(/chapter=(\d+)/)?.[1] || 7;
     const goal=app.querySelector('.concept')?.textContent.replace('本節學習目標：','').trim() || '先用互動模型建立概念，再以題目驗證。';
-    const d = D[`${grade}|${subject}|${unit}`] || fallbackChapter(subject,unit,goal); if (!d) return;
+    // 每個章節優先使用該節四條專屬教材重點；只有尚未建立的舊頁才使用相容內容。
+    const d = guideChapter(subject,unit,goal) || D[`${grade}|${subject}|${unit}`] || fallbackChapter(subject,unit,goal); if (!d) return;
     const s = document.createElement("section"); s.className = "textbook-chapter";
-    const micro=d.ideas.map((idea,i)=>`<details class="micro-lesson" ${i===0?"open":""}><summary>子節 ${i+1}｜${idea}</summary><p>${d.overview}</p><p><b>帶做提示：</b>${i===0?d.example:"先用自己的話重述這條規則，再把題幹的條件逐一對應。"}</p><p class="micro-check"><b>立即練習：</b>${d.check}</p></details>`).join("");
+    const prompts=['先在互動圖上找出對應的量、位置或證據。','改變一個條件後，說明哪個結果會跟著改變。','把題幹資料連回這一條，排除不符合的選項。','用反例檢查：若忽略這條規則，答案會在哪裡出錯？'];
+    const micro=d.ideas.map((idea,i)=>`<details class="micro-lesson" open><summary>重點 ${i+1}</summary><p><b>${idea}</b></p><p><b>帶做：</b>${prompts[i]}</p></details>`).join("");
     s.innerHTML = `<div class="eyebrow">完整單元教材</div><h2>${title.textContent}：從觀念到會考應用</h2><section class="chapter-stage"><h3>1．核心概念</h3><p class="chapter-overview">${d.overview}</p></section><section class="chapter-stage"><h3>2．分節學習</h3>${micro}</section><section class="chapter-stage chapter-example"><h3>3．老師帶你做一題</h3><p>${d.example}</p><p><b>解題步驟：</b>先圈出已知條件，再把它連回上方三個觀念；最後檢查答案是否真的回應題目。</p></section><section class="chapter-stage"><h3>4．基礎演練</h3><p><b>不看筆記試著說明：</b>${d.check}</p><p>能說出理由後，再回到本節立即驗證題；若答錯，請標出是哪一個觀念或條件沒有連起來。</p></section><section class="chapter-stage chapter-check"><h3>5．會考素養讀法</h3><p>會考常把本章概念放進生活情境、圖表或多段資料。作答順序：<b>讀任務 → 圈資料 → 對應概念 → 排除超出證據的選項</b>。</p></section>`;
     (app.querySelector(".course-reader") || app.querySelector(".heart-lab") || app.querySelector(".concept"))?.after(s);
   };
