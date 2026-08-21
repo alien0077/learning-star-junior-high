@@ -26,12 +26,14 @@
     if (stepButton) {
       const index = Number(stepButton.dataset.heartStep);
       document.querySelectorAll("[data-heart-step]").forEach(button => button.classList.toggle("active", button === stepButton));
-      document.querySelectorAll(".route").forEach(route => route.classList.remove("is-active"));
-      document.querySelector(`.r${index + 1}`)?.classList.add("is-active");
+      document.querySelectorAll(".route, .flow-route").forEach(route => route.classList.remove("is-active"));
+      document.querySelectorAll(`.r${index + 1}`).forEach(route => route.classList.add("is-active"));
       const callout = document.querySelector("#heartCallout");
       if (callout) callout.innerHTML = `<b>第 ${index + 1} 步｜${stepButton.textContent.trim()}</b><span>${steps[index]}</span>`;
       const cutawayCue = document.querySelector("[data-heart-cutaway-cue]");
       if (cutawayCue) cutawayCue.textContent = cutawayCues[index];
+      const cutawayCallout = document.querySelector("[data-heart-cutaway-callout]");
+      if (cutawayCallout) cutawayCallout.innerHTML = `<b>第 ${index + 1} 步｜${stepButton.textContent.trim()}</b><span>${steps[index]}</span>`;
       return;
     }
     if (event.target.closest("[data-heart-reveal]")) document.querySelector("#heartReveal").hidden = false;
