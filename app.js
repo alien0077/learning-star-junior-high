@@ -138,6 +138,38 @@ function scienceApplicationQuestion(title){const data={
   '板塊與地質':['地震多集中在板塊邊界，主因是？',['板塊相對運動使應力累積釋放','每天日照不同','月亮發光','植物蒸散'],0,'板塊聚合、張裂或錯動會累積應力，釋放時形成地震。'],
   '天文與永續':['日食發生時，三者位置關係為？',['月球位於太陽和地球之間','地球位於太陽和月球之間','太陽位於地月之間','三者沒有關係'],0,'月球遮住部分太陽光投到地球，形成日食。']
 };const row=data[title];return row?{kind:'自然情境／實驗應用',question:row[0],answers:row[1],correct:row[2],explanation:row[3],tip:'先確認題目描述的現象與條件，再畫出變因、粒子／構造或能量的箭頭；最後用證據檢查因果，不要只背名詞。'}:null;}
+function englishApplicationQuestion(title){const data={
+  '自我介紹與人稱代名詞':['Amy and I are classmates. ___ study together.',['We','They','He','It'],0,'Amy 和 I 合起來是第一人稱複數，所以用 We。'],
+  '日常作息與現在簡單式':['Tom ___ breakfast at 7 every day.',['have','has','is having','had'],1,'every day 表習慣，Tom 是第三人稱單數，用 has。'],
+  '正在發生與現在進行式':['Look! The bus ___.',['comes','is coming','came','will come'],1,'Look! 表示眼前正在發生，使用 be＋V-ing。'],
+  '名詞、冠詞與數量':['There ___ some water in the bottle.',['is','are','be','am'],0,'water 不可數，搭配單數 be 動詞 is。'],
+  '地點與介系詞':['The library is ___ the bank and the park.',['between','at','from','for'],0,'兩個地點之間用 between A and B。'],
+  '問句與簡答':['___ your sister like music?',['Do','Does','Is','Are'],1,'your sister 為第三人稱單數，一般動詞問句用 Does。'],
+  '過去式與時間線':['Yesterday, we ___ a movie.',['watch','watches','watched','are watching'],2,'Yesterday 是已完成的過去時間，規則動詞加 -ed。'],
+  '比較級與最高級':['This bag is ___ than that one.',['heavy','heavier','heaviest','more heavy'],1,'兩個物品比較用比較級；heavy 改 y 為 i 加 -er。'],
+  '未來計畫與 be going to':['It is very cloudy. It ___ rain.',['is going to','went to','has to','was'],0,'眼前有明顯徵兆的預測可用 be going to。'],
+  '情態助動詞':['You ___ wear a helmet when riding a bike.',['should','shoulds','should to','are should'],0,'情態助動詞後面接原形動詞 wear。'],
+  '生活情境閱讀':['A sign says “No food or drinks.” What should you do?',['Eat quietly','Bring a drink','Keep food outside','Ask for a menu'],2,'公告明確禁止食物與飲料，答案要回到文字證據。'],
+  '短文寫作':['Which sentence is the best topic sentence for a paragraph about a pet?',['My dog is special to me.','Because I feed it.','And it is brown.','At seven o’clock.'],0,'主題句要先概括段落中心，其他句子可作細節支持。'],
+  '過去式':['Last weekend, Mia ___ her grandmother.',['visit','visits','visited','is visiting'],2,'last weekend 是過去時間，規則動詞用 visited。'],
+  '比較級':['A train is usually ___ than a bus.',['fast','faster','fastest','more faster'],1,'兩者比較用 faster，不能同時用 more 和 -er。'],
+  '未來式':['I think it ___ sunny tomorrow.',['will be','was','is being','has been'],0,'對未來的預測常用 will＋原形。'],
+  '不定詞與動名詞':['She enjoys ___ comic books.',['read','to read','reading','reads'],2,'enjoy 後接 V-ing，reading 是動名詞。'],
+  '連接詞':['I was tired, ___ I finished my homework.',['but','because','so','if'],0,'前後是轉折：雖然累，仍完成作業，用 but。'],
+  '情態助動詞':['You ___ not use your phone during the test.',['must','must to','are must','musts'],0,'must 表規定，後接原形 use。'],
+  '被動語態入門':['The cake ___ by my mother yesterday.',['made','was made','is making','makes'],1,'蛋糕承受製作動作，且是過去，使用 was made。'],
+  '閱讀圖表':['A timetable shows the last bus leaves at 9:30. What must you do?',['Arrive after 9:30','Get to the stop before 9:30','Wait until midnight','Ignore the time'],1,'從表格找最後一班的時間，再依限制做決定。'],
+  '情境對話':['“Could you show me the way to the station?” Best response?',['Sure. Go straight and turn left.','I went yesterday.','The station shows.','No way is a noun.'],0,'問路時應給出有方向性的禮貌回應。'],
+  '段落寫作':['Which connector best shows a result?',['therefore','however','although','because of'],0,'therefore 引出前述原因造成的結果。'],
+  '現在完成式':['I ___ my homework already.',['finish','finished','have finished','am finish'],2,'already 與完成後的現在狀態，常用 have＋p.p.。'],
+  '被動語態':['English ___ in many countries.',['speaks','is spoken','is speaking','spoke'],1,'English 是被使用的語言，現在式被動為 is spoken。'],
+  '關係子句':['The boy ___ is wearing a cap is my cousin.',['who','which','where','when'],0,'先行詞是人且子句缺主詞，用 who。'],
+  '分詞與長句':['The girl ___ by the window is my friend.',['sit','sits','sitting','sat'],2,'現在分詞 sitting 用來補充說明正在進行的動作。'],
+  '篇章連接':['It rained heavily; ___, the game was canceled.',['therefore','however','for example','first'],0,'後句是前句造成的結果，用 therefore。'],
+  '推論閱讀':['A passage says Ben took an umbrella and wore boots. What can you infer?',['It may be rainy','It is very hot','He is swimming','He is at a concert'],0,'雨傘與雨靴是文本線索，只能作合理而非絕對的推論。'],
+  '圖表與公告':['A museum notice says “Closed on Mondays.” Which visit is possible?',['Monday morning','Monday afternoon','Tuesday morning','Every Monday'],2,'公告限制星期一，星期二可參觀。'],
+  '會考寫作':['寫作題要求提出看法並舉例，第一步應做什麼？',['確認任務、立場與兩個可支持的例子','先背一篇文章','只寫結尾','忽略圖片'],0,'先拆解題目任務，決定立場與例證，才能完整回應。']
+};const row=data[title];return row?{kind:'英文生活情境',question:row[0],answers:row[1],correct:row[2],explanation:row[3],tip:'先圈出人物、時間與溝通目的；再檢查動詞結構、連接詞或公告限制是否完整符合句意。'}:null;}
 function officialPastExamQuestion(subject,title){const key=`${subject}:${title}`,data={
   '數學:二元一次聯立方程式':['115 年國中教育會考｜數學第 1 題','解聯立方程式 x＋2y＝5、2x−2y＝1，x 值為何？',['−4','−2','2','4'],2,'兩式相加先消去 y：3x＝6，所以 x＝2。這是官方 115 年數學第 1 題，本站加入逐步消去法說明。'],
   '數學:平方根':['115 年國中教育會考｜數學第 3 題','若 √504 的最簡根式為 a√b，a＋b 為何？',['13','19','20','50'],2,'504＝36×14，所以 √504＝6√14，a＋b＝20；但原題排版中的 a、b 需依題本符號判讀，請先完整寫出最簡根式。'],
@@ -167,7 +199,7 @@ function chapterPracticeBank(lesson){
     ['素養應用',`「${lesson.unit}」的跨情境題要求學生做的核心能力是？`,['背誦原句','把概念模型套入新資料並說明理由','只找相同的題目','忽略資料來源'],1,`新情境的表面可以不同，但概念關係不變；先找出它和本節的對應。`,solvingTip(lesson)],
     ['自我檢核',`完成本節題目後，最好的自我檢查是？`,['立刻看下一題','用自己的話重述原理，並檢查答案是否符合條件','只看對錯','把錯誤遮起來'],1,`把原理說出來並回代條件，可分辨是真懂還是剛好猜對。`,solvingTip(lesson)]
   ];
-  const rows=[base,...shared].slice(0,10); const application=lesson.subject==='數學'?mathApplicationQuestion(lesson.unit):lesson.subject==='自然'?scienceApplicationQuestion(lesson.unit):null, past=officialPastExamQuestion(lesson.subject,lesson.unit); if(application) rows[4]=application; if(past) rows[8]=past;
+  const rows=[base,...shared].slice(0,10); const application=lesson.subject==='數學'?mathApplicationQuestion(lesson.unit):lesson.subject==='自然'?scienceApplicationQuestion(lesson.unit):lesson.subject==='英文'?englishApplicationQuestion(lesson.unit):null, past=officialPastExamQuestion(lesson.subject,lesson.unit); if(application) rows[4]=application; if(past) rows[8]=past;
   return rows.map((row,index)=>({index,...(Array.isArray(row)?{kind:row[0],question:row[1],answers:row[2],correct:row[3],explanation:row[4],tip:row[5]}:row)}));
 }
 function chapterPracticeView(lesson){const items=chapterPracticeBank(lesson);return `<section class="question card chapter-practice"><div class="eyebrow">本節 10 題理解測驗</div><h2>每一題作答後都顯示原理與解題方法</h2><p>含「生活情境」與「素養應用」題；數學與自然題以模型、圖像或關係式來檢查，而不是只背答案。</p>${items.map(item=>`<article class="practice-item"><div class="eyebrow">第 ${item.index+1} 題｜${item.kind}</div><h3>${item.question}</h3><div class="answers">${item.answers.map((answer,i)=>`<button class="answer" data-chapter-practice-answer="${item.index}:${i}">${String.fromCharCode(65+i)}. ${answer}</button>`).join('')}</div><div class="practice-feedback" id="practiceFeedback${item.index}"></div></article>`).join('')}</section>`;}
