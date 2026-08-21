@@ -71,6 +71,8 @@
     if(absolute){const input=q('[data-absolute-slider]',absolute), values=[-4,0,5,-2], readout=q('[data-absolute-readout]',absolute);let step=0;const show=()=>{if(step>=values.length){clearInterval(lab._replayTimer);lab._replayTimer=null;return;}input.value=values[step];renderAbsolute(absolute);readout.textContent=`播放第 ${step+1} 步：${readout.textContent}`;step+=1;};show();lab._replayTimer=setInterval(show,850);return;}
     const integer=q('[data-integer-lab]',lab);
     if(integer){const start=q('[data-integer-start]',integer),change=q('[data-integer-change]',integer),values=[[-2,5],[3,-6],[-5,-3]];let step=0;const show=()=>{if(step>=values.length){clearInterval(lab._replayTimer);lab._replayTimer=null;return;}[start.value,change.value]=values[step];renderInteger(integer);q('[data-integer-readout]',integer).textContent=`播放第 ${step+1} 步：${q('[data-integer-readout]',integer).textContent}`;step+=1;};show();lab._replayTimer=setInterval(show,1000);return;}
+    const concept=q('[data-concept-visual]',lab);
+    if(concept){const options=[...concept.querySelectorAll('[data-concept-option]')];let step=0;const show=()=>{if(step>=options.length){clearInterval(lab._replayTimer);lab._replayTimer=null;return;}options.forEach((button,index)=>button.classList.toggle('is-active',index===step));q('[data-concept-diagram]',concept).dataset.step=String(step);q('[data-concept-status]',concept).textContent=`播放第 ${step+1} 步：${options[step].textContent}。`;step+=1;};show();lab._replayTimer=setInterval(show,850);return;}
     const visual=q('[data-visual]',lab);
     if(visual){
       const nodes=[...visual.querySelectorAll('[data-visual-node]')]; let step=0;
@@ -80,6 +82,30 @@
     }
     const math=q('[data-math-visual]',lab);
     if(math){const buttons=[...math.querySelectorAll('[data-math-step]')];let step=0;const messages=['圈出已知條件。','把相同的量建立關係。','代回圖像驗證結果。'];const show=()=>{if(step>=buttons.length){clearInterval(lab._replayTimer);lab._replayTimer=null;return;}buttons.forEach((button,index)=>button.classList.toggle('is-active',index===step));q('[data-math-status]',math).textContent=`播放第 ${step+1} 步：${messages[step]}`;step+=1;};show();lab._replayTimer=setInterval(show,850);}
+  }
+  function conceptVisual(subject,kind,title,sequence){
+    const labels={cell:['細胞膜','細胞核','細胞質'],body:['輸入','運輸／調節','結果'],experiment:['改變的變因','保持不變','量測結果'],physics:['作用','方向','結果'],earth:['地球內部／板塊','相對運動','地表現象'],timeline:['過去','現在','未來／結果'],sentence:['主詞','動詞','補充資訊'],reading:['題目任務','文本線索','有據答案'],word:['字形／詞義','前後語境','正確用法'],text:['主張／中心','證據／詞句','判讀結果'],map:['位置','空間條件','人地影響'],civic:['角色','權利／規則','程序結果']};
+    const parts=labels[kind]||['條件','關係','結果'];
+    let diagram='';
+    if(kind==='cell') diagram=`<svg class="concept-svg cell-svg" viewBox="0 0 380 210"><ellipse cx="190" cy="105" rx="145" ry="78"/><circle cx="190" cy="105" r="35"/><circle cx="108" cy="72" r="12"/><circle cx="272" cy="140" r="12"/><text x="190" y="112">細胞核</text><text x="190" y="28">細胞膜</text><text x="260" y="188">細胞質</text></svg>`;
+    else if(kind==='body'){
+      if(title.includes('植物'))diagram=`<svg class="concept-svg body-svg" viewBox="0 0 380 210"><circle cx="70" cy="50" r="24"/><path class="process-line" d="M104 55h95m-40-15 40 15-40 15"/><path d="M230 172V68m0 38l-58-45m58 45l58-45m-58 15l-36 48m36-48l36 48"/><text x="70" y="55">光</text><text x="155" y="37">二氧化碳＋水</text><text x="230" y="68">葉</text><text x="310" y="120">養分＋氧氣</text></svg>`;
+      else if(title.includes('血液'))diagram=`<svg class="concept-svg body-svg" viewBox="0 0 380 210"><path d="M188 158c-95-67-62-139 0-73 62-66 95 6 0 73z"/><path class="process-line" d="M52 104h95m-24-18 24 18-24 18M229 104h100m-24-18 24 18-24 18"/><text x="82" y="82">全身</text><text x="188" y="113">心臟</text><text x="300" y="82">肺部</text></svg>`;
+      else if(title.includes('神經'))diagram=`<svg class="concept-svg body-svg" viewBox="0 0 380 210"><circle cx="70" cy="105" r="24"/><path d="M94 105h78m0 0l45-48m-45 48l45 48m0-96h105"/><circle cx="328" cy="105" r="23"/><text x="70" y="110">受器</text><text x="188" y="90">神經</text><text x="328" y="110">反應</text></svg>`;
+      else if(title.includes('遺傳')||title.includes('演化'))diagram=`<div class="gene-grid"><b>親代</b><span>A</span><span>a</span><span>A</span><strong>AA</strong><strong>Aa</strong><span>a</span><strong>Aa</strong><strong>aa</strong></div>`;
+      else if(title.includes('生態'))diagram=`<div class="food-web"><b>植物</b><i>→</i><b>昆蟲</b><i>→</i><b>鳥類</b><i>→</i><b>分解者</b></div>`;
+      else diagram=`<svg class="concept-svg body-svg" viewBox="0 0 380 210"><circle cx="96" cy="40" r="20"/><path d="M96 60v72m-42-45h84m-42 45l-30 52m30-52l30 52"/><path class="process-line" d="M170 105h155"/><circle class="process-dot" cx="225" cy="105" r="20"/><text x="225" y="111">系統</text><text x="278" y="88">物質／訊息</text></svg>`;
+    }
+    else if(kind==='experiment') diagram=`<svg class="concept-svg experiment-svg" viewBox="0 0 380 210"><path d="M80 25v86l-30 50q0 22 60 22t60-22l-30-50V25"/><path d="M225 35v120m-28 0h56"/><rect x="258" y="72" width="82" height="58" rx="9"/><text x="110" y="205">操作條件</text><text x="298" y="106">量測</text></svg>`;
+    else if(kind==='physics') diagram=`<svg class="concept-svg physics-svg" viewBox="0 0 380 210"><rect x="122" y="100" width="125" height="58" rx="8"/><path class="force-arrow" d="M46 129h74m-18-18l18 18-18 18M250 129h82m-18-18l18 18-18 18"/><text x="185" y="135">物體</text><text x="46" y="93">力／能量</text><text x="273" y="93">運動／變化</text></svg>`;
+    else if(kind==='earth') diagram=`<svg class="concept-svg earth-svg" viewBox="0 0 380 210"><path d="M30 133l130-33 30 28 30-28 130 33v44H30z"/><path class="plate-arrow" d="M142 75h-58m15-15-15 15 15 15M238 75h58m-15-15 15 15-15 15"/><circle cx="190" cy="48" r="22"/><text x="190" y="53">板塊</text><text x="190" y="194">地震／火山／地形</text></svg>`;
+    else if(kind==='timeline') diagram=`<svg class="concept-svg timeline-svg" viewBox="0 0 380 210"><path d="M34 120h310"/><circle cx="82" cy="120" r="17"/><circle cx="190" cy="120" r="17"/><circle cx="298" cy="120" r="17"/><text x="82" y="82">時間線索</text><text x="190" y="160">動詞／事件</text><text x="298" y="82">答案</text></svg>`;
+    else if(kind==='sentence') diagram=`<div class="sentence-slots"><b>誰／什麼</b><i>＋</i><b>做什麼</b><i>＋</i><b>何時／哪裡</b></div>`;
+    else if(kind==='reading'||kind==='text') diagram=`<div class="evidence-board"><b>題目要問什麼？</b><span>找回原文的關鍵句</span><strong>用證據選答案</strong></div>`;
+    else if(kind==='word') diagram=`<div class="word-board"><b>字形／詞性</b><i>＋</i><b>前後句意</b><i>＝</i><strong>詞義</strong></div>`;
+    else if(kind==='map') diagram=`<svg class="concept-svg map-svg" viewBox="0 0 380 210"><path d="M165 25l50 20 32 58-24 78-63 8-31-50 13-70z"/><circle cx="183" cy="106" r="9"/><path class="map-route" d="M55 162l128-56 135-35"/><text x="183" y="203">位置、距離、環境</text></svg>`;
+    else diagram=`<div class="civic-board"><b>人民／角色</b><i>→</i><b>權利與規則</b><i>→</i><strong>程序與結果</strong></div>`;
+    return `<div class="interactive-visual concept-visual kind-${kind}" data-concept-visual><div class="math-model-label">${esc(title)}</div><div class="concept-diagram" data-concept-diagram>${diagram}</div><div class="concept-options">${parts.map((part,index)=>`<button type="button" data-concept-option="${index}" class="${index===0?'is-active':''}">${part}</button>`).join('')}</div><div class="visual-status" data-concept-status>先點選圖中的「${parts[0]}」，確認它在本節代表什麼。</div></div>`;
   }
   function mathModel(title){
     const models={
@@ -155,7 +181,8 @@
       '天文與永續':['日地月與取捨','用運動模型解釋天文現象，再以環境、社會、經濟評估方案'],
       '天文與永續':['系統取捨圖','自然證據、生活需求、社會成本需一起評估']
     }; const m=models[title]||Object.entries(models).find(([key])=>title.includes(key)||key.includes(title))?.[1]||['科學因果流程','條件 → 機制 → 可觀察結果'];
-    return `${visualFlow(m[0],m[1],'science-visual')}<details class="visual-caption"><summary>${m[0]}：觀察提示</summary><p>每次只點一格，說出它如何造成下一格；再改變一個條件，預測結果。</p></details>`;
+    const kind=window.INTERACTIVE_SPECS?.get('自然',title);if(!kind)throw Error(`缺少自然互動模型規格：${title}`);
+    return `${conceptVisual('自然',kind,title,m[1])}<details class="visual-caption"><summary>${m[0]}：觀察提示</summary><p>${m[1]}</p></details>`;
   }
   function languageModel(subject,title){
     const en={
@@ -165,12 +192,14 @@
       '字音、字形與詞義':['語境三角形','部首、詞性、前後搭配一起判讀'], '成語與詞語運用':['固定語意盒','成語先整體換白話，再放回句子檢查'], '句型、語法與標點':['句子骨架','找主詞、主要動詞、受詞與修飾語'], '修辭與表達效果':['手法到效果','手法 → 畫面／語氣 → 作者情感'], '記敘文本閱讀':['事件路線','人物 → 事件 → 轉折 → 感受'], '說明文本閱讀':['說明工具箱','定義、分類、因果、舉例各有任務'], '議論文本閱讀':['論證三角','主張 ← 理由 ← 可查證證據'], '文言文句意':['古文解碼','人物／動詞／轉折 → 補省略 → 重組白話'], '古典詩歌意象':['景情連線','景物與動作如何烘托心情'], '跨文本與圖表':['資料比較表','來源、時間、對象、單位、結論逐項比較'], '寫作表達':['段落地圖','中心句 → 細節／例子 → 回扣題目'], '論證閱讀':['主張檢驗台','證據是否足夠？是否有替代原因？'], '國學常識':['背景索引','作品、體裁、稱謂與時代協助閱讀'], '會考閱讀策略':['題幹回查法','先讀任務，再回原文找直接證據']};
     Object.assign(zh,{'字詞與語法':['詞性定位','先辨名詞、動詞、形容詞在句中扮演的角色'],'古典詩文':['古文解碼','人物／動詞／轉折 → 補省略 → 重組白話'],'文言統整':['古文關係網','實詞、虛詞、句式與人物關係要一起判讀'],'抒情文本':['經驗到情感','具體事件與景物如何承載情緒'],'議論寫作':['立場建築','主張 → 理由 → 例證 → 回應不同意見'],'說明與圖表':['圖文對照','文字說明與圖表的單位、範圍必須一起讀'],'修辭應用':['手法到效果','手法 → 畫面／語氣 → 作者情感'],'文言虛詞':['虛詞定位','從前後詞語關係判斷之、其、以、於的功能'],'寫作組織':['段落地圖','中心句 → 細節／例子 → 回扣題目'],'閱讀推論':['證據邊界','只推出文本支持的結論，不加入自己的想像'],'資料判讀':['資料可信度','先檢查單位、樣本、時間與圖表刻度']});
     const m=(subject==='英文'?en:zh)[title]||['語言結構圖','線索 → 結構 → 完整意思'];
-    return `${visualFlow(m[0],m[1],'language-visual')}<details class="visual-caption"><summary>${m[0]}：操作提示</summary><p>先點題目中出現的線索，再依亮起的結構組句或重組句意。</p></details>`;
+    const kind=window.INTERACTIVE_SPECS?.get(subject,title);if(!kind)throw Error(`缺少${subject}互動模型規格：${title}`);
+    return `${conceptVisual(subject,kind,title,m[1])}<details class="visual-caption"><summary>${m[0]}：操作提示</summary><p>${m[1]}</p></details>`;
   }
   function socialModel(title){
     const models={'臺灣的自然環境':['臺灣環境層疊圖','位置 → 地形 → 氣候 → 災害與人類調適'],'史前與原住民族':['史料拼圖','考古資料與口傳文化 → 多元族群的生活方式'],'荷西與鄭氏時期':['海洋貿易網','外來政權／貿易 → 統治制度 → 移民與社會改變'],'清代臺灣的治理':['開墾治理線','移民與土地利用 → 行政治理 → 社會結構'],'開港與近代化':['港口連線','通商開港 → 商品與人口流動 → 城市與制度改變'],'近代臺灣與東亞':['區域連動圖','外部局勢 → 地方制度 → 人民生活與回應'],'中國近代變遷':['內外壓力圖','內部問題＋外來衝擊 → 改革／革命 → 社會變遷'],'世界近代史':['工業全球鏈','工業化 → 帝國擴張與交流 → 區域影響'],'現代臺灣':['現代轉型線','民主化／經濟轉型／社會運動 → 權利與生活改變'],'世界現代史':['全球事件網','冷戰／科技／全球化 → 不同地區的連動'],'地圖與地理資訊':['讀圖四步','標題與時間 → 圖例與單位 → 方向比例尺 → 空間判讀'],'臺灣的位置與區域':['區域定位圖','經緯位置＋鄰近區域 → 交通、交流與戰略意義'],'人口與聚落':['人口分布因果','自然條件＋工作機會＋交通 → 人口密度與聚落'],'產業活動與區位':['產業選址表','原料／勞力／交通／市場／政策 → 區位選擇'],'資源與環境問題':['人地回饋圈','資源利用 → 環境影響 → 保育與調適'],'中國與東亞地理':['區域比較尺','位置、地形、氣候、水資源 → 人口與產業'],'人口與產業':['區位證據表','資源、交通、市場、勞力、政策 → 發展差異'],'世界區域地理':['區域比較表','自然環境 → 人文活動 → 區域特色'],'全球化與環境':['跨境流動線','商品、資本、資訊、人口 → 受益與代價'],'永續發展':['三面向天平','環境保護 ↔ 社會公平 ↔ 經濟可行'],'社會生活與規範':['規範同心圓','生活行為 → 道德／社會規範／法律 → 後果'],'人性尊嚴與權利':['權利界線','個人權利 ↔ 他人權利與公共利益'],'家庭與校園生活':['角色關係圖','不同角色 → 權利、義務、溝通與責任'],'社區參與':['公共事務流程','問題 → 蒐集意見與資料 → 參與／監督 → 改善'],'政府與公共服務':['公共服務鏈','共同需求 → 政府資源與程序 → 公共服務'],'媒體與資訊識讀':['資訊檢核漏斗','來源 → 發布時間 → 證據 → 立場與查證'],'法律與生活':['法律案例圖','行為人／事實 → 權利義務 → 規範與程序'],'政府與民主':['權力制衡圖','人民授權 → 政府權力 → 監督與權利保障'],'市場與金融':['市場互動圖','需求／供給 → 價格訊號 → 生產與消費選擇'],'民主政治':['民主運作環','選舉與參與 → 多數決 → 少數權利與監督'],'公共參與':['理性參與鏈','可查證資料 → 理由 → 程序 → 公共決策'],'法律與權利救濟':['救濟路徑','權利受影響 → 依程序申訴／救濟 → 公平處理'],'跨科公共議題':['跨科決策盤','自然證據＋數學資料＋制度程序＋價值取捨']};
     const m=models[title]|| (title.includes('地圖')||title.includes('地理')||title.includes('區域')||title.includes('人口')||title.includes('產業')||title.includes('環境')||title.includes('全球化')||title.includes('永續')?['地圖判讀順序','標題／時間 → 圖例／單位 → 空間分布 → 人地原因']:title.includes('政府')||title.includes('法律')||title.includes('權利')||title.includes('民主')||title.includes('公共')||title.includes('市場')||title.includes('金融')?['公民案例關係圖','行為人／受影響者 → 權利義務 → 規則程序 → 結果']:['歷史因果時間線','背景條件 → 事件／制度 → 不同群體的影響']);
-    return `${visualFlow(m[0],m[1],'social-visual')}<details class="visual-caption"><summary>${m[0]}：操作提示</summary><p>把人物、地點或制度拖入心中對應的節點，最後說明這個改變影響了誰。</p></details>`;
+    const kind=window.INTERACTIVE_SPECS?.get('社會',title);if(!kind)throw Error(`缺少社會互動模型規格：${title}`);
+    return `${conceptVisual('社會',kind,title,m[1])}<details class="visual-caption"><summary>${m[0]}：操作提示</summary><p>${m[1]}</p></details>`;
   }
   function stage(subject,title,goal){
     if(subject==='數學') return mathModel(title);
@@ -196,6 +225,7 @@
     if(e.target.closest('[data-chapter-replay]')) replayLab(lab);
     const node=e.target.closest('[data-visual-node]'); if(node){const visual=node.closest('[data-visual]');const nodes=[...visual.querySelectorAll('[data-visual-node]')];const current=Number(node.dataset.visualNode);nodes.forEach((item,index)=>item.classList.toggle('is-active',index<=current));q('[data-visual-status]',visual).textContent=`第 ${current+1} 步已亮起：${node.textContent.trim()}。現在請說出它如何連到下一步。`;}
     const mathStep=e.target.closest('[data-math-step]'); if(mathStep){const visual=mathStep.closest('[data-math-visual]');const messages=['先把題目的數、圖形或條件圈出來。','把同一類量連線：確認符號、單位或對應關係。','把答案代回原條件或圖像，檢查是否合理。'];visual.querySelectorAll('[data-math-step]').forEach((button,index)=>button.classList.toggle('is-active',index===Number(mathStep.dataset.mathStep)));q('[data-math-status]',visual).textContent=messages[Number(mathStep.dataset.mathStep)];}
+    const conceptOption=e.target.closest('[data-concept-option]');if(conceptOption){const visual=conceptOption.closest('[data-concept-visual]'),options=[...visual.querySelectorAll('[data-concept-option]')],index=Number(conceptOption.dataset.conceptOption);options.forEach((button,i)=>button.classList.toggle('is-active',i===index));q('[data-concept-status]',visual).textContent=`已選取「${conceptOption.textContent}」：請在圖中找出它，接著再點下一個步驟。`;q('[data-concept-diagram]',visual).dataset.step=String(index);}
   });
   app.addEventListener('input',e=>{const abs=e.target.closest('[data-absolute-lab]');if(abs&&e.target.matches('[data-absolute-slider]'))renderAbsolute(abs);const integer=e.target.closest('[data-integer-lab]');if(integer&&e.target.matches('[data-integer-start],[data-integer-change]'))renderInteger(integer);});
   new MutationObserver(render).observe(app,{childList:true,subtree:true}); render();
