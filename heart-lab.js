@@ -52,7 +52,7 @@
     const resetThreeD = event.target.closest("[data-heart-reset-view]");
     if (resetThreeD) {
       const model = document.querySelector("[data-heart-3d-object]");
-      if (model) { model.cameraOrbit = '0deg 90deg 105%'; model.setAttribute('camera-orbit', '0deg 90deg 105%'); model.jumpCameraToGoal?.(); }
+      if (model) { model.cameraOrbit = '90deg 90deg 105%'; model.setAttribute('camera-orbit', '90deg 90deg 105%'); model.jumpCameraToGoal?.(); }
     }
   });
 

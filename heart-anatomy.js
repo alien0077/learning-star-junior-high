@@ -2,23 +2,23 @@
 window.heartAnatomyLab=()=>`<section class="heart-lab anatomical-heart-lab" aria-label="解剖式心臟血液循環互動圖"><style>.heart-3d-stage model-viewer{display:block;width:100%;height:100%;background:#091321;--poster-color:#091321}.heart-cutaway-3d-stage img{display:block;width:100%;height:100%;object-fit:contain;background:#445d91}</style>
   <div class="lab-heading"><div><span class="eyebrow">循環系統實驗室｜立體外觀與剖面血流</span><h3>先看真實外觀，再在固定剖面追一滴血</h3><p>外觀模型可以旋轉；切到剖面後不必翻轉。按八個步驟，箭頭會直接亮在相對應的心房、心室或血管上。紅藍只表示含氧量，不是動脈與靜脈的命名規則。</p></div><div class="oxygen-key"><span class="blood deoxy"></span>含氧較少 <span class="blood oxy"></span>含氧較多</div></div>
   <div class="heart-view-tabs" role="group" aria-label="心臟視圖"><button class="active" data-heart-view="threeD">3D：拖曳旋轉</button><button data-heart-view="cutaway">固定剖面：八步血流</button></div>
-  <div class="heart-3d-view" data-heart-3d-view><div class="heart-3d-stage" aria-label="可左右旋轉的真實心臟模型"><model-viewer data-heart-3d-object title="可左右旋轉的人類心臟三維模型" src="assets/nih-heart-surface.glb" alt="NIH 公開領域的人類心臟外觀三維模型" camera-controls interaction-prompt="none" camera-orbit="0deg 90deg 105%" min-camera-orbit="-55deg 90deg auto" max-camera-orbit="55deg 90deg auto" shadow-intensity="1" exposure="1.05"></model-viewer><svg class="heart-3d-label-layer" viewBox="0 0 700 470" aria-label="心臟立體外觀的構造標示"><g><path d="M520 85L426 130"/><text x="525" y="80">主動脈</text></g><g><path d="M108 128L280 176"/><text x="20" y="122">肺動脈</text></g><g><path d="M100 220L275 230"/><text x="18" y="216">肺靜脈</text></g><g><path d="M520 190L410 205"/><text x="530" y="186">右心房</text></g><g><path d="M520 260L418 274"/><text x="530" y="256">右心室</text></g><g><path d="M520 330L405 328"/><text x="530" y="326">左心室</text></g><g><path d="M125 374L325 385"/><text x="20" y="380">心尖</text></g></svg><button class="reset-3d-view" data-heart-reset-view>回到正面</button></div><p>模型固定在正面起始視角，只允許左右旋轉，不允許上下翻轉。<a href="https://3d.nih.gov/entries/3DPX-022787/1.01" target="_blank" rel="noopener">模型來源：NIH 3D（Public Domain）</a></p></div>
+  <div class="heart-3d-view" data-heart-3d-view><div class="heart-3d-stage" aria-label="可左右旋轉的真實心臟模型"><model-viewer data-heart-3d-object title="可左右旋轉的人類心臟三維模型" src="assets/nih-heart-surface.glb" alt="NIH 公開領域的人類心臟外觀三維模型" camera-controls interaction-prompt="none" camera-orbit="90deg 90deg 105%" min-camera-orbit="35deg 90deg auto" max-camera-orbit="145deg 90deg auto" shadow-intensity="1" exposure="1.05"></model-viewer><svg class="heart-3d-label-layer" viewBox="0 0 700 470" aria-label="心臟立體外觀的構造標示"><g><path d="M520 85L426 130"/><text x="525" y="80">主動脈</text></g><g><path d="M108 128L280 176"/><text x="20" y="122">肺動脈</text></g><g><path d="M100 220L275 230"/><text x="18" y="216">肺靜脈</text></g><g><path d="M520 190L410 205"/><text x="530" y="186">右心房</text></g><g><path d="M520 260L418 274"/><text x="530" y="256">右心室</text></g><g><path d="M520 330L405 328"/><text x="530" y="326">左心室</text></g><g><path d="M125 374L325 385"/><text x="20" y="380">心尖</text></g></svg><button class="reset-3d-view" data-heart-reset-view>回到正面</button></div><p>模型固定在正面起始視角，只允許左右旋轉，不允許上下翻轉。<a href="https://3d.nih.gov/entries/3DPX-022787/1.01" target="_blank" rel="noopener">模型來源：NIH 3D（Public Domain）</a></p></div>
   <div class="heart-3d-view heart-3d-cutaway" data-heart-cutaway-view hidden><style>.heart-cutaway-3d-stage{background:#101a28}.heart-cutaway-flow-layer .flow-route{opacity:0;pointer-events:none}.heart-cutaway-flow-layer .flow-route.is-active{opacity:1;animation:dash 1s linear infinite}.heart-cutaway-flow-layer .flow-route path{stroke:#32a8e5!important;stroke-width:9px!important;stroke-linecap:round}.heart-cutaway-flow-layer .flow-route text{fill:#32a8e5;stroke:#102136}.heart-cutaway-flow-layer .r5 path,.heart-cutaway-flow-layer .r6 path,.heart-cutaway-flow-layer .r7 path,.heart-cutaway-flow-layer .r8 path{stroke:#f16170!important}.heart-cutaway-flow-layer .r5 text,.heart-cutaway-flow-layer .r6 text,.heart-cutaway-flow-layer .r7 text,.heart-cutaway-flow-layer .r8 text{fill:#f16170}.heart-cutaway-3d-stage+.heart-cutaway-stage{display:none}</style>
     <div class="heart-3d-stage heart-cutaway-3d-stage" aria-label="NIH 真實長軸心臟剖面模型，點選步驟可觀看血流">
       <img data-heart-cutaway-3d-object src="assets/cg-heart-cutaway-cc-by-sa.gif" alt="真實感三維心臟長軸剖面動畫，呈現四個腔室與瓣膜" />
-      <svg class="heart-3d-label-layer heart-cutaway-flow-layer" viewBox="0 0 700 470" aria-label="在真實三維心臟剖面標示八步血流">
+      <svg class="heart-3d-label-layer heart-cutaway-flow-layer" viewBox="0 0 593 701" preserveAspectRatio="xMidYMid meet" aria-label="在真實三維心臟剖面標示八步血流">
         <defs><marker id="nihCutBlue" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto"><path d="M0,0 L0,8 L9,4z" fill="#32a8e5"/></marker><marker id="nihCutRed" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto"><path d="M0,0 L0,8 L9,4z" fill="#f16170"/></marker></defs>
-        <g class="flow-route r1 is-active"><path d="M86 378C150 360 207 321 255 255" marker-end="url(#nihCutBlue)"/><text x="34" y="408">1 全身 → 腔靜脈</text></g>
-        <g class="flow-route r2"><path d="M258 205v58" marker-end="url(#nihCutBlue)"/><text x="150" y="214">2 右心房</text></g>
-        <g class="flow-route r3"><path d="M265 264c10 34 23 55 40 70" marker-end="url(#nihCutBlue)"/><text x="138" y="298">3 右心室</text></g>
-        <g class="flow-route r4"><path d="M304 332C270 276 229 201 178 154" marker-end="url(#nihCutBlue)"/><text x="26" y="160">4 肺動脈 → 肺</text></g>
-        <g class="flow-route r5"><path d="M602 118C536 120 487 142 444 181" marker-end="url(#nihCutRed)"/><text x="542" y="98">5 肺靜脈</text></g>
-        <g class="flow-route r6"><path d="M438 189v55" marker-end="url(#nihCutRed)"/><text x="474" y="212">6 左心房</text></g>
-        <g class="flow-route r7"><path d="M443 247c7 35 18 62 32 84" marker-end="url(#nihCutRed)"/><text x="495" y="290">7 左心室</text></g>
-        <g class="flow-route r8"><path d="M478 329C518 274 555 204 590 112" marker-end="url(#nihCutRed)"/><text x="548" y="72">8 主動脈 → 全身</text></g>
+        <g class="flow-route r1 is-active"><path d="M73 564C127 536 175 479 216 380" marker-end="url(#nihCutBlue)"/><text x="29" y="608">1 全身 → 腔靜脈</text></g>
+        <g class="flow-route r2"><path d="M218 306v87" marker-end="url(#nihCutBlue)"/><text x="127" y="320">2 右心房</text></g>
+        <g class="flow-route r3"><path d="M224 394c9 51 19 82 34 104" marker-end="url(#nihCutBlue)"/><text x="117" y="445">3 右心室</text></g>
+        <g class="flow-route r4"><path d="M257 495C228 412 194 300 151 230" marker-end="url(#nihCutBlue)"/><text x="22" y="239">4 肺動脈 → 肺</text></g>
+        <g class="flow-route r5"><path d="M510 176C455 179 412 212 376 270" marker-end="url(#nihCutRed)"/><text x="458" y="146">5 肺靜脈</text></g>
+        <g class="flow-route r6"><path d="M371 282v82" marker-end="url(#nihCutRed)"/><text x="401" y="316">6 左心房</text></g>
+        <g class="flow-route r7"><path d="M375 368c6 52 16 92 27 125" marker-end="url(#nihCutRed)"/><text x="419" y="433">7 左心室</text></g>
+        <g class="flow-route r8"><path d="M405 490C439 409 470 304 500 167" marker-end="url(#nihCutRed)"/><text x="464" y="107">8 主動脈 → 全身</text></g>
       </svg>
     </div>
-    <div class="heart-cutaway-stage" hidden aria-hidden="true">
+    <template class="heart-cutaway-stage" aria-hidden="true">
       <svg class="heart-cutaway-visual" viewBox="0 0 700 480" role="img" aria-label="彩色立體心臟剖面，標示四個腔室與血流">
         <defs>
           <linearGradient id="cutawayMuscle" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ed8d94"/><stop offset=".5" stop-color="#aa354a"/><stop offset="1" stop-color="#64172c"/></linearGradient>
@@ -51,7 +51,7 @@ window.heartAnatomyLab=()=>`<section class="heart-lab anatomical-heart-lab" aria
         <g class="flow-route r7"><path class="red" d="M451 241 C451 266 458 290 467 306" marker-end="url(#cutawayArrowRed)"/><text x="495" y="271">7 左心室</text></g>
         <g class="flow-route r8"><path class="red" d="M479 292 C506 240 531 178 557 104" marker-end="url(#cutawayArrowRed)"/><text x="560" y="58">8 主動脈 → 全身</text></g>
       </svg>
-    </div>
+    </template>
     <div class="heart-cutaway-callout" data-heart-cutaway-callout><b>第 1 步｜全身 → 腔靜脈</b><span>含氧較少的血從全身回到右心房。</span></div>
     <p><b data-heart-cutaway-cue>固定 3D 剖面：不需旋轉，先看藍色箭頭由全身回到右心。</b><br>每次選一站，只會亮起那一段血流與它通過的構造。<a href="https://commons.wikimedia.org/wiki/File:CG_heart_2.gif" target="_blank" rel="noopener">3D 剖面動畫：CG heart 2（CC BY-SA 4.0）</a></p>
   </div>
