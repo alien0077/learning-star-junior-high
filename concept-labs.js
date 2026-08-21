@@ -52,19 +52,19 @@
   }
 
   function insert() {
-    if (q('.unit-study-lab')) return;
+    if (q('.concept-lab')) return;
     const [subject, unit] = meta().split(' · '); const d = window.TEXTBOOK_CONTENT?.[`${window.__lessonGrade || 7}|${subject}|${unit}`];
-    if (!d) return;
     let markup = '';
-    if (has('二次函數與圖形')) markup = quadraticLab();
-    else if (has('力、運動、能量與電') || has('電磁、能源與科技')) markup = physicsLab();
-    else if (has('物質、粒子與化學反應') || has('酸鹼鹽與化學反應')) markup = chemistryLab();
-    else if (has('生態系與生物分類') || has('神經、恆定與演化')) markup = biologyLab();
-    else if (has('地球環境與宇宙') || has('氣候與地球系統') || has('天文、地質與永續')) markup = earthLab();
+    if (has('二次函數與圖形') || has('二次函數')) markup = quadraticLab();
+    else if (has('力、運動、能量與電') || has('力與運動') || has('電磁、能源與科技')) markup = physicsLab();
+    else if (has('物質、粒子與化學反應') || has('化學反應') || has('酸鹼鹽與化學反應') || has('酸鹼與指示劑')) markup = chemistryLab();
+    else if (has('生態系與生物分類') || has('神經、恆定與演化') || has('神經與恆定') || has('遺傳與演化')) markup = biologyLab();
+    else if (has('地球環境與宇宙') || has('氣候與地球系統') || has('天文、地質與永續') || has('板塊與地質') || has('天文與永續')) markup = earthLab();
     else if (has('現在式與進行式')) markup = englishLab();
     else if (has('記敘、說明、議論文本')) markup = chineseLab();
     else if (has('臺灣史、中國史與世界史')) markup = socialLab();
-    markup += unitStudyLab(subject, unit, d);
+    if (!markup && !d) return;
+    if (d) markup += unitStudyLab(subject, unit, d);
     const slot = document.createElement('div'); slot.innerHTML = markup;
     const lab = slot.firstElementChild; (q('.heart-lab') || q('.visual-box') || q('.concept'))?.after(lab);
     const unitLab = q('.unit-study-lab', slot) || (lab.classList.contains('unit-study-lab') ? lab : null);
