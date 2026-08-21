@@ -57,6 +57,30 @@
   function mathVisual(title, equation, explanation, kind){
     return `<div class="interactive-visual math-visual kind-${kind}" data-math-visual><div class="math-model-label">${esc(title)}</div><div class="math-canvas">${mathDiagram(kind,equation)}</div><div class="math-expression">${esc(equation)}</div><div class="visual-controls"><button type="button" data-math-step="0">看圖中條件</button><button type="button" data-math-step="1">操作關係</button><button type="button" data-math-step="2">代回驗證</button></div><div class="visual-status" data-math-status>先指出圖中每個量代表什麼，再開始運算。</div></div>`;
   }
+  const gcd=(a,b)=>b?gcd(b,a%b):a;
+  const lcm=(a,b)=>a*b/gcd(a,b);
+  function fractionLab(title){
+    const adding=title==='分數的加減';
+    const a=adding?1:2,b=adding?3:3,c=adding?1:3,d=adding?6:4;
+    return `<div class="interactive-visual fraction-lab" data-fraction-lab data-fraction-mode="${adding?'add':'multiply'}"><div class="visual-instruction">${adding?'調整兩個分數：先把每一格切成相同大小，再把有色格合起來。':'調整兩個分數：左邊選直向比例、上方選橫向比例；重疊的格子就是「其中的其中」。'}</div><div class="fraction-controls"><label>第一個分數 <input type="range" min="1" max="6" value="${a}" data-fraction-a>／<input type="range" min="2" max="8" value="${b}" data-fraction-b><output data-fraction-left></output></label><label>第二個分數 <input type="range" min="1" max="6" value="${c}" data-fraction-c>／<input type="range" min="2" max="8" value="${d}" data-fraction-d><output data-fraction-right></output></label></div><svg class="fraction-svg" data-fraction-svg viewBox="0 0 620 265" role="img" aria-label="可調整分數的面積模型"></svg><div class="fraction-result" data-fraction-result></div></div>`;
+  }
+  function fractionValue(input){return Number(q(input).value);}
+  function renderFraction(lab){
+    const mode=lab.dataset.fractionMode,a=fractionValue('[data-fraction-a]',lab),b=Math.max(a,fractionValue('[data-fraction-b]',lab)),c=fractionValue('[data-fraction-c]',lab),d=Math.max(c,fractionValue('[data-fraction-d]',lab));
+    q('[data-fraction-b]',lab).value=b;q('[data-fraction-d]',lab).value=d;q('[data-fraction-left]',lab).textContent=`${a}/${b}`;q('[data-fraction-right]',lab).textContent=`${c}/${d}`;
+    const svg=q('[data-fraction-svg]',lab),result=q('[data-fraction-result]',lab);
+    if(mode==='add'){
+      const parts=lcm(b,d), first=a*(parts/b), second=c*(parts/d), total=first+second, divisor=gcd(total,parts);
+      const cells=Array.from({length:parts},(_,i)=>{const x=28+i*(564/parts),fill=i<first?'fraction-first':i<total?'fraction-second':'fraction-empty';return `<rect class="${fill}" x="${x}" y="102" width="${564/parts-2}" height="72" rx="3"/>`;}).join('');
+      svg.innerHTML=`<text class="fraction-title" x="310" y="30">先通分：每一條都切成 ${parts} 等份</text><text x="28" y="75" class="fraction-label">${a}/${b} ＝ ${first}/${parts}</text><text x="592" y="75" class="fraction-label fraction-right-label">${c}/${d} ＝ ${second}/${parts}</text>${cells}<text x="310" y="215" class="fraction-answer">有色格：${first} ＋ ${second} ＝ ${total} 格</text>`;
+      result.textContent=`${a}/${b} ＋ ${c}/${d} ＝ ${total}/${parts} ＝ ${total/divisor}/${parts/divisor}。兩個原本大小不同的分母，已經被改成相同大小的 ${parts} 等份，才能相加。`;
+    } else {
+      const divisor=gcd(a*c,b*d), rows=d,cols=b,cellW=360/cols,cellH=150/rows;
+      const cells=Array.from({length:rows*cols},(_,i)=>{const row=Math.floor(i/cols),col=i%cols,vertical=col<a,horizontal=row<c,cls=vertical&&horizontal?'fraction-overlap':vertical?'fraction-vertical':horizontal?'fraction-horizontal':'fraction-empty';return `<rect class="${cls}" x="${130+col*cellW}" y="${58+row*cellH}" width="${cellW-2}" height="${cellH-2}" rx="2"/>`;}).join('');
+      svg.innerHTML=`<text class="fraction-title" x="310" y="27">直向 ${a}/${b} × 橫向 ${c}/${d}</text><text x="308" y="248" class="fraction-answer">重疊 ${a*c} 格 ／ 全部 ${b*d} 格</text><text x="93" y="124" class="fraction-side-label">${c}/${d}</text><text x="310" y="48" class="fraction-top-label">${a}/${b}</text>${cells}`;
+      result.textContent=`${a}/${b} × ${c}/${d} ＝ ${a*c}/${b*d} ＝ ${a*c/divisor}/${b*d/divisor}。紫色重疊區同時屬於兩個有色部分，所以它代表「${a}/${b} 的 ${c}/${d}」。`;
+    }
+  }
   function replayLab(lab){
     const model=q('[data-model]',lab); model?.classList.remove('is-playing');
     if(lab._replayTimer) clearInterval(lab._replayTimer);
@@ -161,6 +185,7 @@
     }; const m=models[title]||['數學關係圖','先把已知條件放進圖或式子，讓關係變得可見。',title];
     if(title==='正負數與絕對值') return absoluteValueLab();
     if(title==='整數的加減') return integerAdditionLab();
+    if(title==='分數的加減'||title==='分數的乘除') return `${fractionLab(title)}<details class="visual-caption"><summary>${m[0]}：操作提示</summary><p>${m[1]}</p><code>${m[2]}</code></details>`;
     const kind=window.INTERACTIVE_SPECS?.get('數學',title); if(!kind) throw Error(`缺少數學互動模型規格：${title}`);
     return `${mathVisual(title,m[2],m[1],kind)}<details class="visual-caption"><summary>${m[0]}：操作提示</summary><p>${m[1]}</p><code>${m[2]}</code></details>`;
   }
@@ -201,6 +226,7 @@
       '天文與永續':['日地月與取捨','用運動模型解釋天文現象，再以環境、社會、經濟評估方案'],
       '天文與永續':['系統取捨圖','自然證據、生活需求、社會成本需一起評估']
     }; const m=models[title]||Object.entries(models).find(([key])=>title.includes(key)||key.includes(title))?.[1]||['科學因果流程','條件 → 機制 → 可觀察結果'];
+    if(title==='動物的血液循環'&&window.heartAnatomyLab) return window.heartAnatomyLab();
     const kind=window.INTERACTIVE_SPECS?.get('自然',title);if(!kind)throw Error(`缺少自然互動模型規格：${title}`);
     return `${conceptVisual('自然',kind,title,m[1])}<details class="visual-caption"><summary>${m[0]}：觀察提示</summary><p>${m[1]}</p></details>`;
   }
@@ -238,6 +264,7 @@
     (q('.heart-lab')||q('.visual-box')||q('.concept'))?.after(section);
     const absLab=q('[data-absolute-lab]',section); if(absLab) renderAbsolute(absLab);
     const integerLab=q('[data-integer-lab]',section); if(integerLab) renderInteger(integerLab);
+    const fractionLabEl=q('[data-fraction-lab]',section); if(fractionLabEl) renderFraction(fractionLabEl);
     const taiwanLab=q('[data-taiwan-lab]',section); if(taiwanLab) renderTaiwanLab(taiwanLab);
     const photoLab=q('[data-photo-lab]',section); if(photoLab) renderPhotosynthesisLab(photoLab);
   }
@@ -250,6 +277,6 @@
     const conceptOption=e.target.closest('[data-concept-option]');if(conceptOption){const visual=conceptOption.closest('[data-concept-visual]'),options=[...visual.querySelectorAll('[data-concept-option]')],index=Number(conceptOption.dataset.conceptOption);options.forEach((button,i)=>button.classList.toggle('is-active',i===index));q('[data-concept-status]',visual).textContent=`已選取「${conceptOption.textContent}」：請在圖中找出它，接著再點下一個步驟。`;q('[data-concept-diagram]',visual).dataset.step=String(index);}
     const layer=e.target.closest('[data-taiwan-layer]');if(layer){const visual=layer.closest('[data-taiwan-lab]');visual.querySelectorAll('[data-taiwan-layer]').forEach(button=>button.classList.toggle('is-active',button===layer));renderTaiwanLab(visual,layer.dataset.taiwanLayer);}
   });
-  app.addEventListener('input',e=>{const abs=e.target.closest('[data-absolute-lab]');if(abs&&e.target.matches('[data-absolute-slider]'))renderAbsolute(abs);const integer=e.target.closest('[data-integer-lab]');if(integer&&e.target.matches('[data-integer-start],[data-integer-change]'))renderInteger(integer);const photo=e.target.closest('[data-photo-lab]');if(photo&&e.target.matches('[data-photo-light],[data-photo-water],[data-photo-co2]'))renderPhotosynthesisLab(photo);});
+  app.addEventListener('input',e=>{const abs=e.target.closest('[data-absolute-lab]');if(abs&&e.target.matches('[data-absolute-slider]'))renderAbsolute(abs);const integer=e.target.closest('[data-integer-lab]');if(integer&&e.target.matches('[data-integer-start],[data-integer-change]'))renderInteger(integer);const fraction=e.target.closest('[data-fraction-lab]');if(fraction&&e.target.matches('[data-fraction-a],[data-fraction-b],[data-fraction-c],[data-fraction-d]'))renderFraction(fraction);const photo=e.target.closest('[data-photo-lab]');if(photo&&e.target.matches('[data-photo-light],[data-photo-water],[data-photo-co2]'))renderPhotosynthesisLab(photo);});
   new MutationObserver(render).observe(app,{childList:true,subtree:true}); render();
 })();

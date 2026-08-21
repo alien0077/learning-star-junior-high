@@ -27,7 +27,11 @@
     if (viewButton) {
       document.querySelectorAll("[data-heart-view]").forEach(button => button.classList.toggle("active", button === viewButton));
       const diagram = document.querySelector(".anatomical-heart");
-      if (diagram) diagram.classList.toggle("is-surface", viewButton.dataset.heartView === "surface");
+      const viewer = document.querySelector("[data-heart-3d-view]");
+      const isThreeD = viewButton.dataset.heartView === "threeD";
+      if (viewer) viewer.hidden = !isThreeD;
+      if (diagram) diagram.closest(".heart-diagram-wrap").hidden = isThreeD;
+      if (diagram) diagram.classList.remove("is-surface");
     }
   });
 })();
