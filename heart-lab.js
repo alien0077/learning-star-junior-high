@@ -10,6 +10,16 @@
     "血進入左心室；它的心肌最厚，因為要把血送到全身。",
     "左心室收縮，血由主動脈離開，送到全身微血管進行物質交換。"
   ];
+  const cutawayCues = [
+    "第 1 步：在長軸剖面找上、下腔靜脈回到右心房的入口。",
+    "第 2 步：定位右心房；它先接收全身回流的血。",
+    "第 3 步：從右心房往下找右心室與房室瓣，血經瓣膜前進。",
+    "第 4 步：由右心室追到肺動脈；它把血送往肺部交換氣體。",
+    "第 5 步：在剖面上方辨認肺靜脈回流；它帶回含氧較多的血。",
+    "第 6 步：定位左心房，確認肺靜脈的血先進入這個腔室。",
+    "第 7 步：沿瓣膜往下找左心室；它的肌肉最厚。",
+    "第 8 步：由左心室一路追到主動脈；血由此送往全身。"
+  ];
 
   document.addEventListener("click", event => {
     const stepButton = event.target.closest("[data-heart-step]");
@@ -20,6 +30,8 @@
       document.querySelector(`.r${index + 1}`)?.classList.add("is-active");
       const callout = document.querySelector("#heartCallout");
       if (callout) callout.innerHTML = `<b>第 ${index + 1} 步｜${stepButton.textContent.trim()}</b><span>${steps[index]}</span>`;
+      const cutawayCue = document.querySelector("[data-heart-cutaway-cue]");
+      if (cutawayCue) cutawayCue.textContent = cutawayCues[index];
       return;
     }
     if (event.target.closest("[data-heart-reveal]")) document.querySelector("#heartReveal").hidden = false;
@@ -28,10 +40,11 @@
       document.querySelectorAll("[data-heart-view]").forEach(button => button.classList.toggle("active", button === viewButton));
       const diagram = document.querySelector(".anatomical-heart");
       const viewer = document.querySelector("[data-heart-3d-view]");
+      const cutawayViewer = document.querySelector("[data-heart-cutaway-view]");
       const isThreeD = viewButton.dataset.heartView === "threeD";
       if (viewer) viewer.hidden = !isThreeD;
-      if (diagram) diagram.closest(".heart-diagram-wrap").hidden = isThreeD;
-      if (diagram) diagram.classList.remove("is-surface");
+      if (cutawayViewer) cutawayViewer.hidden = isThreeD;
+      if (diagram) diagram.closest(".heart-diagram-wrap").hidden = true;
     }
   });
 })();
