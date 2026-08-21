@@ -65,12 +65,25 @@
   add9("社會","民主政治與公共參與","民主制度保障選舉、參與、監督與權利救濟。負責任的公共參與要以可查證資料、理由和程序討論，而不是以情緒或攻擊取代理性。",["多數決仍需保障少數權利。","媒體識讀要查來源、證據與發布時間。","公共政策常需要協商不同利益。"],"例：對校園政策提出建議時，可蒐集問卷、提出理由並回應不同使用者需求。", "分清事實、意見與價值判斷。" );
   add9("社會","永續發展與跨科素養","永續發展追求當代需求與後代需求的平衡。跨科問題需整合自然證據、數學數據、社會制度與倫理價值，才能提出可行方案。",["環境面關注資源、生態與排放。","社會面關注公平、健康與參與。","經濟面關注成本、就業與長期可行性。"],"例：減塑政策可比較垃圾量資料、替代材料成本、商家負擔與消費者使用習慣。", "提出方案時至少說明一項好處、一項代價和改善方式。" );
   window.TEXTBOOK_CONTENT = D;
+  const fallbackChapter = (subject, unit, goal) => {
+    const guide = {
+      數學:{focus:'把題目的量、單位與未知數放入式子、數線、表格或圖形；每一步運算都保留能檢查的理由。',ideas:['先標出已知量、未知量與限制條件。','選擇本節最合適的表徵：數線、面積、座標、圖形或式子。','完成後把答案代回條件，檢查符號、單位與大小是否合理。'],example:'不要一開始就套公式。先說出圖中每個量是什麼、它們如何互相改變，再計算。',check:'遮住解答後，能否畫出本節模型，並解釋每一步為什麼可以這樣做？'},
+      自然:{focus:'先分開「觀察到什麼、改變了什麼、機制是什麼」；再用圖中的流向、粒子、構造或系統關係說明結果。',ideas:['先在互動圖中找出輸入、作用位置與可觀察結果。','一次只改一個條件，說出哪些條件必須固定。','用箭頭完成因果句：因為＿＿改變，所以＿＿經由＿＿而產生＿＿。'],example:'先操作模型再作答：把題目給的數值或情境放入圖中，觀察哪一段被限制或哪個方向改變。',check:'能否不用背名詞，沿著箭頭說清楚本節的過程與一個常見誤解？'},
+      英文:{focus:'先判讀人物、時間與溝通任務，再把單字、句型與篇章線索放回完整句子。',ideas:['圈出主詞、時間詞、連接詞或題目要求。','先決定句子要表達習慣、事件、比較、原因、轉折或回應。','讀完整句後再檢查動詞形式、代名詞指涉與語意是否連貫。'],example:'不要只挑看起來最熟的單字；先用中文說出整段情境，再回原文找能支持答案的詞句。',check:'能否指出本節題目中的兩個線索，並說明它們如何共同決定答案？'},
+      國文:{focus:'閱讀時先找文本在說什麼，再找真正支持判讀的詞句；修辭、詞義與主旨都必須回到語境。',ideas:['先圈人物、事件、關鍵詞、轉折詞或作者主張。','把詞句放回前後文，區分直接訊息、證據與可合理推論。','答案要能指出一個文本依據，而不是只用自己的經驗猜測。'],example:'先把句子換成白話，再問它在段落中扮演什麼角色：描寫、說明、主張還是證據。',check:'能否說出本節的一個判讀依據，並解釋它如何支持你的結論？'},
+      社會:{focus:'同時定位時間、空間、角色與制度；用資料把背景、事件與影響連成因果，而不是孤立背名詞。',ideas:['先確認資料的時間、地點、範圍、圖例或利害關係人。','將背景條件、制度／事件與受影響群體依箭頭連起來。','比較不同資料時，先檢查來源、單位、立場與證據範圍。'],example:'用「因為＿＿背景，因此＿＿制度或事件改變，結果＿＿群體受到＿＿影響」寫出完整的一句。',check:'能否指出本節資料的時間、空間與一條因果關係，而不是只背出一個名詞？'}
+    }[subject];
+    return {overview:`「${unit}」的目標是：${goal} ${guide.focus}`,ideas:guide.ideas,example:guide.example,check:guide.check};
+  };
   const app = document.querySelector("#app");
   const render = () => {
     if (!app || app.querySelector(".textbook-chapter")) return;
     const meta = app.querySelector(".lesson-layout .eyebrow"), title = app.querySelector(".lesson-title");
     if (!meta || !title) return;
-    const [subject, unit] = meta.textContent.split(" · "); const d = D[`${window.__lessonGrade || 7}|${subject}|${unit}`]; if (!d) return;
+    const [subject, unit] = meta.textContent.split(" · ");
+    const grade=window.__lessonGrade || decodeURIComponent(location.hash).match(/chapter=(\d+)/)?.[1] || 7;
+    const goal=app.querySelector('.concept')?.textContent.replace('本節學習目標：','').trim() || '先用互動模型建立概念，再以題目驗證。';
+    const d = D[`${grade}|${subject}|${unit}`] || fallbackChapter(subject,unit,goal); if (!d) return;
     const s = document.createElement("section"); s.className = "textbook-chapter";
     const micro=d.ideas.map((idea,i)=>`<details class="micro-lesson" ${i===0?"open":""}><summary>子節 ${i+1}｜${idea}</summary><p>${d.overview}</p><p><b>帶做提示：</b>${i===0?d.example:"先用自己的話重述這條規則，再把題幹的條件逐一對應。"}</p><p class="micro-check"><b>立即練習：</b>${d.check}</p></details>`).join("");
     s.innerHTML = `<div class="eyebrow">完整單元教材</div><h2>${title.textContent}：從觀念到會考應用</h2><section class="chapter-stage"><h3>1．核心概念</h3><p class="chapter-overview">${d.overview}</p></section><section class="chapter-stage"><h3>2．分節學習</h3>${micro}</section><section class="chapter-stage chapter-example"><h3>3．老師帶你做一題</h3><p>${d.example}</p><p><b>解題步驟：</b>先圈出已知條件，再把它連回上方三個觀念；最後檢查答案是否真的回應題目。</p></section><section class="chapter-stage"><h3>4．基礎演練</h3><p><b>不看筆記試著說明：</b>${d.check}</p><p>能說出理由後，再回到本節立即驗證題；若答錯，請標出是哪一個觀念或條件沒有連起來。</p></section><section class="chapter-stage chapter-check"><h3>5．會考素養讀法</h3><p>會考常把本章概念放進生活情境、圖表或多段資料。作答順序：<b>讀任務 → 圈資料 → 對應概念 → 排除超出證據的選項</b>。</p></section>`;
