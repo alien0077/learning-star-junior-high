@@ -24,7 +24,8 @@
       國文:['中心 → 證據 → 表達效果','先找作者或段落要說什麼，再用詞句證據回答「為什麼能這樣判斷」。'],
       社會:['時間／地點／角色 → 制度 → 影響','先定位事件或資料的時空背景，再連結制度、資源與不同群體受到的影響。']
     }[subject];
-    return `<section class="scholar-highlight" aria-label="公開學生筆記整理法轉化"><div class="eyebrow">公開學生筆記整理法｜本站原創轉化</div><h3><mark>${patterns[0]}</mark></h3><p><b>套回本節：</b>${goal}</p><p>${patterns[1]}</p><small>此區以公開筆記常見的整理框架重新撰寫，未轉載筆記原文或圖片。</small></section>`;
+    const facts=window.CHAPTER_STUDY_GUIDES?.[subject]?.[title]||[goal,patterns[1]];
+    return `<section class="scholar-highlight" aria-label="公開學生筆記整理法轉化"><div class="eyebrow">公開學生筆記整理法｜本站原創轉化</div><h3><mark>${title}：${patterns[0]}</mark></h3><p><b>本節被轉化並凸顯的筆記線索：</b><mark>${facts[0]}</mark></p><p><b>操作後必須能說出的推理：</b>${facts[1]}</p><p>${patterns[1]}</p><small>此區以公開筆記常見的整理框架重新撰寫，未轉載筆記原文或圖片；下方連結可查看本節關鍵字的公開筆記搜尋結果。</small></section>`;
   };
   const esc=value=>String(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
   function absoluteValueLab(){
