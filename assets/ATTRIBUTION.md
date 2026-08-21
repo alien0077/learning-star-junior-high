@@ -6,3 +6,6 @@
   https://commons.wikimedia.org/wiki/File:Plant_cell_structure_no_text.png
 
 本網站在細胞構造單元保留上述出處，並在頁面標示為公開領域教材圖。
+
+- `digestive-system-cc0.png`：〈Digestive System〉，Wikimedia Commons，CC0 1.0。
+  https://commons.wikimedia.org/wiki/File:Digestive_System.png
