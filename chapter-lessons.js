@@ -35,6 +35,20 @@
     output.textContent=`x = ${value<0?'−'+abs:value}`;
     readout.textContent=`${value===0?'x 就在原點，距離是 0 格。':`${value<0?'負':'正'}數 ${value<0?'−'+abs:abs} ${value<0?'在左':'在右'}邊；從 0 到 x 有 ${abs} 格，所以 |${value<0?'−'+abs:abs}| = ${abs}。`}`;
   }
+  function integerAdditionLab(){
+    return `<div class="interactive-visual integer-lab" data-integer-lab><div class="integer-equation" data-integer-equation>−2 ＋ 5 ＝ 3</div><div class="integer-controls"><label>起點 <input type="range" min="-8" max="8" value="-2" step="1" data-integer-start><output data-integer-start-out>−2</output></label><label>加上 <input type="range" min="-8" max="8" value="5" step="1" data-integer-change><output data-integer-change-out>＋5</output></label></div><div class="visual-instruction">紫點是起點；箭頭向右代表加正數、向左代表加負數；橘點就是答案。</div><svg class="integer-svg" data-integer-svg viewBox="0 0 690 205" role="img" aria-label="整數加減的可調整數線"></svg><div class="visual-status" data-integer-readout>從 −2 出發，加上 ＋5 就向右走 5 格，停在 3。</div></div>`;
+  }
+  function signed(value,withPlus=false){return value<0?`−${Math.abs(value)}`:(withPlus?`＋${value}`:`${value}`);}
+  function renderInteger(lab){
+    const start=Number(q('[data-integer-start]',lab).value), change=Number(q('[data-integer-change]',lab).value), end=start+change;
+    const min=-12,max=12,left=36,width=618,unit=width/(max-min),px=n=>left+(n-min)*unit, svg=q('[data-integer-svg]',lab);
+    const ticks=Array.from({length:max-min+1},(_,i)=>{const n=min+i,x=px(n);return `<g><line x1="${x}" y1="120" x2="${x}" y2="${n===0?146:136}" class="${n===0?'zero-tick':'tick'}"/><text x="${x}" y="170">${n}</text></g>`}).join('');
+    const sx=px(start), ex=px(end), within=end>=min&&end<=max;
+    svg.innerHTML=`<defs><marker id="integer-arrow" markerWidth="10" markerHeight="10" refX="7" refY="4" orient="auto"><path d="M0,0 L0,8 L8,4z" fill="#e58232"/></marker></defs><line class="number-axis" x1="${left}" y1="120" x2="${left+width}" y2="120"/>${ticks}${within?`<path class="move-arrow" d="M ${sx} 76 Q ${(sx+ex)/2} ${Math.max(20,76-Math.abs(ex-sx)*.14)} ${ex} 76" marker-end="url(#integer-arrow)"/><circle class="start-dot" cx="${sx}" cy="120" r="13"/><circle class="end-dot" cx="${ex}" cy="120" r="13"/><text class="start-label" x="${sx}" y="48">起點 ${signed(start)}</text><text class="end-label" x="${ex}" y="202">答案 ${signed(end)}</text>`:`<text class="end-label" x="345" y="70">答案超出目前數線範圍</text>`}`;
+    q('[data-integer-equation]',lab).textContent=`${signed(start)} ＋ ${signed(change,true)} ＝ ${signed(end)}`;
+    q('[data-integer-start-out]',lab).textContent=signed(start);q('[data-integer-change-out]',lab).textContent=signed(change,true);
+    q('[data-integer-readout]',lab).textContent=`從 ${signed(start)} 出發，加上 ${signed(change,true)}，所以${change>=0?'向右':'向左'}走 ${Math.abs(change)} 格，停在 ${signed(end)}。`;
+  }
   function mathVisual(title, equation, explanation){
     return `<div class="interactive-visual math-visual" data-math-visual><div class="visual-instruction">先操作圖像，再用自己的話說明規則</div><div class="math-canvas"><div class="math-shape shape-a"></div><div class="math-shape shape-b"></div><div class="math-symbol">↔</div><div class="math-shape shape-c"></div></div><div class="visual-controls"><button type="button" data-math-step="0">看條件</button><button type="button" data-math-step="1">建立關係</button><button type="button" data-math-step="2">驗證結果</button></div><div class="visual-status" data-math-status>先圈出題目的已知量：不要直接計算。</div></div>`;
   }
@@ -44,6 +58,8 @@
     requestAnimationFrame(()=>model?.classList.add('is-playing'));
     const absolute=q('[data-absolute-lab]',lab);
     if(absolute){const input=q('[data-absolute-slider]',absolute), values=[-4,0,5,-2], readout=q('[data-absolute-readout]',absolute);let step=0;const show=()=>{if(step>=values.length){clearInterval(lab._replayTimer);lab._replayTimer=null;return;}input.value=values[step];renderAbsolute(absolute);readout.textContent=`播放第 ${step+1} 步：${readout.textContent}`;step+=1;};show();lab._replayTimer=setInterval(show,850);return;}
+    const integer=q('[data-integer-lab]',lab);
+    if(integer){const start=q('[data-integer-start]',integer),change=q('[data-integer-change]',integer),values=[[-2,5],[3,-6],[-5,-3]];let step=0;const show=()=>{if(step>=values.length){clearInterval(lab._replayTimer);lab._replayTimer=null;return;}[start.value,change.value]=values[step];renderInteger(integer);q('[data-integer-readout]',integer).textContent=`播放第 ${step+1} 步：${q('[data-integer-readout]',integer).textContent}`;step+=1;};show();lab._replayTimer=setInterval(show,1000);return;}
     const visual=q('[data-visual]',lab);
     if(visual){
       const nodes=[...visual.querySelectorAll('[data-visual-node]')]; let step=0;
@@ -87,6 +103,7 @@
       ,'機率模型':['樹狀圖分支','多步驟事件沿樹狀圖相乘；互斥結果再相加。','P(A且B)=P(A)×P(B|A)']
     }; const m=models[title]||['數學關係圖','先把已知條件放進圖或式子，讓關係變得可見。',title];
     if(title==='正負數與絕對值') return absoluteValueLab();
+    if(title==='整數的加減') return integerAdditionLab();
     return `${mathVisual(title,m[2],m[1])}<details class="visual-caption"><summary>${m[0]}：操作提示</summary><p>${m[1]}</p><code>${m[2]}</code></details>`;
   }
   function scienceModel(title){
@@ -159,6 +176,7 @@
     const source=sourceGuide[subject];section.innerHTML=`<header><div class="eyebrow">${a.mode}｜互動式分節教材</div><h2>${title}</h2><p>${goal}</p></header><div class="chapter-workspace"><div class="model-stage" data-model>${stage(subject,title,goal)}</div><aside class="lab-panel"><h3>先做預測</h3><div class="prediction">看到題目時，先不要選答案。請說出：<b>我會先找哪個條件？它和本節概念有什麼關係？</b></div><div class="chapter-choices"><button data-chapter-choice="0">先把題目中的條件標記出來</button><button data-chapter-choice="1">只靠記得的關鍵字猜答案</button><button data-chapter-choice="2">先建立模型／關係，再驗證結論</button></div><div class="chapter-feedback" data-chapter-feedback>點選一個做法，查看解題理由。</div></aside></div><details class="chapter-note-details"><summary>操作後再看：重點、解題法與常見誤解</summary><div class="chapter-note-grid"><article><b>圖像化重點</b><p>${goal}</p></article><article><b>解題整理法</b><p>${a.method}</p></article><article><b>常見誤解</b><p>${a.trap}</p></article></div><div class="source-note"><b>本節整理依據</b><p>${source[0]}</p><a href="${source[1]}" target="_blank" rel="noopener">查看公開筆記的章節整理方式</a><small>本站只參考整理方法與章節脈絡；概念說明、圖示、題目與解答均自行撰寫。</small></div></details><button class="chapter-replay" data-chapter-replay>重新播放圖像路徑</button>`;
     (q('.heart-lab')||q('.visual-box')||q('.concept'))?.after(section);
     const absLab=q('[data-absolute-lab]',section); if(absLab) renderAbsolute(absLab);
+    const integerLab=q('[data-integer-lab]',section); if(integerLab) renderInteger(integerLab);
   }
   app.addEventListener('click',e=>{
     const lab=e.target.closest('.chapter-lab'); if(!lab)return;
@@ -167,6 +185,6 @@
     const node=e.target.closest('[data-visual-node]'); if(node){const visual=node.closest('[data-visual]');const nodes=[...visual.querySelectorAll('[data-visual-node]')];const current=Number(node.dataset.visualNode);nodes.forEach((item,index)=>item.classList.toggle('is-active',index<=current));q('[data-visual-status]',visual).textContent=`第 ${current+1} 步已亮起：${node.textContent.trim()}。現在請說出它如何連到下一步。`;}
     const mathStep=e.target.closest('[data-math-step]'); if(mathStep){const visual=mathStep.closest('[data-math-visual]');const messages=['先把題目的數、圖形或條件圈出來。','把同一類量連線：確認符號、單位或對應關係。','把答案代回原條件或圖像，檢查是否合理。'];visual.querySelectorAll('[data-math-step]').forEach((button,index)=>button.classList.toggle('is-active',index===Number(mathStep.dataset.mathStep)));q('[data-math-status]',visual).textContent=messages[Number(mathStep.dataset.mathStep)];}
   });
-  app.addEventListener('input',e=>{const lab=e.target.closest('[data-absolute-lab]');if(lab&&e.target.matches('[data-absolute-slider]'))renderAbsolute(lab);});
+  app.addEventListener('input',e=>{const abs=e.target.closest('[data-absolute-lab]');if(abs&&e.target.matches('[data-absolute-slider]'))renderAbsolute(abs);const integer=e.target.closest('[data-integer-lab]');if(integer&&e.target.matches('[data-integer-start],[data-integer-change]'))renderInteger(integer);});
   new MutationObserver(render).observe(app,{childList:true,subtree:true}); render();
 })();
