@@ -213,6 +213,12 @@ function officialPastExamQuestion(subject,title){const key=`${subject}:${title}`
   ,'自然:遺傳與基因':['114 年國中教育會考｜自然第 30 題','兩隻黑眼孔雀魚交配後產生黑、紅兩種子代。可確定哪兩隻的基因型相同？',['兩親代','親代甲與任一黑眼子代','親代乙與任一黑眼子代','任兩隻黑眼子代'],0,'紅眼子代為 aa，表示兩個黑眼親代都必須各提供 a，因此兩親代皆為 Aa；黑眼子代則可能是 AA 或 Aa。']
   ,'自然:能源轉換':['114 年國中教育會考｜自然第 42 題','自行車發電共產生 0.021 kWh，電價每度 3 元，對應電費如何計算？',['700÷1000×3 元','0.021×3 元','0.021÷1000×700×3 元','0.021÷700×1000×3 元'],1,'一度電就是 1 kWh，因此費用＝0.021 kWh×3 元/kWh；不需再把功率 700 W 代入。']
 };const row=data[key];return row?{kind:row[0],question:row[1],answers:row[2],correct:row[3],explanation:row[4],tip:'先讀題幹條件，再用圖、式或列舉法重建關係；官方題本的圖表必須連同標示一起判讀。'}:null;}
+function guideConceptQuestions(lesson){const facts=window.CHAPTER_STUDY_GUIDES?.[lesson.subject]?.[lesson.unit];if(!facts)return [];const labels=['核心事實','模型推理','情境判讀','常見迷思'];const decoys=[
+  ['只要背章名即可','可以忽略條件直接作答','所有題目都只靠猜測'],
+  ['不需要建立圖、式或流程','可任意改變題目條件','不必檢查前後關係'],
+  ['生活情境不必回到本節概念','只看一個關鍵字就能判定','結果不需要符合題目限制'],
+  ['看到熟悉名詞就直接選','不必回到定義或證據','錯誤規則也可以套用']
+];return facts.slice(0,4).map((fact,index)=>({kind:labels[index],question:`關於「${lesson.unit}」，下列哪一項敘述最符合本節重點？`,answers:[fact,...decoys[index]],correct:0,explanation:fact,tip:`回到本節的互動模型，找出題幹中的條件，再用「${labels[index]}」這一句話檢查選項；不能只憑關鍵字猜。`}));}
 function chapterPracticeBank(lesson){
   const base={question:lesson.question,answers:lesson.answers,correct:lesson.correct,explanation:lesson.explanation,tip:solvingTip(lesson),kind:'核心概念'};
   const shared=[
@@ -226,7 +232,7 @@ function chapterPracticeBank(lesson){
     ['素養應用',`「${lesson.unit}」的跨情境題要求學生做的核心能力是？`,['背誦原句','把概念模型套入新資料並說明理由','只找相同的題目','忽略資料來源'],1,`新情境的表面可以不同，但概念關係不變；先找出它和本節的對應。`,solvingTip(lesson)],
     ['自我檢核',`完成本節題目後，最好的自我檢查是？`,['立刻看下一題','用自己的話重述原理，並檢查答案是否符合條件','只看對錯','把錯誤遮起來'],1,`把原理說出來並回代條件，可分辨是真懂還是剛好猜對。`,solvingTip(lesson)]
   ];
-  const rows=[base,...shared].slice(0,10); const application=lesson.subject==='數學'?mathApplicationQuestion(lesson.unit):lesson.subject==='自然'?scienceApplicationQuestion(lesson.unit):lesson.subject==='英文'?englishApplicationQuestion(lesson.unit):humanitiesApplicationQuestion(lesson.subject,lesson.unit), past=officialPastExamQuestion(lesson.subject,lesson.unit); if(application) rows[4]=application; if(past) rows[8]=past;
+  const guideRows=guideConceptQuestions(lesson);const rows=[base,...guideRows,...shared].slice(0,10); const application=lesson.subject==='數學'?mathApplicationQuestion(lesson.unit):lesson.subject==='自然'?scienceApplicationQuestion(lesson.unit):lesson.subject==='英文'?englishApplicationQuestion(lesson.unit):humanitiesApplicationQuestion(lesson.subject,lesson.unit), past=officialPastExamQuestion(lesson.subject,lesson.unit); if(application) rows[5]=application; if(past) rows[8]=past;
   return rows.map((row,index)=>({index,...(Array.isArray(row)?{kind:row[0],question:row[1],answers:row[2],correct:row[3],explanation:row[4],tip:row[5]}:row)}));
 }
 function chapterPracticeView(lesson){const items=chapterPracticeBank(lesson);return `<section class="question card chapter-practice"><div class="eyebrow">本節 10 題理解測驗</div><h2>每一題作答後都顯示原理與解題方法</h2><p>含「生活情境」與「素養應用」題；數學與自然題以模型、圖像或關係式來檢查，而不是只背答案。</p>${items.map(item=>`<article class="practice-item"><div class="eyebrow">第 ${item.index+1} 題｜${item.kind}</div><h3>${item.question}</h3><div class="answers">${item.answers.map((answer,i)=>`<button class="answer" data-chapter-practice-answer="${item.index}:${i}">${String.fromCharCode(65+i)}. ${answer}</button>`).join('')}</div><div class="practice-feedback" id="practiceFeedback${item.index}"></div></article>`).join('')}</section>`;}
