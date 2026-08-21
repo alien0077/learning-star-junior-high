@@ -10,11 +10,11 @@
   };
   const q=(s,r=document)=>r.querySelector(s);
   const sourceGuide={
-    數學:['公開學生筆記常用「數線、符號表、因數樹、面積模型」整理數學；本站將它們改寫為可操作模型與原創題目。','https://www.clearnotebooks.com/zh-TW/notebooks/2307671'],
-    國文:['公開筆記常以注釋、句意重組與主張—證據框架協助閱讀；本站以原創文本與判讀流程呈現，不轉載筆記內容。','https://www.clearnotebooks.com/zh-TW/notebooks/2446570'],
-    英文:['公開筆記常把時態畫成時間線、將句型拆成結構；本站以原創例句與互動結構圖重新編寫。','https://www.clearnotebooks.com/zh-TW/notebooks/2017113'],
-    自然:['公開筆記常以流程圖、比較表整理生物、理化與地科；本站以因果模型、實驗變因與原創檢核題重新編寫。','https://www.clearnotebooks.com/zh-TW/notebooks/grade/junior-high/subject/science'],
-    社會:['公開會考整理常以地圖、年表、制度關係與案例表格組織資料；本站以原創事件鏈與讀圖流程重編。','https://www.clearnotebooks.com/zh-TW/notebooks/1698681']
+    數學:['公開學生筆記常用「數線、符號表、因數樹、面積模型」整理數學；本站將它們改寫為可操作模型與原創題目。','https://www.clearnotebooks.com/zh-TW/notebooks/1228802','Clearnote｜數學B1.CH1正負數與整數的運算'],
+    國文:['公開筆記常以注釋、句意重組與主張—證據框架協助閱讀；本站以原創文本與判讀流程呈現，不轉載筆記內容。','https://www.clearnotebooks.com/zh-TW/notebooks/1184257','Clearnote｜會考國文（四大句型＋狀聲詞）統整'],
+    英文:['公開筆記常把時態畫成時間線、將句型拆成結構；本站以原創例句與互動結構圖重新編寫。','https://www.clearnotebooks.com/zh-TW/notebooks/848027','Clearnote｜會考英文重點整理：第一冊 1～4 課'],
+    自然:['公開筆記常以流程圖、比較表整理生物、理化與地科；本站以因果模型、實驗變因與原創檢核題重新編寫。','https://www.clearnotebooks.com/zh-TW/notebooks/1111360','Clearnote｜會考生物 B1-2 總整理'],
+    社會:['公開會考整理常以地圖、年表、制度關係與案例表格組織資料；本站以原創事件鏈與讀圖流程重編。','https://www.clearnotebooks.com/zh-TW/notebooks/2181369','Clearnote｜會考考場筆記：歷史年代表（臺灣）']
   };
   const noteHighlight=(subject,title,goal)=>{
     const patterns={
@@ -435,7 +435,7 @@
     const meta=q('.lesson-layout .eyebrow'),titleEl=q('.lesson-title'),concept=q('.concept'); if(!meta||!titleEl||!concept||!titleEl.textContent.includes('｜')) return;
     const [subject]=meta.textContent.split(' · '), title=titleEl.textContent.split('｜').slice(1).join('｜').trim(), goal=concept.textContent.replace('本節學習目標：','').trim(), a=subjectAdvice[subject]; if(!a) return;
     const section=document.createElement('section'); section.className='chapter-lab';
-    const source=sourceGuide[subject],noteSearch=`https://www.clearnotebooks.com/zh-TW/notebooks/grade/junior-high?q=${encodeURIComponent(`${subject} ${title}`)}`;section.innerHTML=`<header><div class="eyebrow">${a.mode}｜互動式分節教材</div><h2>${title}</h2><p>${goal}</p></header><div class="chapter-workspace"><div class="model-stage" data-model>${stage(subject,title,goal)}</div><aside class="lab-panel"><h3>先做預測</h3><div class="prediction">看到題目時，先不要選答案。請說出：<b>我會先找哪個條件？它和本節概念有什麼關係？</b></div><div class="chapter-choices"><button data-chapter-choice="0">先把題目中的條件標記出來</button><button data-chapter-choice="1">只靠記得的關鍵字猜答案</button><button data-chapter-choice="2">先建立模型／關係，再驗證結論</button></div><div class="chapter-feedback" data-chapter-feedback>點選一個做法，查看解題理由。</div></aside></div><details class="chapter-note-details" open><summary>操作後再看：本節完整重點、推理與常見誤解</summary><div class="chapter-note-grid">${studyGuide(subject,title,goal)}</div>${noteHighlight(subject,title,goal)}<div class="source-note"><b>本節整理依據</b><p>${source[0]}</p><a href="${noteSearch}" target="_blank" rel="noopener">搜尋「${title}」公開學生筆記</a><a href="${source[1]}" target="_blank" rel="noopener">查看本學科公開筆記整理方式</a><small>本站只參考整理方法與章節脈絡；概念說明、圖示、題目與解答均自行撰寫。</small></div></details><button class="chapter-replay" data-chapter-replay>重新播放圖像路徑</button>`;
+    const source=sourceGuide[subject],noteSearch=`https://www.clearnotebooks.com/zh-TW/notebooks/grade/junior-high?q=${encodeURIComponent(`${subject} ${title}`)}`;section.innerHTML=`<header><div class="eyebrow">${a.mode}｜互動式分節教材</div><h2>${title}</h2><p>${goal}</p></header><div class="chapter-workspace"><div class="model-stage" data-model>${stage(subject,title,goal)}</div><aside class="lab-panel"><h3>先做預測</h3><div class="prediction">看到題目時，先不要選答案。請說出：<b>我會先找哪個條件？它和本節概念有什麼關係？</b></div><div class="chapter-choices"><button data-chapter-choice="0">先把題目中的條件標記出來</button><button data-chapter-choice="1">只靠記得的關鍵字猜答案</button><button data-chapter-choice="2">先建立模型／關係，再驗證結論</button></div><div class="chapter-feedback" data-chapter-feedback>點選一個做法，查看解題理由。</div></aside></div><details class="chapter-note-details" open><summary>操作後再看：本節完整重點、推理與常見誤解</summary><div class="chapter-note-grid">${studyGuide(subject,title,goal)}</div>${noteHighlight(subject,title,goal)}<div class="source-note"><b>本節整理依據</b><p>${source[0]}</p><a href="${source[1]}" target="_blank" rel="noopener">已核對的公開筆記：${source[2]}</a><a href="${noteSearch}" target="_blank" rel="noopener">搜尋「${title}」公開學生筆記</a><small>本站只參考整理方法與章節脈絡；概念說明、圖示、題目與解答均自行撰寫。</small></div></details><button class="chapter-replay" data-chapter-replay>重新播放圖像路徑</button>`;
     (q('.heart-lab')||q('.visual-box')||q('.concept'))?.after(section);
     const absLab=q('[data-absolute-lab]',section); if(absLab) renderAbsolute(absLab);
     const integerLab=q('[data-integer-lab]',section); if(integerLab) renderInteger(integerLab);
