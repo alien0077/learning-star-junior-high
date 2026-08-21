@@ -9,3 +9,9 @@
 
 - `digestive-system-cc0.png`：〈Digestive System〉，Wikimedia Commons，CC0 1.0。
   https://commons.wikimedia.org/wiki/File:Digestive_System.png
+- `neuron-cell-pd.svg`：LadyofHats，〈Complete neuron cell diagram〉，Wikimedia Commons，公開領域。
+  https://commons.wikimedia.org/wiki/File:Complete_neuron_cell_diagram_numbered.svg
+- `food-web-cc0.svg`：LadyofHats，〈Food web diagram〉，Wikimedia Commons，CC0 1.0。
+  https://commons.wikimedia.org/wiki/File:Food_web_diagram.svg
+- `xylem-phloem-cc-by-sa.svg`：Nefronus，〈Xylem and phloem diagram〉，Wikimedia Commons，CC BY-SA 4.0；本站未修改原圖。
+  https://commons.wikimedia.org/wiki/File:Xylem_and_phloem_diagram.svg
