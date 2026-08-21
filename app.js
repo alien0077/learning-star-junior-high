@@ -138,6 +138,20 @@ function scienceApplicationQuestion(title){const data={
   '板塊與地質':['地震多集中在板塊邊界，主因是？',['板塊相對運動使應力累積釋放','每天日照不同','月亮發光','植物蒸散'],0,'板塊聚合、張裂或錯動會累積應力，釋放時形成地震。'],
   '天文與永續':['日食發生時，三者位置關係為？',['月球位於太陽和地球之間','地球位於太陽和月球之間','太陽位於地月之間','三者沒有關係'],0,'月球遮住部分太陽光投到地球，形成日食。']
 };const row=data[title];return row?{kind:'自然情境／實驗應用',question:row[0],answers:row[1],correct:row[2],explanation:row[3],tip:'先確認題目描述的現象與條件，再畫出變因、粒子／構造或能量的箭頭；最後用證據檢查因果，不要只背名詞。'}:null;}
+function humanitiesApplicationQuestion(subject,title){const chinese=subject==='國文';const rules=chinese?[
+  [/字音|字形|字詞|詞義|成語/,['句中「走馬看花」最接近哪個意思？',['快速瀏覽','騎馬賞花','細看花朵','停止前進'],0,'成語要依整體語境判讀，不能逐字拆開猜。']],
+  [/文言|古典|國學/,['閱讀文言句子時，第一步最可靠的是？',['逐字硬譯','找人物、動作與轉折，再補語意','只背作者年代','忽略虛詞'],1,'先建立誰做什麼，再處理省略、倒裝與古今異義。']],
+  [/修辭|抒情|詩歌/,['「風在窗外唱歌」最主要使用何種修辭？',['擬人','借代','排比','設問'],0,'把無生命的風寫成會唱歌，屬於擬人；還要說明它營造的感受。']],
+  [/議論|論證/,['文章主張「應減少一次性用品」，哪一項最能支持主張？',['可查證的垃圾量資料','重複主張三次','無關的故事','作者心情'],0,'議論須用可檢查的理由或證據支持主張。']],
+  [/說明|圖表|資料/,['閱讀圖表型說明文前，應優先確認？',['標題、單位與資料來源','顏色好不好看','作者名字長短','自己的印象'],0,'圖表的標題、單位與資料範圍決定可否正確比較。']],
+  [/跨文本|推論|閱讀策略/,['兩篇文章觀點不同時，最恰當的作法是？',['比較各自的主張與證據','只選自己喜歡的','只看標題','把兩文混成一句'],0,'跨文本要分別找觀點與證據，再比較共同與差異。']],
+  [/寫作|組織|表達/,['一段文章要表達「珍惜水資源」，最佳開頭是？',['先提出中心句，再用例子支持','只列標點','先寫結論以外內容','不分段'],0,'中心句先讓讀者知道段落主旨，細節再具體支持。']],
+  [/記敘/,['記敘文理解事件轉折時，最有用的線索是？',['人物、事件、時間與感受變化','字數','紙張顏色','作者生日'],0,'以事件順序與人物感受重建內容，才能判讀轉折。']]]:[
+  [/臺灣的自然|地圖|地理資訊|區域|世界區域/,['地圖顯示一地降雨量，判讀前最重要的是？',['看圖例、單位、方向與時間','只看顏色深淺','只記地名','忽略比例尺'],0,'地圖符號與單位是資料證據；先確認它們才能比較空間差異。']],
+  [/人口|產業|資源|環境|全球化|永續/,['工業區接近港口與交通節點，最合理原因是？',['降低運輸成本並連結市場','氣溫一定最低','人口一定最少','沒有政策影響'],0,'產業區位通常要綜合資源、交通、市場、勞力與政策。']],
+  [/史前|荷西|鄭氏|清代|開港|近代|現代臺灣|中國|世界|歷史/,['理解一項歷史事件的影響，最適合的做法是？',['連結背景、事件、不同角色與後續改變','只背年份','只看人物姓名','忽略時間先後'],0,'歷史判讀要用因果與時序連結，而非孤立名詞。']],
+  [/法律|權利|民主|政府|公共|社區|市場|金融|經濟|社會生活/,['討論社區垃圾處理時，哪一項屬於公共事務？',['需要共同規則與資源分配','一個人的午餐選擇','私人日記','個人興趣'],0,'公共事務影響多數人，需透過制度、參與與資源協調處理。']]
+];const matched=rules.find(([pattern])=>pattern.test(title));const row=matched?.[1];return row?{kind:chinese?'國文文本判讀':'社會資料／制度判讀',question:row[0],answers:row[1],correct:row[2],explanation:row[3],tip:chinese?'先圈文本中的關鍵詞句，再說出它如何支持答案；不要只靠熟悉的名詞。':'先定位時間、空間、角色與制度，再以資料證據連結原因與影響。'}:null;}
 function englishApplicationQuestion(title){const data={
   '自我介紹與人稱代名詞':['Amy and I are classmates. ___ study together.',['We','They','He','It'],0,'Amy 和 I 合起來是第一人稱複數，所以用 We。'],
   '日常作息與現在簡單式':['Tom ___ breakfast at 7 every day.',['have','has','is having','had'],1,'every day 表習慣，Tom 是第三人稱單數，用 has。'],
@@ -199,7 +213,7 @@ function chapterPracticeBank(lesson){
     ['素養應用',`「${lesson.unit}」的跨情境題要求學生做的核心能力是？`,['背誦原句','把概念模型套入新資料並說明理由','只找相同的題目','忽略資料來源'],1,`新情境的表面可以不同，但概念關係不變；先找出它和本節的對應。`,solvingTip(lesson)],
     ['自我檢核',`完成本節題目後，最好的自我檢查是？`,['立刻看下一題','用自己的話重述原理，並檢查答案是否符合條件','只看對錯','把錯誤遮起來'],1,`把原理說出來並回代條件，可分辨是真懂還是剛好猜對。`,solvingTip(lesson)]
   ];
-  const rows=[base,...shared].slice(0,10); const application=lesson.subject==='數學'?mathApplicationQuestion(lesson.unit):lesson.subject==='自然'?scienceApplicationQuestion(lesson.unit):lesson.subject==='英文'?englishApplicationQuestion(lesson.unit):null, past=officialPastExamQuestion(lesson.subject,lesson.unit); if(application) rows[4]=application; if(past) rows[8]=past;
+  const rows=[base,...shared].slice(0,10); const application=lesson.subject==='數學'?mathApplicationQuestion(lesson.unit):lesson.subject==='自然'?scienceApplicationQuestion(lesson.unit):lesson.subject==='英文'?englishApplicationQuestion(lesson.unit):humanitiesApplicationQuestion(lesson.subject,lesson.unit), past=officialPastExamQuestion(lesson.subject,lesson.unit); if(application) rows[4]=application; if(past) rows[8]=past;
   return rows.map((row,index)=>({index,...(Array.isArray(row)?{kind:row[0],question:row[1],answers:row[2],correct:row[3],explanation:row[4],tip:row[5]}:row)}));
 }
 function chapterPracticeView(lesson){const items=chapterPracticeBank(lesson);return `<section class="question card chapter-practice"><div class="eyebrow">本節 10 題理解測驗</div><h2>每一題作答後都顯示原理與解題方法</h2><p>含「生活情境」與「素養應用」題；數學與自然題以模型、圖像或關係式來檢查，而不是只背答案。</p>${items.map(item=>`<article class="practice-item"><div class="eyebrow">第 ${item.index+1} 題｜${item.kind}</div><h3>${item.question}</h3><div class="answers">${item.answers.map((answer,i)=>`<button class="answer" data-chapter-practice-answer="${item.index}:${i}">${String.fromCharCode(65+i)}. ${answer}</button>`).join('')}</div><div class="practice-feedback" id="practiceFeedback${item.index}"></div></article>`).join('')}</section>`;}
