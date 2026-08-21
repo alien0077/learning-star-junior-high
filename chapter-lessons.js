@@ -60,9 +60,23 @@
     }; const m=models[title]||Object.entries(models).find(([key])=>title.includes(key)||key.includes(title))?.[1]||['科學因果流程','條件 → 機制 → 可觀察結果'];
     return `<div class="math-specific science-specific"><b>${m[0]}</b><div class="math-equation">${m[1]}</div><small>按下按鈕，依箭頭用自己的話解釋每一格如何造成下一格。</small><button type="button" data-math-model>播放因果路徑</button><p data-math-model-result>先預測：改變哪一個條件，最可能影響最後的觀察結果？</p></div>`;
   }
+  function languageModel(subject,title){
+    const en={
+      '自我介紹與人稱代名詞':['人稱配對','I／you／we／they ↔ am／are；he／she／it ↔ is'], '日常作息與現在簡單式':['習慣時間線','every day、usually → 主詞＋原形／第三人稱單數'], '正在發生與現在進行式':['現在進行燈號','now、at the moment → am／is／are＋V-ing'], '名詞、冠詞與數量':['名詞分類籃','可數單數用 a／an；複數或不可數量用 some／any'], '地點與介系詞':['位置地圖','in 在裡面；on 在表面；at 指特定點'], '問句與簡答':['問答樹','be 動詞直接倒裝；一般動詞用 Do／Does'], '過去式與時間線':['過去事件軸','yesterday、last… → 規則 ed 或不規則過去式'], '比較級與最高級':['比較階梯','兩者比較＋than；三者以上用 the 最高級'], '未來計畫與 be going to':['未來箭頭','已有計畫或明顯跡象 → be going to'], '情態助動詞':['語氣儀表板','can 能力／允許；should 建議；must 必要'], '連接詞':['邏輯接線','because 原因；so 結果；but 轉折'], '被動語態入門':['動作焦點切換','承受動作的主詞＋be＋p.p.'], '現在完成式':['過去連到現在','have／has＋p.p. 表經驗、完成或持續'], '關係子句':['名詞標籤','先行詞是人用 who；事物用 which'], '篇章連接':['段落箭頭','however 轉折；therefore 結果'], '推論閱讀':['證據放大鏡','合理推論必須回到文本線索'], '會考寫作':['寫作骨架','任務點 → 段落 → 例子 → 檢查']};
+    const zh={
+      '字音、字形與詞義':['語境三角形','部首、詞性、前後搭配一起判讀'], '成語與詞語運用':['固定語意盒','成語先整體換白話，再放回句子檢查'], '句型、語法與標點':['句子骨架','找主詞、主要動詞、受詞與修飾語'], '修辭與表達效果':['手法到效果','手法 → 畫面／語氣 → 作者情感'], '記敘文本閱讀':['事件路線','人物 → 事件 → 轉折 → 感受'], '說明文本閱讀':['說明工具箱','定義、分類、因果、舉例各有任務'], '議論文本閱讀':['論證三角','主張 ← 理由 ← 可查證證據'], '文言文句意':['古文解碼','人物／動詞／轉折 → 補省略 → 重組白話'], '古典詩歌意象':['景情連線','景物與動作如何烘托心情'], '跨文本與圖表':['資料比較表','來源、時間、對象、單位、結論逐項比較'], '寫作表達':['段落地圖','中心句 → 細節／例子 → 回扣題目'], '論證閱讀':['主張檢驗台','證據是否足夠？是否有替代原因？'], '國學常識':['背景索引','作品、體裁、稱謂與時代協助閱讀'], '會考閱讀策略':['題幹回查法','先讀任務，再回原文找直接證據']};
+    const m=(subject==='英文'?en:zh)[title]||['語言結構圖','線索 → 結構 → 完整意思'];
+    return `<div class="math-specific language-specific"><b>${m[0]}</b><div class="math-equation">${m[1]}</div><small>按下按鈕後，先用這個結構重述一句／一段，再回到題目檢查。</small><button type="button" data-math-model>切換到結構模式</button><p data-math-model-result>先找線索，不要先猜答案。</p></div>`;
+  }
+  function socialModel(title){
+    const m=title.includes('地圖')||title.includes('地理')||title.includes('區域')||title.includes('人口')||title.includes('產業')||title.includes('環境')||title.includes('全球化')||title.includes('永續')?['地圖判讀順序','標題／時間 → 圖例／單位 → 空間分布 → 人地原因']:title.includes('政府')||title.includes('法律')||title.includes('權利')||title.includes('民主')||title.includes('公共')||title.includes('市場')||title.includes('金融')?['公民案例關係圖','行為人／受影響者 → 權利義務 → 規則程序 → 結果']:['歷史因果時間線','背景條件 → 事件／制度 → 不同群體的影響'];
+    return `<div class="math-specific social-specific"><b>${m[0]}</b><div class="math-equation">${m[1]}</div><small>操作時，把本節人物、地點或制度填入每一格；最後說明它改變了誰。</small><button type="button" data-math-model>播放因果連線</button><p data-math-model-result>先辨識資料的時間、位置與角色，避免把名詞孤立背誦。</p></div>`;
+  }
   function stage(subject,title,goal){
     if(subject==='數學') return mathModel(title);
     if(subject==='自然') return scienceModel(title);
+    if(subject==='英文'||subject==='國文') return languageModel(subject,title);
+    if(subject==='社會') return socialModel(title);
     const labels=subject==='英文'?['情境線索','句型與字詞','完整意思']:subject==='國文'?['文本線索','作者意圖','有據的判讀']:['背景條件','事件／制度','群體影響'];
     return `<div class="flow-model">${labels.map((x,i)=>`<span class="flow-node">${x}</span>${i<labels.length-1?'<span class="flow-arrow">→</span>':''}`).join('')}</div><small>把「${title}」放入這條路徑，逐格說出它如何發生、如何被判斷。</small>`;
   }
