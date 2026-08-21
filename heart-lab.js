@@ -48,5 +48,11 @@
       if (cutawayViewer) cutawayViewer.hidden = isThreeD;
       if (diagram) diagram.closest(".heart-diagram-wrap").hidden = true;
     }
+
+    const resetThreeD = event.target.closest("[data-heart-reset-view]");
+    if (resetThreeD) {
+      const model = document.querySelector("[data-heart-3d-view] iframe");
+      if (model) model.src = model.src;
+    }
   });
 })();
