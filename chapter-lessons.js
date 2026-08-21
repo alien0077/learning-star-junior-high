@@ -16,6 +16,28 @@
     自然:['公開筆記常以流程圖、比較表整理生物、理化與地科；本站以因果模型、實驗變因與原創檢核題重新編寫。','https://www.clearnotebooks.com/zh-TW/notebooks/grade/junior-high/subject/science'],
     社會:['公開會考整理常以地圖、年表、制度關係與案例表格組織資料；本站以原創事件鏈與讀圖流程重編。','https://www.clearnotebooks.com/zh-TW/notebooks/1698681']
   };
+  const esc=value=>String(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+  function flowParts(text){return String(text).split(/\s*(?:→|↔|＋)\s*/).filter(Boolean).slice(0,5);}
+  function visualFlow(title, text, type='flow'){
+    const parts=flowParts(text); const count=Math.max(parts.length,2);
+    const nodes=parts.map((part,index)=>`<button type="button" class="visual-node ${index===0?'is-active':''}" data-visual-node="${index}" aria-label="操作第 ${index+1} 個概念：${esc(part)}"><span>${index+1}</span><strong>${esc(part)}</strong></button>`).join('');
+    return `<div class="interactive-visual ${type}" data-visual data-title="${esc(title)}"><div class="visual-instruction">點選節點，讓關係一步一步亮起</div><div class="visual-track" style="--node-count:${count}">${nodes}</div><div class="visual-status" data-visual-status>從「${esc(parts[0]||title)}」開始：先指出它在這一節扮演的角色。</div></div>`;
+  }
+  function absoluteValueLab(){
+    return `<div class="interactive-visual absolute-lab" data-absolute-lab><div class="visual-instruction">拖曳 x：位置在 0 的哪一側？距離又是多少？</div><label class="visual-slider-label">x 的位置 <input type="range" min="-8" max="8" value="-4" step="1" data-absolute-slider><output data-absolute-output>x = −4</output></label><svg class="absolute-svg" data-absolute-svg viewBox="0 0 640 180" role="img" aria-label="可調整的數線與絕對值距離圖"></svg><div class="visual-status" data-absolute-readout>−4 在 0 的左邊；從 0 到 −4 有 4 格，所以 |−4| = 4。</div></div>`;
+  }
+  function renderAbsolute(lab){
+    const input=q('[data-absolute-slider]',lab); if(!input)return;
+    const value=Number(input.value), abs=Math.abs(value), svg=q('[data-absolute-svg]',lab), output=q('[data-absolute-output]',lab), readout=q('[data-absolute-readout]',lab);
+    const left=54, width=532, zero=left+width/2, unit=width/16, x=zero+value*unit;
+    const ticks=Array.from({length:17},(_,i)=>{const n=i-8,px=left+i*unit;return `<g><line x1="${px}" y1="92" x2="${px}" y2="${n===0?116:108}" class="${n===0?'zero-tick':'tick'}"/><text x="${px}" y="139">${n}</text></g>`}).join('');
+    svg.innerHTML=`<defs><marker id="abs-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3z"/></marker></defs><line class="number-axis" x1="${left}" y1="92" x2="${left+width}" y2="92" marker-end="url(#abs-arrow)"/>${ticks}<line class="distance-line" x1="${zero}" y1="62" x2="${x}" y2="62"/><line class="distance-guide" x1="${zero}" y1="62" x2="${zero}" y2="92"/><line class="distance-guide" x1="${x}" y1="62" x2="${x}" y2="92"/><circle class="zero-dot" cx="${zero}" cy="92" r="7"/><circle class="value-dot" cx="${x}" cy="92" r="12"/><text class="distance-label" x="${(zero+x)/2}" y="45">距離 ${abs} 格</text><text class="value-label" x="${x}" y="170">x = ${value}</text>`;
+    output.textContent=`x = ${value<0?'−'+abs:value}`;
+    readout.textContent=`${value===0?'x 就在原點，距離是 0 格。':`${value<0?'負':'正'}數 ${value<0?'−'+abs:abs} ${value<0?'在左':'在右'}邊；從 0 到 x 有 ${abs} 格，所以 |${value<0?'−'+abs:abs}| = ${abs}。`}`;
+  }
+  function mathVisual(title, equation, explanation){
+    return `<div class="interactive-visual math-visual" data-math-visual><div class="visual-instruction">先操作圖像，再用自己的話說明規則</div><div class="math-canvas"><div class="math-shape shape-a"></div><div class="math-shape shape-b"></div><div class="math-symbol">↔</div><div class="math-shape shape-c"></div></div><div class="visual-controls"><button type="button" data-math-step="0">看條件</button><button type="button" data-math-step="1">建立關係</button><button type="button" data-math-step="2">驗證結果</button></div><div class="visual-status" data-math-status>先圈出題目的已知量：不要直接計算。</div></div>`;
+  }
   function mathModel(title){
     const models={
       '正負數與絕對值':['數線與距離模型','把滑鼠點在數線左右兩端：位置代表正負，離 0 的格數才是絕對值。','−4　−3　−2　−1　0　1　2　3　4'],
@@ -48,7 +70,8 @@
       ,'統計與資料判讀':['資料可信度檢查','先檢查來源、樣本、時間、單位與縱軸刻度，才解讀趨勢。','圖大不等於差距大；先看刻度']
       ,'機率模型':['樹狀圖分支','多步驟事件沿樹狀圖相乘；互斥結果再相加。','P(A且B)=P(A)×P(B|A)']
     }; const m=models[title]||['數學關係圖','先把已知條件放進圖或式子，讓關係變得可見。',title];
-    return `<div class="math-specific"><b>${m[0]}</b><div class="math-equation">${m[2]}</div><small>${m[1]}</small><button type="button" data-math-model>操作模型，顯示關鍵規則</button><p data-math-model-result>先預測：這個表示法中，哪一個部分決定方向、單位或未知數？</p></div>`;
+    if(title==='正負數與絕對值') return absoluteValueLab();
+    return `${mathVisual(title,m[2],m[1])}<details class="visual-caption"><summary>${m[0]}：操作提示</summary><p>${m[1]}</p><code>${m[2]}</code></details>`;
   }
   function scienceModel(title){
     const models={
@@ -87,7 +110,7 @@
       '天文與永續':['日地月與取捨','用運動模型解釋天文現象，再以環境、社會、經濟評估方案'],
       '天文與永續':['系統取捨圖','自然證據、生活需求、社會成本需一起評估']
     }; const m=models[title]||Object.entries(models).find(([key])=>title.includes(key)||key.includes(title))?.[1]||['科學因果流程','條件 → 機制 → 可觀察結果'];
-    return `<div class="math-specific science-specific"><b>${m[0]}</b><div class="math-equation">${m[1]}</div><small>按下按鈕，依箭頭用自己的話解釋每一格如何造成下一格。</small><button type="button" data-math-model>播放因果路徑</button><p data-math-model-result>先預測：改變哪一個條件，最可能影響最後的觀察結果？</p></div>`;
+    return `${visualFlow(m[0],m[1],'science-visual')}<details class="visual-caption"><summary>${m[0]}：觀察提示</summary><p>每次只點一格，說出它如何造成下一格；再改變一個條件，預測結果。</p></details>`;
   }
   function languageModel(subject,title){
     const en={
@@ -97,12 +120,12 @@
       '字音、字形與詞義':['語境三角形','部首、詞性、前後搭配一起判讀'], '成語與詞語運用':['固定語意盒','成語先整體換白話，再放回句子檢查'], '句型、語法與標點':['句子骨架','找主詞、主要動詞、受詞與修飾語'], '修辭與表達效果':['手法到效果','手法 → 畫面／語氣 → 作者情感'], '記敘文本閱讀':['事件路線','人物 → 事件 → 轉折 → 感受'], '說明文本閱讀':['說明工具箱','定義、分類、因果、舉例各有任務'], '議論文本閱讀':['論證三角','主張 ← 理由 ← 可查證證據'], '文言文句意':['古文解碼','人物／動詞／轉折 → 補省略 → 重組白話'], '古典詩歌意象':['景情連線','景物與動作如何烘托心情'], '跨文本與圖表':['資料比較表','來源、時間、對象、單位、結論逐項比較'], '寫作表達':['段落地圖','中心句 → 細節／例子 → 回扣題目'], '論證閱讀':['主張檢驗台','證據是否足夠？是否有替代原因？'], '國學常識':['背景索引','作品、體裁、稱謂與時代協助閱讀'], '會考閱讀策略':['題幹回查法','先讀任務，再回原文找直接證據']};
     Object.assign(zh,{'字詞與語法':['詞性定位','先辨名詞、動詞、形容詞在句中扮演的角色'],'古典詩文':['古文解碼','人物／動詞／轉折 → 補省略 → 重組白話'],'文言統整':['古文關係網','實詞、虛詞、句式與人物關係要一起判讀'],'抒情文本':['經驗到情感','具體事件與景物如何承載情緒'],'議論寫作':['立場建築','主張 → 理由 → 例證 → 回應不同意見'],'說明與圖表':['圖文對照','文字說明與圖表的單位、範圍必須一起讀'],'修辭應用':['手法到效果','手法 → 畫面／語氣 → 作者情感'],'文言虛詞':['虛詞定位','從前後詞語關係判斷之、其、以、於的功能'],'寫作組織':['段落地圖','中心句 → 細節／例子 → 回扣題目'],'閱讀推論':['證據邊界','只推出文本支持的結論，不加入自己的想像'],'資料判讀':['資料可信度','先檢查單位、樣本、時間與圖表刻度']});
     const m=(subject==='英文'?en:zh)[title]||['語言結構圖','線索 → 結構 → 完整意思'];
-    return `<div class="math-specific language-specific"><b>${m[0]}</b><div class="math-equation">${m[1]}</div><small>按下按鈕後，先用這個結構重述一句／一段，再回到題目檢查。</small><button type="button" data-math-model>切換到結構模式</button><p data-math-model-result>先找線索，不要先猜答案。</p></div>`;
+    return `${visualFlow(m[0],m[1],'language-visual')}<details class="visual-caption"><summary>${m[0]}：操作提示</summary><p>先點題目中出現的線索，再依亮起的結構組句或重組句意。</p></details>`;
   }
   function socialModel(title){
     const models={'臺灣的自然環境':['臺灣環境層疊圖','位置 → 地形 → 氣候 → 災害與人類調適'],'史前與原住民族':['史料拼圖','考古資料與口傳文化 → 多元族群的生活方式'],'荷西與鄭氏時期':['海洋貿易網','外來政權／貿易 → 統治制度 → 移民與社會改變'],'清代臺灣的治理':['開墾治理線','移民與土地利用 → 行政治理 → 社會結構'],'開港與近代化':['港口連線','通商開港 → 商品與人口流動 → 城市與制度改變'],'近代臺灣與東亞':['區域連動圖','外部局勢 → 地方制度 → 人民生活與回應'],'中國近代變遷':['內外壓力圖','內部問題＋外來衝擊 → 改革／革命 → 社會變遷'],'世界近代史':['工業全球鏈','工業化 → 帝國擴張與交流 → 區域影響'],'現代臺灣':['現代轉型線','民主化／經濟轉型／社會運動 → 權利與生活改變'],'世界現代史':['全球事件網','冷戰／科技／全球化 → 不同地區的連動'],'地圖與地理資訊':['讀圖四步','標題與時間 → 圖例與單位 → 方向比例尺 → 空間判讀'],'臺灣的位置與區域':['區域定位圖','經緯位置＋鄰近區域 → 交通、交流與戰略意義'],'人口與聚落':['人口分布因果','自然條件＋工作機會＋交通 → 人口密度與聚落'],'產業活動與區位':['產業選址表','原料／勞力／交通／市場／政策 → 區位選擇'],'資源與環境問題':['人地回饋圈','資源利用 → 環境影響 → 保育與調適'],'中國與東亞地理':['區域比較尺','位置、地形、氣候、水資源 → 人口與產業'],'人口與產業':['區位證據表','資源、交通、市場、勞力、政策 → 發展差異'],'世界區域地理':['區域比較表','自然環境 → 人文活動 → 區域特色'],'全球化與環境':['跨境流動線','商品、資本、資訊、人口 → 受益與代價'],'永續發展':['三面向天平','環境保護 ↔ 社會公平 ↔ 經濟可行'],'社會生活與規範':['規範同心圓','生活行為 → 道德／社會規範／法律 → 後果'],'人性尊嚴與權利':['權利界線','個人權利 ↔ 他人權利與公共利益'],'家庭與校園生活':['角色關係圖','不同角色 → 權利、義務、溝通與責任'],'社區參與':['公共事務流程','問題 → 蒐集意見與資料 → 參與／監督 → 改善'],'政府與公共服務':['公共服務鏈','共同需求 → 政府資源與程序 → 公共服務'],'媒體與資訊識讀':['資訊檢核漏斗','來源 → 發布時間 → 證據 → 立場與查證'],'法律與生活':['法律案例圖','行為人／事實 → 權利義務 → 規範與程序'],'政府與民主':['權力制衡圖','人民授權 → 政府權力 → 監督與權利保障'],'市場與金融':['市場互動圖','需求／供給 → 價格訊號 → 生產與消費選擇'],'民主政治':['民主運作環','選舉與參與 → 多數決 → 少數權利與監督'],'公共參與':['理性參與鏈','可查證資料 → 理由 → 程序 → 公共決策'],'法律與權利救濟':['救濟路徑','權利受影響 → 依程序申訴／救濟 → 公平處理'],'跨科公共議題':['跨科決策盤','自然證據＋數學資料＋制度程序＋價值取捨']};
     const m=models[title]|| (title.includes('地圖')||title.includes('地理')||title.includes('區域')||title.includes('人口')||title.includes('產業')||title.includes('環境')||title.includes('全球化')||title.includes('永續')?['地圖判讀順序','標題／時間 → 圖例／單位 → 空間分布 → 人地原因']:title.includes('政府')||title.includes('法律')||title.includes('權利')||title.includes('民主')||title.includes('公共')||title.includes('市場')||title.includes('金融')?['公民案例關係圖','行為人／受影響者 → 權利義務 → 規則程序 → 結果']:['歷史因果時間線','背景條件 → 事件／制度 → 不同群體的影響']);
-    return `<div class="math-specific social-specific"><b>${m[0]}</b><div class="math-equation">${m[1]}</div><small>操作時，把本節人物、地點或制度填入每一格；最後說明它改變了誰。</small><button type="button" data-math-model>播放因果連線</button><p data-math-model-result>先辨識資料的時間、位置與角色，避免把名詞孤立背誦。</p></div>`;
+    return `${visualFlow(m[0],m[1],'social-visual')}<details class="visual-caption"><summary>${m[0]}：操作提示</summary><p>把人物、地點或制度拖入心中對應的節點，最後說明這個改變影響了誰。</p></details>`;
   }
   function stage(subject,title,goal){
     if(subject==='數學') return mathModel(title);
@@ -117,14 +140,17 @@
     const meta=q('.lesson-layout .eyebrow'),titleEl=q('.lesson-title'),concept=q('.concept'); if(!meta||!titleEl||!concept||!titleEl.textContent.includes('｜')) return;
     const [subject]=meta.textContent.split(' · '), title=titleEl.textContent.split('｜').slice(1).join('｜').trim(), goal=concept.textContent.replace('本節學習目標：','').trim(), a=subjectAdvice[subject]; if(!a) return;
     const section=document.createElement('section'); section.className='chapter-lab';
-    const source=sourceGuide[subject];section.innerHTML=`<header><div class="eyebrow">${a.mode}｜互動式分節教材</div><h2>${title}</h2><p>${goal}</p></header><div class="chapter-workspace"><div class="model-stage" data-model>${stage(subject,title,goal)}</div><aside class="lab-panel"><h3>先做預測</h3><div class="prediction">看到題目時，先不要選答案。請說出：<b>我會先找哪個條件？它和本節概念有什麼關係？</b></div><div class="chapter-choices"><button data-chapter-choice="0">先把題目中的條件標記出來</button><button data-chapter-choice="1">只靠記得的關鍵字猜答案</button><button data-chapter-choice="2">先建立模型／關係，再驗證結論</button></div><div class="chapter-feedback" data-chapter-feedback>點選一個做法，查看解題理由。</div></aside></div><div class="chapter-note-grid"><article><b>圖像化重點</b><p>${goal}</p></article><article><b>學霸式整理法</b><p>${a.method}</p></article><article><b>常見誤解</b><p>${a.trap}</p></article></div><div class="source-note"><b>本節整理依據</b><p>${source[0]}</p><a href="${source[1]}" target="_blank" rel="noopener">查看公開筆記的章節整理方式</a><small>本站只參考整理方法與章節脈絡；概念說明、圖示、題目與解答均自行撰寫。</small></div><button class="chapter-replay" data-chapter-replay>播放一次概念路徑</button>`;
+    const source=sourceGuide[subject];section.innerHTML=`<header><div class="eyebrow">${a.mode}｜互動式分節教材</div><h2>${title}</h2><p>${goal}</p></header><div class="chapter-workspace"><div class="model-stage" data-model>${stage(subject,title,goal)}</div><aside class="lab-panel"><h3>先做預測</h3><div class="prediction">看到題目時，先不要選答案。請說出：<b>我會先找哪個條件？它和本節概念有什麼關係？</b></div><div class="chapter-choices"><button data-chapter-choice="0">先把題目中的條件標記出來</button><button data-chapter-choice="1">只靠記得的關鍵字猜答案</button><button data-chapter-choice="2">先建立模型／關係，再驗證結論</button></div><div class="chapter-feedback" data-chapter-feedback>點選一個做法，查看解題理由。</div></aside></div><details class="chapter-note-details"><summary>操作後再看：重點、解題法與常見誤解</summary><div class="chapter-note-grid"><article><b>圖像化重點</b><p>${goal}</p></article><article><b>解題整理法</b><p>${a.method}</p></article><article><b>常見誤解</b><p>${a.trap}</p></article></div><div class="source-note"><b>本節整理依據</b><p>${source[0]}</p><a href="${source[1]}" target="_blank" rel="noopener">查看公開筆記的章節整理方式</a><small>本站只參考整理方法與章節脈絡；概念說明、圖示、題目與解答均自行撰寫。</small></div></details><button class="chapter-replay" data-chapter-replay>重新播放圖像路徑</button>`;
     (q('.heart-lab')||q('.visual-box')||q('.concept'))?.after(section);
+    const absLab=q('[data-absolute-lab]',section); if(absLab) renderAbsolute(absLab);
   }
   app.addEventListener('click',e=>{
     const lab=e.target.closest('.chapter-lab'); if(!lab)return;
     const choice=e.target.closest('[data-chapter-choice]'); if(choice){lab.querySelectorAll('[data-chapter-choice]').forEach(b=>b.classList.toggle('active',b===choice));q('[data-chapter-feedback]',lab).textContent=choice.dataset.chapterChoice==='1'?'這樣容易被陷阱帶走。請回到題目的條件，確認它真能支持結論。':'正確方向：先從條件建立關係，再把結論放回題目檢查是否合理。';}
     if(e.target.closest('[data-chapter-replay]')){const m=q('[data-model]',lab);m.classList.remove('is-playing');requestAnimationFrame(()=>m.classList.add('is-playing'));}
-    if(e.target.closest('[data-math-model]')){const result=q('[data-math-model-result]',lab);result.textContent='關鍵規則已顯示：先把「符號、單位、未知數或對應量」找出來，再開始運算。請用本節圖像重述一次。';q('[data-model]',lab).classList.add('is-playing');}
+    const node=e.target.closest('[data-visual-node]'); if(node){const visual=node.closest('[data-visual]');const nodes=[...visual.querySelectorAll('[data-visual-node]')];const current=Number(node.dataset.visualNode);nodes.forEach((item,index)=>item.classList.toggle('is-active',index<=current));q('[data-visual-status]',visual).textContent=`第 ${current+1} 步已亮起：${node.textContent.trim()}。現在請說出它如何連到下一步。`;}
+    const mathStep=e.target.closest('[data-math-step]'); if(mathStep){const visual=mathStep.closest('[data-math-visual]');const messages=['先把題目的數、圖形或條件圈出來。','把同一類量連線：確認符號、單位或對應關係。','把答案代回原條件或圖像，檢查是否合理。'];visual.querySelectorAll('[data-math-step]').forEach((button,index)=>button.classList.toggle('is-active',index===Number(mathStep.dataset.mathStep)));q('[data-math-status]',visual).textContent=messages[Number(mathStep.dataset.mathStep)];}
   });
+  app.addEventListener('input',e=>{const lab=e.target.closest('[data-absolute-lab]');if(lab&&e.target.matches('[data-absolute-slider]'))renderAbsolute(lab);});
   new MutationObserver(render).observe(app,{childList:true,subtree:true}); render();
 })();
