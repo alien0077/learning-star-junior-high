@@ -9,6 +9,13 @@
     社會:{method:'先定位時間、地點、角色，再連結制度、環境與影響。',trap:'不能只背名詞年份；必須回答背景、事件與改變的關係。',mode:'時間空間因果圖'}
   };
   const q=(s,r=document)=>r.querySelector(s);
+  const sourceGuide={
+    數學:['公開學生筆記常用「數線、符號表、因數樹、面積模型」整理數學；本站將它們改寫為可操作模型與原創題目。','https://www.clearnotebooks.com/zh-TW/notebooks/2307671'],
+    國文:['公開筆記常以注釋、句意重組與主張—證據框架協助閱讀；本站以原創文本與判讀流程呈現，不轉載筆記內容。','https://www.clearnotebooks.com/zh-TW/notebooks/2446570'],
+    英文:['公開筆記常把時態畫成時間線、將句型拆成結構；本站以原創例句與互動結構圖重新編寫。','https://www.clearnotebooks.com/zh-TW/notebooks/2017113'],
+    自然:['公開筆記常以流程圖、比較表整理生物、理化與地科；本站以因果模型、實驗變因與原創檢核題重新編寫。','https://www.clearnotebooks.com/zh-TW/notebooks/grade/junior-high/subject/science'],
+    社會:['公開會考整理常以地圖、年表、制度關係與案例表格組織資料；本站以原創事件鏈與讀圖流程重編。','https://www.clearnotebooks.com/zh-TW/notebooks/1698681']
+  };
   function mathModel(title){
     const models={
       '正負數與絕對值':['數線與距離模型','把滑鼠點在數線左右兩端：位置代表正負，離 0 的格數才是絕對值。','−4　−3　−2　−1　0　1　2　3　4'],
@@ -110,7 +117,7 @@
     const meta=q('.lesson-layout .eyebrow'),titleEl=q('.lesson-title'),concept=q('.concept'); if(!meta||!titleEl||!concept||!titleEl.textContent.includes('｜')) return;
     const [subject]=meta.textContent.split(' · '), title=titleEl.textContent.split('｜').slice(1).join('｜').trim(), goal=concept.textContent.replace('本節學習目標：','').trim(), a=subjectAdvice[subject]; if(!a) return;
     const section=document.createElement('section'); section.className='chapter-lab';
-    section.innerHTML=`<header><div class="eyebrow">${a.mode}｜互動式分節教材</div><h2>${title}</h2><p>${goal}</p></header><div class="chapter-workspace"><div class="model-stage" data-model>${stage(subject,title,goal)}</div><aside class="lab-panel"><h3>先做預測</h3><div class="prediction">看到題目時，先不要選答案。請說出：<b>我會先找哪個條件？它和本節概念有什麼關係？</b></div><div class="chapter-choices"><button data-chapter-choice="0">先把題目中的條件標記出來</button><button data-chapter-choice="1">只靠記得的關鍵字猜答案</button><button data-chapter-choice="2">先建立模型／關係，再驗證結論</button></div><div class="chapter-feedback" data-chapter-feedback>點選一個做法，查看解題理由。</div></aside></div><div class="chapter-note-grid"><article><b>圖像化重點</b><p>${goal}</p></article><article><b>學霸式整理法</b><p>${a.method}</p></article><article><b>常見誤解</b><p>${a.trap}</p></article></div><button class="chapter-replay" data-chapter-replay>播放一次概念路徑</button>`;
+    const source=sourceGuide[subject];section.innerHTML=`<header><div class="eyebrow">${a.mode}｜互動式分節教材</div><h2>${title}</h2><p>${goal}</p></header><div class="chapter-workspace"><div class="model-stage" data-model>${stage(subject,title,goal)}</div><aside class="lab-panel"><h3>先做預測</h3><div class="prediction">看到題目時，先不要選答案。請說出：<b>我會先找哪個條件？它和本節概念有什麼關係？</b></div><div class="chapter-choices"><button data-chapter-choice="0">先把題目中的條件標記出來</button><button data-chapter-choice="1">只靠記得的關鍵字猜答案</button><button data-chapter-choice="2">先建立模型／關係，再驗證結論</button></div><div class="chapter-feedback" data-chapter-feedback>點選一個做法，查看解題理由。</div></aside></div><div class="chapter-note-grid"><article><b>圖像化重點</b><p>${goal}</p></article><article><b>學霸式整理法</b><p>${a.method}</p></article><article><b>常見誤解</b><p>${a.trap}</p></article></div><div class="source-note"><b>本節整理依據</b><p>${source[0]}</p><a href="${source[1]}" target="_blank" rel="noopener">查看公開筆記的章節整理方式</a><small>本站只參考整理方法與章節脈絡；概念說明、圖示、題目與解答均自行撰寫。</small></div><button class="chapter-replay" data-chapter-replay>播放一次概念路徑</button>`;
     (q('.heart-lab')||q('.visual-box')||q('.concept'))?.after(section);
   }
   app.addEventListener('click',e=>{
