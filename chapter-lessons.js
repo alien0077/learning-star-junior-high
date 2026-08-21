@@ -49,8 +49,19 @@
     q('[data-integer-start-out]',lab).textContent=signed(start);q('[data-integer-change-out]',lab).textContent=signed(change,true);
     q('[data-integer-readout]',lab).textContent=`從 ${signed(start)} 出發，加上 ${signed(change,true)}，所以${change>=0?'向右':'向左'}走 ${Math.abs(change)} 格，停在 ${signed(end)}。`;
   }
-  function mathVisual(title, equation, explanation){
-    return `<div class="interactive-visual math-visual" data-math-visual><div class="visual-instruction">先操作圖像，再用自己的話說明規則</div><div class="math-canvas"><div class="math-shape shape-a"></div><div class="math-shape shape-b"></div><div class="math-symbol">↔</div><div class="math-shape shape-c"></div></div><div class="visual-controls"><button type="button" data-math-step="0">看條件</button><button type="button" data-math-step="1">建立關係</button><button type="button" data-math-step="2">驗證結果</button></div><div class="visual-status" data-math-status>先圈出題目的已知量：不要直接計算。</div></div>`;
+  function mathDiagram(kind,equation){
+    if(kind==='signTable')return `<div class="sign-table"><span>×／÷</span><b>＋</b><b>−</b><b>＋</b><strong>＋</strong><strong>−</strong><b>−</b><strong>−</strong><strong>＋</strong></div>`;
+    if(kind==='exponent')return `<div class="power-tiles"><i>底數</i><b>2</b><em>×</em><b>2</b><em>×</em><b>2</b><i>重複相乘</i></div>`;
+    if(kind==='factorTree')return `<div class="factor-tree"><b>60</b><span>↙　↘</span><b>2</b><b>30</b><span>　　↙　↘</span><i>2 × 2 × 3 × 5</i></div>`;
+    if(kind==='fractionBar')return `<div class="fraction-bars"><div><b style="--parts:3;--fill:2"></b><span>2／3</span></div><em>×／＋</em><div><b style="--parts:4;--fill:3"></b><span>3／4</span></div></div>`;
+    if(kind==='algebraTiles')return `<div class="algebra-tiles"><b>x</b><b>x</b><b>x</b><i>＋</i><span>1</span><span>1</span><span>1</span><p>同類項才可以合併</p></div>`;
+    if(kind==='balance')return `<div class="balance-diagram"><div class="balance-pan">3x − 5</div><div class="balance-pivot">＝</div><div class="balance-pan">10</div><p>兩邊做相同運算，天平才平衡</p></div>`;
+    if(kind==='coordinate')return `<svg class="coordinate-diagram" viewBox="0 0 360 180" role="img" aria-label="座標平面"><path d="M25 150H340M180 15V165"/><path class="coord-line" d="M55 142L305 35"/><circle cx="180" cy="89" r="7"/><text x="315" y="28">y</text><text x="342" y="165">x</text><text x="188" y="84">關係點</text></svg>`;
+    if(kind==='geometry')return `<svg class="geometry-diagram" viewBox="0 0 340 180" role="img" aria-label="幾何圖形"><path d="M42 145L150 28L286 145Z"/><path class="right-angle" d="M126 119h22v-22"/><text x="82" y="92">a</text><text x="210" y="93">b</text><text x="156" y="155">c</text><text x="152" y="25">直角／對應關係</text></svg>`;
+    return `<div class="data-diagram"><i style="--h:35%"></i><i style="--h:68%"></i><i style="--h:48%"></i><i style="--h:86%"></i><b>比較高度、總數與比例</b></div>`;
+  }
+  function mathVisual(title, equation, explanation, kind){
+    return `<div class="interactive-visual math-visual kind-${kind}" data-math-visual><div class="math-model-label">${esc(title)}</div><div class="math-canvas">${mathDiagram(kind,equation)}</div><div class="math-expression">${esc(equation)}</div><div class="visual-controls"><button type="button" data-math-step="0">看圖中條件</button><button type="button" data-math-step="1">操作關係</button><button type="button" data-math-step="2">代回驗證</button></div><div class="visual-status" data-math-status>先指出圖中每個量代表什麼，再開始運算。</div></div>`;
   }
   function replayLab(lab){
     const model=q('[data-model]',lab); model?.classList.remove('is-playing');
@@ -104,7 +115,8 @@
     }; const m=models[title]||['數學關係圖','先把已知條件放進圖或式子，讓關係變得可見。',title];
     if(title==='正負數與絕對值') return absoluteValueLab();
     if(title==='整數的加減') return integerAdditionLab();
-    return `${mathVisual(title,m[2],m[1])}<details class="visual-caption"><summary>${m[0]}：操作提示</summary><p>${m[1]}</p><code>${m[2]}</code></details>`;
+    const kind=window.INTERACTIVE_SPECS?.get('數學',title); if(!kind) throw Error(`缺少數學互動模型規格：${title}`);
+    return `${mathVisual(title,m[2],m[1],kind)}<details class="visual-caption"><summary>${m[0]}：操作提示</summary><p>${m[1]}</p><code>${m[2]}</code></details>`;
   }
   function scienceModel(title){
     const models={
