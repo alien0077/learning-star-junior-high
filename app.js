@@ -138,6 +138,15 @@ function scienceApplicationQuestion(title){const data={
   '板塊與地質':['地震多集中在板塊邊界，主因是？',['板塊相對運動使應力累積釋放','每天日照不同','月亮發光','植物蒸散'],0,'板塊聚合、張裂或錯動會累積應力，釋放時形成地震。'],
   '天文與永續':['日食發生時，三者位置關係為？',['月球位於太陽和地球之間','地球位於太陽和月球之間','太陽位於地月之間','三者沒有關係'],0,'月球遮住部分太陽光投到地球，形成日食。']
 };const row=data[title];return row?{kind:'自然情境／實驗應用',question:row[0],answers:row[1],correct:row[2],explanation:row[3],tip:'先確認題目描述的現象與條件，再畫出變因、粒子／構造或能量的箭頭；最後用證據檢查因果，不要只背名詞。'}:null;}
+function officialPastExamQuestion(subject,title){const key=`${subject}:${title}`,data={
+  '數學:二元一次聯立方程式':['115 年國中教育會考｜數學第 1 題','解聯立方程式 x＋2y＝5、2x−2y＝1，x 值為何？',['−4','−2','2','4'],2,'兩式相加先消去 y：3x＝6，所以 x＝2。這是官方 115 年數學第 1 題，本站加入逐步消去法說明。'],
+  '數學:平方根':['115 年國中教育會考｜數學第 3 題','若 √504 的最簡根式為 a√b，a＋b 為何？',['13','19','20','50'],2,'504＝36×14，所以 √504＝6√14，a＋b＝20；但原題排版中的 a、b 需依題本符號判讀，請先完整寫出最簡根式。'],
+  '數學:機率模型':['115 年國中教育會考｜數學第 4 題','甲袋有 2、3、4；乙袋有 3、4、5，各抽一球時，哪個總和的機率最大？',['6','7','8','9'],1,'列出九個等可能配對後，總和 7 出現 3 次，機率最大。'],
+  '數學:科學記號':['115 年國中教育會考｜數學第 8 題','培養皿細菌量分別以 4.4×10⁵、7.3×10⁶、5.4×10⁷ 表示；比較區域大小時，首要比較什麼？',['只比較首數','先比較 10 的指數，再比較首數','只比較單位','直接相加'],1,'科學記號比較大小先比 10 的指數；指數相同才比較首數。此題是官方 115 年數學第 8 題的核心判讀方式。'],
+  '數學:一元二次方程式':['115 年國中教育會考｜數學第 9 題','2x(x＋7)−10(x＋7)＝0，最先應採取哪一步？',['展開全部','提出共同因式 (x＋7)','兩邊同加 10','直接除以 x'],1,'兩項都有 (x＋7)，先提公因式得 (x＋7)(2x−10)=0，再用零乘積性質。'],
+  '數學:二次函數':['115 年國中教育會考｜數學第 14 題','y＝−(x＋5)²−20 的值域上界為何？',['−20','−15','0','25'],0,'平方項最小為 0，且前面是負號，因此 y 最大為 −20；這是 115 年數學第 14 題的圖形判讀核心。'],
+  '數學:二元一次方程式的圖形':['115 年國中教育會考｜數學第 13 題','通過 (−3,−1) 且與 x 軸平行的直線方程式為何？',['x＝−3','y＝−3','x＝−1','y＝−1'],3,'與 x 軸平行代表 y 固定；通過點的 y 是 −1，所以 y＝−1。']
+};const row=data[key];return row?{kind:row[0],question:row[1],answers:row[2],correct:row[3],explanation:row[4],tip:'先讀題幹條件，再用圖、式或列舉法重建關係；官方題本的圖表必須連同標示一起判讀。'}:null;}
 function chapterPracticeBank(lesson){
   const base={question:lesson.question,answers:lesson.answers,correct:lesson.correct,explanation:lesson.explanation,tip:solvingTip(lesson),kind:'核心概念'};
   const shared=[
@@ -151,7 +160,7 @@ function chapterPracticeBank(lesson){
     ['素養應用',`「${lesson.unit}」的跨情境題要求學生做的核心能力是？`,['背誦原句','把概念模型套入新資料並說明理由','只找相同的題目','忽略資料來源'],1,`新情境的表面可以不同，但概念關係不變；先找出它和本節的對應。`,solvingTip(lesson)],
     ['自我檢核',`完成本節題目後，最好的自我檢查是？`,['立刻看下一題','用自己的話重述原理，並檢查答案是否符合條件','只看對錯','把錯誤遮起來'],1,`把原理說出來並回代條件，可分辨是真懂還是剛好猜對。`,solvingTip(lesson)]
   ];
-  const rows=[base,...shared].slice(0,10); const application=lesson.subject==='數學'?mathApplicationQuestion(lesson.unit):lesson.subject==='自然'?scienceApplicationQuestion(lesson.unit):null; if(application) rows[4]=application;
+  const rows=[base,...shared].slice(0,10); const application=lesson.subject==='數學'?mathApplicationQuestion(lesson.unit):lesson.subject==='自然'?scienceApplicationQuestion(lesson.unit):null, past=officialPastExamQuestion(lesson.subject,lesson.unit); if(application) rows[4]=application; if(past) rows[8]=past;
   return rows.map((row,index)=>({index,...(Array.isArray(row)?{kind:row[0],question:row[1],answers:row[2],correct:row[3],explanation:row[4],tip:row[5]}:row)}));
 }
 function chapterPracticeView(lesson){const items=chapterPracticeBank(lesson);return `<section class="question card chapter-practice"><div class="eyebrow">本節 10 題理解測驗</div><h2>每一題作答後都顯示原理與解題方法</h2><p>含「生活情境」與「素養應用」題；數學與自然題以模型、圖像或關係式來檢查，而不是只背答案。</p>${items.map(item=>`<article class="practice-item"><div class="eyebrow">第 ${item.index+1} 題｜${item.kind}</div><h3>${item.question}</h3><div class="answers">${item.answers.map((answer,i)=>`<button class="answer" data-chapter-practice-answer="${item.index}:${i}">${String.fromCharCode(65+i)}. ${answer}</button>`).join('')}</div><div class="practice-feedback" id="practiceFeedback${item.index}"></div></article>`).join('')}</section>`;}
