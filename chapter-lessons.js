@@ -17,12 +17,6 @@
     社會:['公開會考整理常以地圖、年表、制度關係與案例表格組織資料；本站以原創事件鏈與讀圖流程重編。','https://www.clearnotebooks.com/zh-TW/notebooks/1698681']
   };
   const esc=value=>String(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
-  function flowParts(text){return String(text).split(/\s*(?:→|↔|＋)\s*/).filter(Boolean).slice(0,5);}
-  function visualFlow(title, text, type='flow'){
-    const parts=flowParts(text); const count=Math.max(parts.length,2);
-    const nodes=parts.map((part,index)=>`<button type="button" class="visual-node ${index===0?'is-active':''}" data-visual-node="${index}" aria-label="操作第 ${index+1} 個概念：${esc(part)}"><span>${index+1}</span><strong>${esc(part)}</strong></button>`).join('');
-    return `<div class="interactive-visual ${type}" data-visual data-title="${esc(title)}"><div class="visual-instruction">點選節點，讓關係一步一步亮起</div><div class="visual-track" style="--node-count:${count}">${nodes}</div><div class="visual-status" data-visual-status>從「${esc(parts[0]||title)}」開始：先指出它在這一節扮演的角色。</div></div>`;
-  }
   function absoluteValueLab(){
     return `<div class="interactive-visual absolute-lab" data-absolute-lab><div class="visual-instruction">拖曳 x：位置在 0 的哪一側？距離又是多少？</div><label class="visual-slider-label">x 的位置 <input type="range" min="-8" max="8" value="-4" step="1" data-absolute-slider><output data-absolute-output>x = −4</output></label><svg class="absolute-svg" data-absolute-svg viewBox="0 0 640 180" role="img" aria-label="可調整的數線與絕對值距離圖"></svg><div class="visual-status" data-absolute-readout>−4 在 0 的左邊；從 0 到 −4 有 4 格，所以 |−4| = 4。</div></div>`;
   }
