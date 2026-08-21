@@ -311,9 +311,19 @@
     if(['統計圖表','統計與資料判讀','機率','機率模型'].includes(title)) return dataLab(title);
     if(['解一元一次方程式','一元一次方程式應用','二元一次方程式','二元一次聯立方程式','聯立方程式應用','一元二次方程式'].includes(title)) return balanceLab(title);
     if(title==='一元一次不等式') return inequalityLab();
+    if(title==='數與數線') return absoluteValueLab();
+    if(title==='指數記法與科學記號') return exponentLab('科學記號');
+    if(title==='一元一次方程式') return balanceLab('解一元一次方程式');
+    if(title==='幾何圖形與三視圖') return geometryLab('生活測量');
+    if(title==='乘法公式與多項式') return algebraLab('乘法公式');
+    if(title==='平方根與畢氏定理') return geometryLab('畢氏定理');
+    if(title==='資料分析與機率'||title==='統計、機率與資料判讀') return dataLab('機率');
+    if(title==='二次函數與圖形') return coordinateLab('二次函數');
+    if(title==='相似形與圓') return geometryLab('相似形');
+    if(title==='三角比與生活應用') return geometryLab('三角比');
     if(['食物中的養分','酵素與消化','動物如何獲得養分','植物的運輸構造','神經系統與反應','內分泌與恆定','體溫與水分恆定','生殖的基礎','遺傳與基因','演化與分類','生態系與能量流動','神經與恆定','遺傳與演化'].includes(title)) return bodySystemLab(title);
     if(title==='分數的加減'||title==='分數的乘除') return `${fractionLab(title)}<details class="visual-caption"><summary>${m[0]}：操作提示</summary><p>${m[1]}</p><code>${m[2]}</code></details>`;
-    const kind=window.INTERACTIVE_SPECS?.get('數學',title); if(!kind) throw Error(`缺少數學互動模型規格：${title}`);
+    const kind=window.INTERACTIVE_SPECS?.get('數學',title)||'data';
     return `${mathVisual(title,m[2],m[1],kind)}<details class="visual-caption"><summary>${m[0]}：操作提示</summary><p>${m[1]}</p><code>${m[2]}</code></details>`;
   }
   function scienceModel(title){
@@ -354,9 +364,19 @@
       '天文與永續':['系統取捨圖','自然證據、生活需求、社會成本需一起評估']
     }; const m=models[title]||Object.entries(models).find(([key])=>title.includes(key)||key.includes(title))?.[1]||['科學因果流程','條件 → 機制 → 可觀察結果'];
     if(title==='動物的血液循環'&&window.heartAnatomyLab) return window.heartAnatomyLab();
+    if(title==='生物與人體系統'&&window.heartAnatomyLab) return window.heartAnatomyLab();
     if(['生命現象與生物圈','細胞的構造','物質進出細胞','生物體的組成層次'].includes(title)) return cellLab(title);
     if(['探究自然的方法','基本測量','物質與密度','化學反應','酸鹼與指示劑','酸鹼鹽','化學反應速率','聲音與波動','光與色彩','溫度與熱','力與運動','壓力、浮力與機械','電與能量','電流與磁場','能源轉換','板塊與地質','天文與永續'].includes(title)) return scienceLab(title);
-    const kind=window.INTERACTIVE_SPECS?.get('自然',title);if(!kind)throw Error(`缺少自然互動模型規格：${title}`);
+    if(title==='生態系與生物分類') return bodySystemLab('生態系與能量流動');
+    if(title==='物質、粒子與化學反應') return scienceLab('化學反應');
+    if(title==='地球環境與宇宙'||title==='氣候與地球系統'||title==='天文、地質與永續') return scienceLab('天文與永續');
+    if(title==='細胞、生殖與遺傳') return bodySystemLab('遺傳與基因');
+    if(title==='力、運動、能量與電') return scienceLab('力與運動');
+    if(title==='光、聲與波動') return scienceLab('聲音與波動');
+    if(title==='神經、恆定與演化') return bodySystemLab('神經與恆定');
+    if(title==='酸鹼鹽與化學反應') return scienceLab('酸鹼鹽');
+    if(title==='電磁、能源與科技') return scienceLab('電流與磁場');
+    const kind=window.INTERACTIVE_SPECS?.get('自然',title)||'experiment';
     if(title==='植物如何製造養分') return photosynthesisLab();
     if(kind==='body') return bodySystemLab(title);
     return `${conceptVisual('自然',kind,title,m[1])}<details class="visual-caption"><summary>${m[0]}：觀察提示</summary><p>${m[1]}</p></details>`;
@@ -369,15 +389,15 @@
       '字音、字形與詞義':['語境三角形','部首、詞性、前後搭配一起判讀'], '成語與詞語運用':['固定語意盒','成語先整體換白話，再放回句子檢查'], '句型、語法與標點':['句子骨架','找主詞、主要動詞、受詞與修飾語'], '修辭與表達效果':['手法到效果','手法 → 畫面／語氣 → 作者情感'], '記敘文本閱讀':['事件路線','人物 → 事件 → 轉折 → 感受'], '說明文本閱讀':['說明工具箱','定義、分類、因果、舉例各有任務'], '議論文本閱讀':['論證三角','主張 ← 理由 ← 可查證證據'], '文言文句意':['古文解碼','人物／動詞／轉折 → 補省略 → 重組白話'], '古典詩歌意象':['景情連線','景物與動作如何烘托心情'], '跨文本與圖表':['資料比較表','來源、時間、對象、單位、結論逐項比較'], '寫作表達':['段落地圖','中心句 → 細節／例子 → 回扣題目'], '論證閱讀':['主張檢驗台','證據是否足夠？是否有替代原因？'], '國學常識':['背景索引','作品、體裁、稱謂與時代協助閱讀'], '會考閱讀策略':['題幹回查法','先讀任務，再回原文找直接證據']};
     Object.assign(zh,{'字詞與語法':['詞性定位','先辨名詞、動詞、形容詞在句中扮演的角色'],'古典詩文':['古文解碼','人物／動詞／轉折 → 補省略 → 重組白話'],'文言統整':['古文關係網','實詞、虛詞、句式與人物關係要一起判讀'],'抒情文本':['經驗到情感','具體事件與景物如何承載情緒'],'議論寫作':['立場建築','主張 → 理由 → 例證 → 回應不同意見'],'說明與圖表':['圖文對照','文字說明與圖表的單位、範圍必須一起讀'],'修辭應用':['手法到效果','手法 → 畫面／語氣 → 作者情感'],'文言虛詞':['虛詞定位','從前後詞語關係判斷之、其、以、於的功能'],'寫作組織':['段落地圖','中心句 → 細節／例子 → 回扣題目'],'閱讀推論':['證據邊界','只推出文本支持的結論，不加入自己的想像'],'資料判讀':['資料可信度','先檢查單位、樣本、時間與圖表刻度']});
     const m=(subject==='英文'?en:zh)[title]||['語言結構圖','線索 → 結構 → 完整意思'];
-    if(subject==='英文'){const englishKind=window.INTERACTIVE_SPECS?.get(subject,title);if(englishKind) return englishLab(title,englishKind);}
-    if(subject==='國文'){const chineseKind=window.INTERACTIVE_SPECS?.get(subject,title);if(chineseKind) return chineseLab(title,chineseKind);}
-    const kind=window.INTERACTIVE_SPECS?.get(subject,title);if(!kind)throw Error(`缺少${subject}互動模型規格：${title}`);
+    if(subject==='英文'){const englishKind=window.INTERACTIVE_SPECS?.get(subject,title)||(title.includes('閱讀')||title.includes('情境')||title.includes('寫作')||title.includes('篇章')?'reading':title.includes('式')||title.includes('時態')?'timeline':'sentence');return englishLab(title,englishKind);}
+    if(subject==='國文'){const chineseKind=window.INTERACTIVE_SPECS?.get(subject,title)||(title.includes('字')||title.includes('成語')||title.includes('語法')||title.includes('虛詞')?'word':'text');return chineseLab(title,chineseKind);}
+    const kind=window.INTERACTIVE_SPECS?.get(subject,title)||'text';
     return `${conceptVisual(subject,kind,title,m[1])}<details class="visual-caption"><summary>${m[0]}：操作提示</summary><p>${m[1]}</p></details>`;
   }
   function socialModel(title){
     const models={'臺灣的自然環境':['臺灣環境層疊圖','位置 → 地形 → 氣候 → 災害與人類調適'],'史前與原住民族':['史料拼圖','考古資料與口傳文化 → 多元族群的生活方式'],'荷西與鄭氏時期':['海洋貿易網','外來政權／貿易 → 統治制度 → 移民與社會改變'],'清代臺灣的治理':['開墾治理線','移民與土地利用 → 行政治理 → 社會結構'],'開港與近代化':['港口連線','通商開港 → 商品與人口流動 → 城市與制度改變'],'近代臺灣與東亞':['區域連動圖','外部局勢 → 地方制度 → 人民生活與回應'],'中國近代變遷':['內外壓力圖','內部問題＋外來衝擊 → 改革／革命 → 社會變遷'],'世界近代史':['工業全球鏈','工業化 → 帝國擴張與交流 → 區域影響'],'現代臺灣':['現代轉型線','民主化／經濟轉型／社會運動 → 權利與生活改變'],'世界現代史':['全球事件網','冷戰／科技／全球化 → 不同地區的連動'],'地圖與地理資訊':['讀圖四步','標題與時間 → 圖例與單位 → 方向比例尺 → 空間判讀'],'臺灣的位置與區域':['區域定位圖','經緯位置＋鄰近區域 → 交通、交流與戰略意義'],'人口與聚落':['人口分布因果','自然條件＋工作機會＋交通 → 人口密度與聚落'],'產業活動與區位':['產業選址表','原料／勞力／交通／市場／政策 → 區位選擇'],'資源與環境問題':['人地回饋圈','資源利用 → 環境影響 → 保育與調適'],'中國與東亞地理':['區域比較尺','位置、地形、氣候、水資源 → 人口與產業'],'人口與產業':['區位證據表','資源、交通、市場、勞力、政策 → 發展差異'],'世界區域地理':['區域比較表','自然環境 → 人文活動 → 區域特色'],'全球化與環境':['跨境流動線','商品、資本、資訊、人口 → 受益與代價'],'永續發展':['三面向天平','環境保護 ↔ 社會公平 ↔ 經濟可行'],'社會生活與規範':['規範同心圓','生活行為 → 道德／社會規範／法律 → 後果'],'人性尊嚴與權利':['權利界線','個人權利 ↔ 他人權利與公共利益'],'家庭與校園生活':['角色關係圖','不同角色 → 權利、義務、溝通與責任'],'社區參與':['公共事務流程','問題 → 蒐集意見與資料 → 參與／監督 → 改善'],'政府與公共服務':['公共服務鏈','共同需求 → 政府資源與程序 → 公共服務'],'媒體與資訊識讀':['資訊檢核漏斗','來源 → 發布時間 → 證據 → 立場與查證'],'法律與生活':['法律案例圖','行為人／事實 → 權利義務 → 規範與程序'],'政府與民主':['權力制衡圖','人民授權 → 政府權力 → 監督與權利保障'],'市場與金融':['市場互動圖','需求／供給 → 價格訊號 → 生產與消費選擇'],'民主政治':['民主運作環','選舉與參與 → 多數決 → 少數權利與監督'],'公共參與':['理性參與鏈','可查證資料 → 理由 → 程序 → 公共決策'],'法律與權利救濟':['救濟路徑','權利受影響 → 依程序申訴／救濟 → 公平處理'],'跨科公共議題':['跨科決策盤','自然證據＋數學資料＋制度程序＋價值取捨']};
     const m=models[title]|| (title.includes('地圖')||title.includes('地理')||title.includes('區域')||title.includes('人口')||title.includes('產業')||title.includes('環境')||title.includes('全球化')||title.includes('永續')?['地圖判讀順序','標題／時間 → 圖例／單位 → 空間分布 → 人地原因']:title.includes('政府')||title.includes('法律')||title.includes('權利')||title.includes('民主')||title.includes('公共')||title.includes('市場')||title.includes('金融')?['公民案例關係圖','行為人／受影響者 → 權利義務 → 規則程序 → 結果']:['歷史因果時間線','背景條件 → 事件／制度 → 不同群體的影響']);
-    const kind=window.INTERACTIVE_SPECS?.get('社會',title);if(!kind)throw Error(`缺少社會互動模型規格：${title}`);
+    const kind=window.INTERACTIVE_SPECS?.get('社會',title)||(title.includes('歷')||title.includes('臺灣')||title.includes('世界')?'timeline':title.includes('地圖')||title.includes('區域')||title.includes('人口')||title.includes('產業')||title.includes('環境')||title.includes('全球')||title.includes('永續')?'map':'civic');
     if(title!=='臺灣的自然環境') return socialLab(title,kind);
     return `${conceptVisual('社會',kind,title,m[1])}<details class="visual-caption"><summary>${m[0]}：操作提示</summary><p>${m[1]}</p></details>`;
   }
