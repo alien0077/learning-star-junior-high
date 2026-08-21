@@ -319,6 +319,8 @@
     if(['生命現象與生物圈','細胞的構造','物質進出細胞','生物體的組成層次'].includes(title)) return cellLab(title);
     if(['探究自然的方法','基本測量','物質與密度','化學反應','酸鹼與指示劑','酸鹼鹽','化學反應速率','聲音與波動','光與色彩','溫度與熱','力與運動','壓力、浮力與機械','電與能量','電流與磁場','能源轉換','板塊與地質','天文與永續'].includes(title)) return scienceLab(title);
     const kind=window.INTERACTIVE_SPECS?.get('自然',title);if(!kind)throw Error(`缺少自然互動模型規格：${title}`);
+    if(title==='植物如何製造養分') return photosynthesisLab();
+    if(kind==='body') return bodySystemLab(title);
     return `${conceptVisual('自然',kind,title,m[1])}<details class="visual-caption"><summary>${m[0]}：觀察提示</summary><p>${m[1]}</p></details>`;
   }
   function languageModel(subject,title){
