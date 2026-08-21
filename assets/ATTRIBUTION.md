@@ -15,3 +15,7 @@
   https://commons.wikimedia.org/wiki/File:Food_web_diagram.svg
 - `xylem-phloem-cc-by-sa.svg`：Nefronus，〈Xylem and phloem diagram〉，Wikimedia Commons，CC BY-SA 4.0；本站未修改原圖。
   https://commons.wikimedia.org/wiki/File:Xylem_and_phloem_diagram.svg
+- `nih-heart-surface.glb`：NIH 3D，〈Human Heart 3d Model〉（3DPX-022787），Public Domain。
+  https://3d.nih.gov/entries/3DPX-022787
+- `nih-heart-cutaway.glb`：NIH 3D，〈Heart: parasternal long axis view〉（3DPX-009511），Public Domain。
+  https://3d.nih.gov/entries/3DPX-009511
