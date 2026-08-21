@@ -38,6 +38,22 @@
   function mathVisual(title, equation, explanation){
     return `<div class="interactive-visual math-visual" data-math-visual><div class="visual-instruction">先操作圖像，再用自己的話說明規則</div><div class="math-canvas"><div class="math-shape shape-a"></div><div class="math-shape shape-b"></div><div class="math-symbol">↔</div><div class="math-shape shape-c"></div></div><div class="visual-controls"><button type="button" data-math-step="0">看條件</button><button type="button" data-math-step="1">建立關係</button><button type="button" data-math-step="2">驗證結果</button></div><div class="visual-status" data-math-status>先圈出題目的已知量：不要直接計算。</div></div>`;
   }
+  function replayLab(lab){
+    const model=q('[data-model]',lab); model?.classList.remove('is-playing');
+    if(lab._replayTimer) clearInterval(lab._replayTimer);
+    requestAnimationFrame(()=>model?.classList.add('is-playing'));
+    const absolute=q('[data-absolute-lab]',lab);
+    if(absolute){const input=q('[data-absolute-slider]',absolute), values=[-4,0,5,-2], readout=q('[data-absolute-readout]',absolute);let step=0;const show=()=>{if(step>=values.length){clearInterval(lab._replayTimer);lab._replayTimer=null;return;}input.value=values[step];renderAbsolute(absolute);readout.textContent=`播放第 ${step+1} 步：${readout.textContent}`;step+=1;};show();lab._replayTimer=setInterval(show,850);return;}
+    const visual=q('[data-visual]',lab);
+    if(visual){
+      const nodes=[...visual.querySelectorAll('[data-visual-node]')]; let step=0;
+      nodes.forEach(node=>node.classList.remove('is-active'));
+      const show=()=>{const node=nodes[step]; if(!node){clearInterval(lab._replayTimer);lab._replayTimer=null;return;}node.classList.add('is-active');q('[data-visual-status]',visual).textContent=`播放第 ${step+1} 步：${node.textContent.trim()}。`;step+=1;};
+      show(); lab._replayTimer=setInterval(show,850); return;
+    }
+    const math=q('[data-math-visual]',lab);
+    if(math){const buttons=[...math.querySelectorAll('[data-math-step]')];let step=0;const messages=['圈出已知條件。','把相同的量建立關係。','代回圖像驗證結果。'];const show=()=>{if(step>=buttons.length){clearInterval(lab._replayTimer);lab._replayTimer=null;return;}buttons.forEach((button,index)=>button.classList.toggle('is-active',index===step));q('[data-math-status]',math).textContent=`播放第 ${step+1} 步：${messages[step]}`;step+=1;};show();lab._replayTimer=setInterval(show,850);}
+  }
   function mathModel(title){
     const models={
       '正負數與絕對值':['數線與距離模型','把滑鼠點在數線左右兩端：位置代表正負，離 0 的格數才是絕對值。','−4　−3　−2　−1　0　1　2　3　4'],
@@ -147,7 +163,7 @@
   app.addEventListener('click',e=>{
     const lab=e.target.closest('.chapter-lab'); if(!lab)return;
     const choice=e.target.closest('[data-chapter-choice]'); if(choice){lab.querySelectorAll('[data-chapter-choice]').forEach(b=>b.classList.toggle('active',b===choice));q('[data-chapter-feedback]',lab).textContent=choice.dataset.chapterChoice==='1'?'這樣容易被陷阱帶走。請回到題目的條件，確認它真能支持結論。':'正確方向：先從條件建立關係，再把結論放回題目檢查是否合理。';}
-    if(e.target.closest('[data-chapter-replay]')){const m=q('[data-model]',lab);m.classList.remove('is-playing');requestAnimationFrame(()=>m.classList.add('is-playing'));}
+    if(e.target.closest('[data-chapter-replay]')) replayLab(lab);
     const node=e.target.closest('[data-visual-node]'); if(node){const visual=node.closest('[data-visual]');const nodes=[...visual.querySelectorAll('[data-visual-node]')];const current=Number(node.dataset.visualNode);nodes.forEach((item,index)=>item.classList.toggle('is-active',index<=current));q('[data-visual-status]',visual).textContent=`第 ${current+1} 步已亮起：${node.textContent.trim()}。現在請說出它如何連到下一步。`;}
     const mathStep=e.target.closest('[data-math-step]'); if(mathStep){const visual=mathStep.closest('[data-math-visual]');const messages=['先把題目的數、圖形或條件圈出來。','把同一類量連線：確認符號、單位或對應關係。','把答案代回原條件或圖像，檢查是否合理。'];visual.querySelectorAll('[data-math-step]').forEach((button,index)=>button.classList.toggle('is-active',index===Number(mathStep.dataset.mathStep)));q('[data-math-status]',visual).textContent=messages[Number(mathStep.dataset.mathStep)];}
   });
