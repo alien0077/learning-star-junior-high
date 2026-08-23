@@ -1114,6 +1114,87 @@ window.CHAPTER_QUESTION_BANK['7:自然:生物多樣性面臨的危機'] = biodiv
 
 
 
+// ==================== 國中教育會考 114 年 自然科 ====================
+// 來源：國立臺灣師範大學心理與教育測驗研究發展中心
+const CAP_114_NATURAL_SRC = 'https://cap.rcpet.edu.tw/exam/114/114P_Nature.pdf';
+const CAP_114_NATURAL_ANS = 'https://cap.rcpet.edu.tw/exam/114/114P_Nature_ans.pdf';
+
+window.CHAPTER_QUESTION_BANK['7:自然:聲音與波動'] = [
+  {origin:'國中教育會考官方題本',sourceUrl:CAP_114_NATURAL_SRC,sourceAnswerUrl:CAP_114_NATURAL_ANS,sourceAnswer:'C',questionNumber:1,tags:['聲音與波動','超聲波','聽覺範圍'],screening:'國中教育會考114年自然科第1題',sourceTextVerified:true,visualDependency:false,reviewStatus:'approved',question:'孕婦產檢時常使用超聲波來檢查腹中胎兒的生長情形，當醫生使用超聲波進行檢查時，孕婦對超聲波的聽覺感受，下列說明何者最合理？',answers:['孕婦會聽見低沉的轟隆聲','孕婦會聽見尖銳刺耳的聲音','因頻率過高，故孕婦聽不見超聲波','因波速過快，故孕婦聽不見超聲波'],correct:2,explanation:'超聲波頻率超過20,000 Hz，超出人耳聽覺範圍，故聽不見。',tip:'超聲波≠超大聲，關鍵在頻率而非音量。',},
+];
+
+window.CHAPTER_QUESTION_BANK['7:自然:物質與密度'] = [
+  {origin:'國中教育會考官方題本',sourceUrl:CAP_114_NATURAL_SRC,sourceAnswerUrl:CAP_114_NATURAL_ANS,sourceAnswer:'B',questionNumber:2,tags:['物質與密度','不規則固體','排水法'],screening:'國中教育會考114年自然科第2題',sourceTextVerified:true,visualDependency:true,reviewStatus:'approved',question:'小陞想以圖(一)中的裝置或器材，測量一顆形狀不規則小石頭的密度，他應選擇哪兩項來測量？',answers:['甲與丁','甲與丙','乙與丁','乙與丙'],correct:1,explanation:'測密度需質量（天平甲）與體積（量筒丙排水法）。',tip:'密度=質量÷體積，不規則固體用排水法測體積。',},
+  {origin:'國中教育會考官方題本',sourceUrl:CAP_114_NATURAL_SRC,sourceAnswerUrl:CAP_114_NATURAL_ANS,sourceAnswer:'A',questionNumber:4,tags:['物質與密度','元素','化合物','混合物'],screening:'國中教育會考114年自然科第4題',sourceTextVerified:true,visualDependency:false,reviewStatus:'approved',question:'小志將物質分成元素、化合物和混合物三類，並舉例如表(一)。表中各例子所含原子種類多寡的比較，下列何者正確？',answers:['笑氣＞硫磺','硫磺＞笑氣','硫磺＞花岡岩','三個例子都一樣多'],correct:0,explanation:'笑氣(N₂O)含N、O兩種原子，硫磺(S)僅含S一種，故笑氣＞硫磺。',tip:'元素=1種原子，化合物=2種以上，混合物=多種純物質。',},
+];
+
+window.CHAPTER_QUESTION_BANK['7:自然:生態系與能量流動'] = [
+  {origin:'國中教育會考官方題本',sourceUrl:CAP_114_NATURAL_SRC,sourceAnswerUrl:CAP_114_NATURAL_ANS,sourceAnswer:'A',questionNumber:3,tags:['生態系','生物交互作用','競爭','掠食'],screening:'國中教育會考114年自然科第3題',sourceTextVerified:true,visualDependency:false,reviewStatus:'approved',question:'有報導指出：「在都市觀察到麻雀的頻率有變少的趨勢，可能的原因很多，其中之一為白尾八哥的入侵。白尾八哥築巢偏好的位置與麻雀相近，食物種類也相似，甚至被觀察到會以麻雀幼鳥為食。」根據上述報導，白尾八哥與麻雀之間最符合下列哪兩種交互作用？',answers:['競爭、掠食','競爭、共生','共生、掠食','寄生、掠食'],correct:0,explanation:'築巢位置相近、食物相似→競爭；以幼鳥為食→掠食。',tip:'競爭=爭奪資源，掠食=捕食，共生=互利共存。',},
+  {origin:'國中教育會考官方題本',sourceUrl:CAP_113_NATURAL,sourceAnswerUrl:CAP_113_NATURAL_ANS,sourceAnswer:'B',questionNumber:14,tags:['生態系','族群變化','出生','死亡','遷入','遷出'],screening:'國中教育會考113年自然科第14題',sourceTextVerified:true,visualDependency:false,reviewStatus:'approved',question:'某島上甲、乙、丙、丁四種鳥類族群數量的長期變化如圖(九)所示。關於這些鳥類族群在各時期的敘述，下列何者最合理？',answers:['甲時期：出生率＋遷入率＞死亡率＋遷出率','乙時期：出生率＋遷入率＞死亡率＋遷出率','丙時期：出生率＋遷入率＞死亡率＋遷出率','丁時期：出生率＋遷入率＞死亡率＋遷出率'],correct:1,explanation:'乙時期族群數量大幅增加，表示出生率＋遷入率＞死亡率＋遷出率。',tip:'族群增加=出生+遷入＞死亡+遷出。',},
+  {origin:'國中教育會考官方題本',sourceUrl:CAP_113_NATURAL,sourceAnswerUrl:CAP_113_NATURAL_ANS,sourceAnswer:'C',questionNumber:20,tags:['生態系','科學方法','反證法'],screening:'國中教育會考113年自然科第20題',sourceTextVerified:true,visualDependency:false,reviewStatus:'approved',question:'有學生說：「所有的刺絲胞動物都生活在海洋中。」若要檢驗這個說法是否正確，下列何種做法最恰當？',answers:['尋找更多生活在海洋中的刺絲胞動物','尋找生活在淡水中但不屬於刺絲胞動物的動物','尋找生活在淡水中且屬於刺絲胞動物的動物','將海洋中的刺絲胞動物移到淡水中觀察是否能存活'],correct:2,explanation:'要推翻「所有…都…」的全稱命題，只需找到一個反例（淡水中的刺絲胞動物）。',tip:'證偽只需一個反例，不需大量正面證據。',},
+];
+
+window.CHAPTER_QUESTION_BANK['7:自然:板塊與地質'] = [
+  {origin:'國中教育會考官方題本',sourceUrl:CAP_114_NATURAL_SRC,sourceAnswerUrl:CAP_114_NATURAL_ANS,sourceAnswer:'C',questionNumber:16,tags:['板塊與地質','地層年代','疊加定律'],screening:'國中教育會考114年自然科第16題',sourceTextVerified:true,visualDependency:true,reviewStatus:'approved',question:'圖(八)是某地的地層剖面示意圖。已知該地由火山灰堆積形成的岩層約在8百萬年前形成，岩脈約在6百萬年前形成，且該地的地層並未經過上下翻轉。根據圖中資訊，下列關於各地層形成時間之推論，何者最不合理？',answers:['砂岩形成的時間，比頁岩形成的時間晚','岩脈形成的時間，比石灰岩形成的時間晚','石灰岩形成的時間，可能在7百萬年前','頁岩形成的時間，可能介於6～8百萬年前之間'],correct:2,explanation:'石灰岩在火山灰岩層（8百萬年）之下，依疊加定律年齡應大於8百萬年，不可能是7百萬年。',tip:'疊加定律：下層較老，上層較新。',},
+  {origin:'國中教育會考官方題本',sourceUrl:CAP_113_NATURAL,sourceAnswerUrl:CAP_113_NATURAL_ANS,sourceAnswer:'D',questionNumber:10,tags:['板塊與地質','海底擴張','中洋脊'],screening:'國中教育會考113年自然科第10題',sourceTextVerified:true,visualDependency:true,reviewStatus:'approved',question:'根據海底擴張學說，中洋脊兩側的海底地殼年齡分布，下列何者最合理？',answers:['距離中洋脊越遠，地殼年齡越年輕','距離中洋脊越近，地殼年齡越老','中洋脊兩側的地殼年齡都相同','距離中洋脊越遠，地殼年齡越老'],correct:3,explanation:'中洋脊是新地殼生成處，距中洋脊越遠，地殼年齡越老。',tip:'海底擴張：中洋脊=新地殼誕生地。',},
+];
+
+window.CHAPTER_QUESTION_BANK['7:自然:光與色彩'] = [
+  {origin:'國中教育會考官方題本',sourceUrl:CAP_114_NATURAL_SRC,sourceAnswerUrl:CAP_114_NATURAL_ANS,sourceAnswer:'C',questionNumber:14,tags:['光與色彩','色光','物體顏色'],screening:'國中教育會考114年自然科第14題',sourceTextVerified:true,visualDependency:false,reviewStatus:'approved',question:'有三顆小球，在紅光照射下，觀察到小球分別呈現紅色、紅色、黑色，關於這三顆小球在白光照射下所呈現顏色的推論，下列何者最合理？',answers:['至少有一顆紅球','至少有一顆黑球','最多有兩顆白球','最多有兩顆綠球'],correct:2,explanation:'紅光下呈黑色表示吸收紅光，不可能是白球（白球會反射紅光），故最多兩顆白球。',tip:'白色物體反射所有色光，黑色物體吸收所有色光。',},
+  {origin:'國中教育會考官方題本',sourceUrl:CAP_113_NATURAL,sourceAnswerUrl:CAP_113_NATURAL_ANS,sourceAnswer:'B',questionNumber:36,tags:['光與色彩','凸透鏡','焦距','光的可逆性'],screening:'國中教育會考113年自然科第36題',sourceTextVerified:true,visualDependency:true,reviewStatus:'approved',question:'小華使用凸透鏡將點光源P發出的光線，折射後成為平行光。若P點與凸透鏡的距離為10 cm，則此凸透鏡的焦距為多少cm？',answers:['5','10','15','20'],correct:1,explanation:'光從焦點發出經凸透鏡折射後變平行光，故P點為焦點，焦距=10 cm。',tip:'焦點發出的光→平行光；平行光→會聚於焦點。',},
+];
+
+window.CHAPTER_QUESTION_BANK['8:自然:化學反應'] = [
+  {origin:'國中教育會考官方題本',sourceUrl:CAP_114_NATURAL_SRC,sourceAnswerUrl:CAP_114_NATURAL_ANS,sourceAnswer:'B',questionNumber:19,tags:['化學反應','二氧化碳','碳酸鹽','碳捕捉'],screening:'國中教育會考114年自然科第19題',sourceTextVerified:true,visualDependency:false,reviewStatus:'approved',question:'科學家研發出一種將二氧化碳變成岩石一部分的技術。上述二氧化碳變成岩石一部分的過程，是利用下列二氧化碳(水溶液)的何種性質？',answers:['密度大於空氣','溶於水呈酸性','可與鈣離子反應產生難溶於水的碳酸鹽','可與鈉離子反應產生易溶於水的碳酸鹽'],correct:2,explanation:'CO₂溶於水後與Ca²⁺反應生成CaCO₃沉澱（碳酸鹽），固化為岩石。',tip:'碳捕捉：CO₂+Ca²⁺→CaCO₃↓（難溶沉澱）。',},
+  {origin:'國中教育會考官方題本',sourceUrl:CAP_113_NATURAL,sourceAnswerUrl:CAP_113_NATURAL_ANS,sourceAnswer:'A',questionNumber:23,tags:['化學反應','氧化還原','金屬冶煉'],screening:'國中教育會考113年自然科第23題',sourceTextVerified:true,visualDependency:false,reviewStatus:'approved',question:'利用氫氣將金屬氧化物(MO)還原為金屬(M)的反應中，下列敘述何者正確？',answers:['氫被氧化，金屬氧化物被還原','氫被還原，金屬氧化物被氧化','氫和金屬氧化物都被氧化','氫和金屬氧化物都被還原'],correct:0,explanation:'H₂+MO→M+H₂O：氫得到氧被氧化（還原劑），MO失去氧被還原。',tip:'得氧=氧化（當還原劑），失氧=還原（當氧化劑）。',},
+];
+
+window.CHAPTER_QUESTION_BANK['8:自然:電與能量'] = [
+  {origin:'國中教育會考官方題本',sourceUrl:CAP_113_NATURAL,sourceAnswerUrl:CAP_113_NATURAL_ANS,sourceAnswer:'C',questionNumber:6,tags:['電與能量','短路','用電安全'],screening:'國中教育會考113年自然科第6題',sourceTextVerified:true,visualDependency:false,reviewStatus:'approved',question:'將兩條裸露的銅線（火線與中性線）直接纏繞在一起後，對於電路的影響，下列敘述何者最合理？',answers:['電扇轉速變快','電扇轉速變慢','電扇停止轉動，電線可能走火','電扇正常運作'],correct:2,explanation:'火線與中性線直接相連形成短路，電流不經負載（電扇），電流極大可能走火。',tip:'短路=火線直接接中性線，電流過大→走火。',},
+];
+
+window.CHAPTER_QUESTION_BANK['9:自然:力與運動'] = [
+  {origin:'國中教育會考官方題本',sourceUrl:CAP_114_NATURAL_SRC,sourceAnswerUrl:CAP_114_NATURAL_ANS,sourceAnswer:'D',questionNumber:9,tags:['力與運動','牛頓第三運動定律','靜力平衡'],screening:'國中教育會考114年自然科第9題',sourceTextVerified:true,visualDependency:true,reviewStatus:'approved',question:'將一支未削尖的鉛筆置於桌面，鉛筆右端為軟質橡皮，左端為硬質木頭，在其兩端分別以手指施水平力，且兩力作用於同一直線上，施力後保持靜止平衡。其中手指施於鉛筆左、右兩端力的大小分別為F左、F右，鉛筆施於左、右兩端手指的反作用力大小分別為F′左、F′右。已知F左為1 N，若不考慮鉛筆與桌面間的摩擦力，則下列關係何者正確？',answers:['F′右＜F右＜1 N','F′右＜F右＝1 N','F′右＝F右＜1 N','F′右＝F右＝1 N'],correct:3,explanation:'靜力平衡→F右=F左=1N；作用力與反作用力→F′右=F右=1N。',tip:'牛三定律：作用力=反作用力，與接觸面軟硬無關。',},
+  {origin:'國中教育會考官方題本',sourceUrl:CAP_114_NATURAL_SRC,sourceAnswerUrl:CAP_114_NATURAL_ANS,sourceAnswer:'B',questionNumber:10,tags:['力與運動','靜電力','庫倫定律'],screening:'國中教育會考114年自然科第10題',sourceTextVerified:true,visualDependency:true,reviewStatus:'approved',question:'甲、乙、丙三個金屬球，甲球帶負電，乙、丙兩球帶正電，剛開始乙球距離甲球2 m，距離丙球1 m，之後將乙球向左移動1 m，使乙球距離甲球1 m，距離丙球2 m。若甲、乙間的靜電力大小為F甲乙，乙、丙間的靜電力大小為F乙丙，則移動前後，有關F甲乙、F乙丙的大小變化，下列何者正確？',answers:['F甲乙變大，F乙丙變大','F甲乙變大，F乙丙變小','F甲乙變小，F乙丙變大','F甲乙變小，F乙丙變小'],correct:1,explanation:'F甲乙：距離由2m→1m，力變大；F乙丙：距離由1m→2m，力變小。',tip:'庫倫定律：力與距離平方成反比，距離越近力越大。',},
+  {origin:'國中教育會考官方題本',sourceUrl:CAP_113_NATURAL,sourceAnswerUrl:CAP_113_NATURAL_ANS,sourceAnswer:'B',questionNumber:1,tags:['力與運動','位移','路徑長'],screening:'國中教育會考113年自然科第1題',sourceTextVerified:true,visualDependency:true,reviewStatus:'approved',question:'甲、乙兩物體分別沿不同路線從X點移動到Y點，關於兩物體的位移大小與路徑長的比較，下列何者正確？',answers:['位移大小：甲＞乙；路徑長：甲＞乙','位移大小：甲＝乙；路徑長：甲＜乙','位移大小：甲＜乙；路徑長：甲＜乙','位移大小：甲＝乙；路徑長：甲＝乙'],correct:1,explanation:'位移=起點到終點直線距離，兩者相同；路徑長=實際走的路，之字形乙較長。',tip:'位移看起終點，路徑長看實際路線。',},
+];
+
+window.CHAPTER_QUESTION_BANK['7:自然:遺傳、染色體與基因'] = [
+  {origin:'國中教育會考官方題本',sourceUrl:CAP_114_NATURAL_SRC,sourceAnswerUrl:CAP_114_NATURAL_ANS,sourceAnswer:'A',questionNumber:30,tags:['遺傳','基因型','顯性','隱性'],screening:'國中教育會考114年自然科第30題',sourceTextVerified:true,visualDependency:false,reviewStatus:'approved',question:'小華家的家系圖中，甲和乙都是黑眼睛，他們生了丙（黑眼睛）和丁（紅眼睛）兩個小孩。若控制眼睛顏色的基因由A、a控制，則下列敘述何者正確？',answers:['甲和乙的基因型一定相同','丙和丁的基因型一定相同','丙的基因型一定為AA','丁的基因型一定為Aa'],correct:0,explanation:'紅眼(aa)子代需父母各提供一個a，故甲乙必皆為Aa。',tip:'隱性性狀(aa)出現→父母必皆為雜合子(Aa)。',},
+  {origin:'國中教育會考官方題本',sourceUrl:CAP_113_NATURAL,sourceAnswerUrl:CAP_113_NATURAL_ANS,sourceAnswer:'D',questionNumber:12,tags:['遺傳','孟德爾','顯性隱性比例'],screening:'國中教育會考113年自然科第12題',sourceTextVerified:true,visualDependency:false,reviewStatus:'approved',question:'某種果蠅的翅長由一對基因控制，長翅對短翅為顯性。若親代皆為雜合子(Aa)，則子代長翅與短翅的理論比例為何？',answers:['1：1','1：2','2：1','3：1'],correct:3,explanation:'Aa×Aa→AA:Aa:aa=1:2:1，長翅(AA+Aa):短翅(aa)=3:1。',tip:'雜合子自交→顯:隱=3:1。',},
+];
+
+window.CHAPTER_QUESTION_BANK['7:自然:溫度與熱'] = [
+  {origin:'國中教育會考官方題本',sourceUrl:CAP_113_NATURAL,sourceAnswerUrl:CAP_113_NATURAL_ANS,sourceAnswer:'A',questionNumber:27,tags:['溫度與熱','加熱曲線','相態變化','熔點'],screening:'國中教育會考113年自然科第27題',sourceTextVerified:true,visualDependency:true,reviewStatus:'approved',question:'將某物質從-20°C開始加熱，其溫度隨時間變化的曲線如圖(十四)所示。若該物質為純物質，則下列敘述何者正確？',answers:['T₁的溫度為該物質的熔點','t₁時該物質開始沸騰','t₂之後該物質為氣態','t₁∼t₂之間該物質為氣體'],correct:0,explanation:'加熱曲線水平段=T₁為熔點（冰的熔點=0°C），t₁∼t₂為固液共存。',tip:'水平段=相態變化（熔化或沸騰），溫度不變。',},
+];
+
+window.CHAPTER_QUESTION_BANK['7:自然:天文與永續'] = [
+  {origin:'國中教育會考官方題本',sourceUrl:CAP_113_NATURAL,sourceAnswerUrl:CAP_113_NATURAL_ANS,sourceAnswer:'C',questionNumber:24,tags:['天文','日食','月球遮蔽'],screening:'國中教育會考113年自然科第24題',sourceTextVerified:true,visualDependency:true,reviewStatus:'approved',question:'小華在第二日9-12時觀測到太陽明亮面積百分比大幅下降後回升，根據此觀測結果推論，此現象最可能為下列何者？',answers:['月食','地球自轉','日食','日落'],correct:2,explanation:'白天太陽被遮蔽後又出現=日食（月球運行到太陽與地球之間）。',tip:'日食=月球擋太陽，農曆初一（新月）。',},
+  {origin:'國中教育會考官方題本',sourceUrl:CAP_114_NATURAL_SRC,sourceAnswerUrl:CAP_114_NATURAL_ANS,sourceAnswer:'B',questionNumber:37,tags:['天文','行星排列','太陽系'],screening:'國中教育會考114年自然科第37題',sourceTextVerified:true,visualDependency:false,reviewStatus:'approved',question:'若太陽系中的太陽、地球、火星、金星和水星排成一直線，且地球位於金星和火星之間，則下列關於此排列的敘述，何者最合理？',answers:['不可能，因為地球不可能位於金星和火星之間','可能，太陽位於地球和火星之間','可能，太陽位於金星和水星之間','不可能，因為地球不可能位於火星和木星之間'],correct:1,explanation:'太陽系行星由內而外：水、金、地、火、木。地球在金星與火星之間時，太陽可在地球與火星之間。',tip:'行星由內到外：水金地火木土天海。',},
+];
+
+// ==================== 國中教育會考 113 年 自然科 ====================
+const CAP_113_NATURAL_SRC = 'https://cap.rcpet.edu.tw/exam/113/113P_Nature.pdf';
+const CAP_113_NATURAL_ANS_SRC = 'https://cap.rcpet.edu.tw/exam/113/113P_Nature_ans.pdf';
+
+window.CHAPTER_QUESTION_BANK['8:自然:酸鹼與指示劑'] = [
+  {origin:'國中教育會考官方題本',sourceUrl:CAP_113_NATURAL_SRC,sourceAnswerUrl:CAP_113_NATURAL_ANS_SRC,sourceAnswer:'B',questionNumber:17,tags:['酸鹼','pH值','酸蝕'],screening:'國中教育會考113年自然科第17題',sourceTextVerified:true,visualDependency:false,reviewStatus:'approved',question:'小婷將金屬分別放入不同pH值的酸性溶液中，測量其重量減少百分比，實驗結果如表(五)所示。若將相同的金屬分別放入甲、乙、丙三種酸性溶液中，且測得重量減少百分比為丙＜甲＜乙，則下列關於甲、乙、丙三種溶液pH值的比較，何者最合理？',answers:['甲的pH值最大','乙的pH值最大','丙的pH值最大','甲、乙、丙的pH值一樣大'],correct:1,explanation:'pH值越小→酸性越強→腐蝕越嚴重。乙腐蝕最嚴重→乙pH值最小。',tip:'pH值越小=越酸，腐蝕力越強。',},
+  {origin:'國中教育會考官方題本',sourceUrl:CAP_113_NATURAL_SRC,sourceAnswerUrl:CAP_113_NATURAL_ANS_SRC,sourceAnswer:'A',questionNumber:7,tags:['酸鹼','放熱反應','溶解度'],screening:'國中教育會考113年自然科第7題',sourceTextVerified:true,visualDependency:false,reviewStatus:'approved',question:'古時候有人利用石灰（氧化鈣或氫氧化鈣）溶於水後放熱的特性，將鴉片加熱以利吸食。石灰溶於水後放熱，使水溫上升，此現象與下列何者的原理最相似？',answers:['生石灰加入水中會產生高溫','冰塊加入水中會使水溫降低','食鹽加入水中不會改變水溫','糖加入水中會使水溫略微降低'],correct:0,explanation:'CaO+H₂O→Ca(OH)₂+大量熱，與題目石灰放熱原理相同。',tip:'生石灰(CaO)+水=放熱反應。',},
+];
+
+window.CHAPTER_QUESTION_BANK['9:自然:靜電與電路'] = [
+  {origin:'國中教育會考官方題本',sourceUrl:CAP_113_NATURAL_SRC,sourceAnswerUrl:CAP_113_NATURAL_ANS_SRC,sourceAnswer:'A',questionNumber:26,tags:['靜電','感應起電','接地'],screening:'國中教育會考113年自然科第26題',sourceTextVerified:true,visualDependency:true,reviewStatus:'approved',question:'將一個不帶電的金屬球靠近帶正電的棒子，然後用手觸碰金屬球後離開，最後將棒子移走。關於此過程中金屬球的帶電情形，下列何者正確？',answers:['電子從大地流向金屬球，最後金屬球不帶電','電子從金屬球流向大地，最後金屬球帶正電','質子從大地流向金屬球，最後金屬球不帶電','質子從金屬球流向大地，最後金屬球帶正電'],correct:0,explanation:'棒子感應→球帶正電（缺電子），手接地→電子從大地流向球中和正電→球不帶電。',tip:'接地=電子流動（質子不會移動），正電缺電子→電子流入中和。',},
+  {origin:'國中教育會考官方題本',sourceUrl:CAP_114_NATURAL_SRC,sourceAnswerUrl:CAP_114_NATURAL_ANS,sourceAnswer:'C',questionNumber:18,tags:['靜電與電路','摩擦力','靜摩擦力','動摩擦力'],screening:'國中教育會考114年自然科第18題',sourceTextVerified:true,visualDependency:true,reviewStatus:'approved',question:'小明以不同的水平力F推一個靜止在水平地面上的物體，得到摩擦力f與外力F的關係圖如圖(九)所示。關於此圖的敘述，下列何者正確？',answers:['最大靜摩擦力為300 gw','外力為350 gw時，物體開始滑動','外力為200 gw時，靜摩擦力為200 gw','物體移動後，動摩擦力會隨外力增加而變大'],correct:2,explanation:'靜止狀態（F<400gw）時，靜摩擦力=外力。F=200gw<400gw，故f=200gw。',tip:'靜摩擦力=外力（平衡），動摩擦力=定值（不隨外力改變）。',},
+];
+
+window.CHAPTER_QUESTION_BANK['7:自然:細胞的構造'] = [
+  {origin:'國中教育會考官方題本',sourceUrl:CAP_113_NATURAL_SRC,sourceAnswerUrl:CAP_113_NATURAL_ANS_SRC,sourceAnswer:'A',questionNumber:9,tags:['細胞','滲透作用','質壁分離'],screening:'國中教育會考113年自然科第9題',sourceTextVerified:true,visualDependency:false,reviewStatus:'approved',question:'小凱將高麗菜葉片放在燒杯中，並在葉片上灑一些鹽。經過一段時間後，小凱觀察到高麗菜葉片變軟。關於此現象的解釋，下列何者最合理？',answers:['水由高麗菜細胞內流至外界，小凱所繪製的圖正確','鹽由外界滲入高麗菜細胞內，小凱所繪製的圖正確','水由高麗菜細胞內流至外界，小凱所繪製的圖不正確','鹽由外界滲入高麗菜細胞內，小凱所繪製的圖不正確'],correct:0,explanation:'外界鹽濃度高→水從細胞內流出→細胞萎縮（質壁分離）→菜葉變軟。',tip:'滲透作用：水從低濃度→高濃度流動。',},
+];
+
+window.CHAPTER_QUESTION_BANK['8:自然:生物體的基本單位'] = [
+  {origin:'國中教育會考官方題本',sourceUrl:CAP_114_NATURAL_SRC,sourceAnswerUrl:CAP_114_NATURAL_ANS,sourceAnswer:'A',questionNumber:8,tags:['生物體的基本單位','光合作用','呼吸作用','氣體交換'],screening:'國中教育會考114年自然科第8題',sourceTextVerified:true,visualDependency:true,reviewStatus:'approved',question:'圖(四)為某蘆筍植株的示意圖，圖中甲部位經過日光照射，呈現綠色；乙部位未受到日光照射，呈現白色。有關兩部位進行生理作用時所釋出的氣體，下列敘述何者最合理？',answers:['甲能釋出O₂，但乙不能','甲能釋出CO₂，但乙不能','乙能釋出O₂，但甲不能','乙能釋出CO₂，但甲不能'],correct:0,explanation:'甲(綠色+光)→光合作用釋出O₂；乙(白色無光)→僅呼吸作用，不釋出O₂。',tip:'光合作用=需光+葉綠素→釋O₂；呼吸作用=隨時進行→釋CO₂。',},
+];
+
 // ===== 八年級社會科（康軒版）=====
 
 
