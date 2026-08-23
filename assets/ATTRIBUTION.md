@@ -17,5 +17,7 @@
   https://commons.wikimedia.org/wiki/File:Xylem_and_phloem_diagram.svg
 - `nih-heart-surface.glb`：NIH 3D，〈Human Heart 3d Model〉（3DPX-022787），Public Domain。
   https://3d.nih.gov/entries/3DPX-022787
-- `cg-heart-cutaway-cc-by-sa.gif`：Alexis Jazz，〈CG heart 2〉；源自 DrJanaOfficial 的 3D 心臟剖面動畫，CC BY-SA 4.0。本站未修改原動畫，僅以互動箭頭疊加八步血流說明。
+- `cg-heart-cutaway-cc-by-sa.gif`：Alexis Jazz，〈CG heart 2〉；源自 DrJanaOfficial 的 3D 心臟剖面動畫，CC BY-SA 4.0。本站未修改原動畫。
   https://commons.wikimedia.org/wiki/File:CG_heart_2.gif
+- `p-anatomy-pd.svg`：Mariana Ruiz Villarreal（LadyofHats），〈P Anatomy〉，Wikimedia Commons，公開領域（PD-self）。本站僅在外層加入獨立的動態血流粒子。
+  https://commons.wikimedia.org/wiki/File:P_Anatomy.svg

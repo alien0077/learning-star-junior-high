@@ -105,15 +105,52 @@
     return {overview:`「${unit}」的目標是：${goal} ${topic}`,ideas:guide.ideas,example:guide.example,check:guide.check};
   };
   const app = document.querySelector("#app");
-  const guideChapter = (subject, unit, goal) => {
-    const facts = window.CHAPTER_STUDY_GUIDES?.[subject]?.[unit];
-    if (!Array.isArray(facts) || facts.length < 4) return null;
+  // 每一筆已審核指南是完整的「可學習重點」。不能以逗號、分號拆成
+  // 片段，否則條件、例外與結論會落到不同卡片而失去語意。
+  const splitGuideFacts = facts => facts
+    .map(fact => String(fact).trim())
+    .filter(fact => fact.length > 4);
+  const guideChapter = (grade, subject, unit, goal) => {
+    const facts = window.getChapterStudyGuide?.(grade,subject,unit)||window.CHAPTER_STUDY_GUIDES?.[subject]?.[unit];
+    if (!Array.isArray(facts) || facts.length === 0) return null;
+    const ideas = splitGuideFacts(facts);
+    if (ideas.length === 0) return null;
+    // 「帶做」也必須連回所有已核對重點，不能只取前幾點。
+    const worked = ideas.slice(1);
     return {
-      overview: `本節先要看懂這件事：${facts[0]}`,
-      ideas: facts.slice(0,4),
-      example: `把題目的條件逐一對回本節概念：${facts[1]} 接著檢查：${facts[2]}`,
-      check: `${facts[3]} 現在請用自己的話說明：題目中的哪一個條件能讓你判斷這件事？`
+      overview: `本節先要看懂這件事：${ideas[0]}`,
+      ideas,
+      example: `把題目的條件逐一對回本節概念：${worked.join(' 接著檢查：') || ideas[0]}`,
+      check: `${ideas.at(-1)} 現在請用自己的話說明：題目中的哪一個條件能讓你判斷這件事？`
     };
+  };
+  const esc = value => String(value).replace(/[&<>'"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch]));
+  const flowDiagram = (nodes, active, caption) => {
+    const width = 640, positions = [18,174,330,486];
+    const boxes = nodes.map((node, i) => `<g class="diagram-node ${i === active ? 'is-active' : ''}"><rect x="${positions[i]}" y="43" width="136" height="54" rx="12"/><text x="${positions[i]+68}" y="76" text-anchor="middle">${esc(node)}</text></g>`).join('');
+    const arrows = positions.slice(0,-1).map((x,i) => `<path class="diagram-arrow ${i+1 === active ? 'is-active' : ''}" d="M${x+138} 70H${positions[i+1]-9}"/>`).join('');
+    return `<figure class="micro-diagram"><svg class="micro-diagram-svg" viewBox="0 0 ${width} 140" role="img" aria-label="${esc(caption)}"><defs><marker id="micro-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z"/></marker></defs>${arrows}${boxes}</svg><figcaption>圖式解讀：${esc(caption)}</figcaption></figure>`;
+  };
+  const polynomialDiagram = index => {
+    const diagrams = [
+      `<svg class="micro-diagram-svg" viewBox="0 0 640 166" role="img" aria-label="同類項依 x 的次方對齊後合併"><text class="diagram-title" x="18" y="25">依相同字母與次方對齊</text><g class="diagram-grid"><rect x="30" y="43" width="180" height="82" rx="10"/><path d="M90 43V125M150 43V125M30 71H210M30 98H210"/><text x="60" y="64">x²</text><text x="120" y="64">x</text><text x="180" y="64">常數</text><text x="60" y="91">3</text><text x="120" y="91">+2</text><text x="180" y="91">+0</text><text x="60" y="116">+1</text><text x="120" y="116">−5</text><text x="180" y="116">+0</text></g><path class="diagram-arrow is-active" d="M230 84H332"/><rect class="diagram-emphasis" x="355" y="53" width="240" height="64" rx="12"/><text class="diagram-result" x="475" y="92" text-anchor="middle">4x² − 3x</text><text class="diagram-note" x="30" y="151">只有 x² 對 x²、x 對 x 才能合併</text></svg>`,
+      `<svg class="micro-diagram-svg" viewBox="0 0 640 166" role="img" aria-label="分配律的四格面積模型"><text class="diagram-title" x="18" y="25">(x＋2)(x＋3)：每一項都相乘</text><text x="184" y="48">x</text><text x="333" y="48">3</text><text x="82" y="93">x</text><text x="82" y="139">2</text><g class="diagram-grid"><rect x="118" y="57" width="300" height="90" rx="8"/><path d="M268 57V147M118 102H418"/></g><text class="diagram-result" x="193" y="87" text-anchor="middle">x²</text><text class="diagram-result" x="343" y="87" text-anchor="middle">3x</text><text class="diagram-result" x="193" y="132" text-anchor="middle">2x</text><text class="diagram-result" x="343" y="132" text-anchor="middle">6</text><path class="diagram-arrow is-active" d="M442 102H486"/><text class="diagram-note" x="501" y="91">交叉項</text><text class="diagram-result" x="501" y="117">3x＋2x</text></svg>`,
+      `<svg class="micro-diagram-svg" viewBox="0 0 640 150" role="img" aria-label="多項式依次方由高到低排列"><text class="diagram-title" x="18" y="25">依次方由高到低，方便檢查</text><g class="diagram-node"><rect x="32" y="55" width="110" height="48" rx="10"/><text x="87" y="84" text-anchor="middle">−3x</text></g><g class="diagram-node"><rect x="170" y="55" width="110" height="48" rx="10"/><text x="225" y="84" text-anchor="middle">4x²</text></g><g class="diagram-node"><rect x="308" y="55" width="110" height="48" rx="10"/><text x="363" y="84" text-anchor="middle">＋7</text></g><path class="diagram-arrow is-active" d="M435 79H480"/><rect class="diagram-emphasis" x="495" y="55" width="120" height="48" rx="10"/><text class="diagram-result" x="555" y="84" text-anchor="middle">4x²−3x＋7</text><text class="diagram-note" x="32" y="132">先看最高次 x²，再到 x，最後常數</text></svg>`,
+      `<svg class="micro-diagram-svg" viewBox="0 0 640 156" role="img" aria-label="不能漏掉多項式乘法的交叉項"><text class="diagram-title" x="18" y="25">不能漏掉交叉項</text><text class="diagram-wrong" x="55" y="71">×  x² ＋ 6</text><path class="diagram-cross" d="M48 49L188 83M188 49L48 83"/><path class="diagram-arrow is-active" d="M235 67H300"/><rect class="diagram-emphasis" x="322" y="42" width="280" height="58" rx="12"/><text class="diagram-result" x="462" y="77" text-anchor="middle">x²＋3x＋2x＋6</text><text class="diagram-note" x="322" y="130">兩個交叉格：3x 與 2x，都要保留</text></svg>`
+    ];
+    return `<figure class="micro-diagram micro-diagram--math">${diagrams[index] || diagrams[0]}<figcaption>圖式解讀：把符號放進格子或流程，才能看見每一步為什麼成立。</figcaption></figure>`;
+  };
+  const microDiagram = (subject, unit, idea, index) => {
+    if (subject === '數學' && unit === '多項式運算') return polynomialDiagram(index);
+    if (subject === '數學' && /坐標|比例|函數/.test(unit)) return flowDiagram(['題目中的量','式子／比例','座標或圖線','交點與結論'], index, '先把 a、b 等量標在式子或座標上，再讀出關係。');
+    if (subject === '數學' && /幾何|三角|圓|畢氏|平方根/.test(unit)) return flowDiagram(['已知邊角','畫出圖形','套用關係','檢查單位'], index, '先標清圖上的量，再判斷要用哪一個幾何關係。');
+    if (subject === '數學') return flowDiagram(['已知條件','規則／式子','逐步運算','代回檢查'], index, '每一步都保留可回看的量與規則，而不是直接猜答案。');
+    if (subject === '自然' && /血液|循環|心臟/.test(unit)) return flowDiagram(['全身回流','右心→肺','肺交換氣體','左心→全身'], index, '血液沿箭頭單向流動；先看正往哪裡去，再判斷血管與心腔。');
+    if (subject === '自然' && /神經|恆定/.test(unit)) return flowDiagram(['刺激／偏離','受器偵測','中樞調節','反應器回應'], index, '把刺激、訊息路徑與結果連起來，才能說明調節或反射。');
+    if (subject === '自然') return flowDiagram(['條件或輸入','構造／粒子','作用過程','可觀察結果'], index, '用箭頭說清楚條件如何經過機制，造成可觀察的結果。');
+    if (subject === '英文') return flowDiagram(['時間／任務線索','主詞與角色','動詞或句型','完整句意'], index, '英文答案要同時符合時間、主詞與溝通情境，不是只挑熟悉單字。');
+    if (subject === '國文') return flowDiagram(['語境與詞句','判讀線索','文本證據','合理結論'], index, '答案必須從原文詞句出發，讓解釋與結論有可指出的依據。');
+    return flowDiagram(['背景與資料','制度／事件','受影響角色','造成的影響'], index, '把時間、空間、角色與因果連起來，而不是孤立背一個名詞。');
   };
   const render = () => {
     if (!app || app.querySelector(".textbook-chapter")) return;
@@ -122,11 +159,11 @@
     const [subject, unit] = meta.textContent.split(" · ");
     const grade=window.__lessonGrade || decodeURIComponent(location.hash).match(/chapter=(\d+)/)?.[1] || 7;
     const goal=app.querySelector('.concept')?.textContent.replace('本節學習目標：','').trim() || '先用互動模型建立概念，再以題目驗證。';
-    // 每個章節優先使用該節四條專屬教材重點；只有尚未建立的舊頁才使用相容內容。
-    const d = guideChapter(subject,unit,goal) || D[`${grade}|${subject}|${unit}`] || fallbackChapter(subject,unit,goal); if (!d) return;
+    // 每個章節優先使用該節完整專屬教材重點；只有尚未建立的舊頁才使用相容內容。
+    const d = guideChapter(grade,subject,unit,goal) || D[`${grade}|${subject}|${unit}`] || fallbackChapter(subject,unit,goal); if (!d) return;
     const s = document.createElement("section"); s.className = "textbook-chapter";
     const prompts=['先在互動圖上找出對應的量、位置或證據。','改變一個條件後，說明哪個結果會跟著改變。','把題幹資料連回這一條，排除不符合的選項。','用反例檢查：若忽略這條規則，答案會在哪裡出錯？'];
-    const micro=d.ideas.map((idea,i)=>`<details class="micro-lesson" open><summary>重點 ${i+1}</summary><p><b>${idea}</b></p><p><b>帶做：</b>${prompts[i]}</p></details>`).join("");
+    const micro=d.ideas.map((idea,i)=>`<details class="micro-lesson" open><summary>重點 ${i+1}</summary><p><b>${esc(idea)}</b></p>${microDiagram(subject,unit,idea,i)}<p><b>帶做：</b>${prompts[i % prompts.length]}</p></details>`).join("");
     s.innerHTML = `<div class="eyebrow">完整單元教材</div><h2>${title.textContent}：從觀念到會考應用</h2><section class="chapter-stage"><h3>1．核心概念</h3><p class="chapter-overview">${d.overview}</p></section><section class="chapter-stage"><h3>2．分節學習</h3>${micro}</section><section class="chapter-stage chapter-example"><h3>3．老師帶你做一題</h3><p>${d.example}</p><p><b>解題步驟：</b>先圈出已知條件，再把它連回上方三個觀念；最後檢查答案是否真的回應題目。</p></section><section class="chapter-stage"><h3>4．基礎演練</h3><p><b>不看筆記試著說明：</b>${d.check}</p><p>能說出理由後，再回到本節立即驗證題；若答錯，請標出是哪一個觀念或條件沒有連起來。</p></section><section class="chapter-stage chapter-check"><h3>5．會考素養讀法</h3><p>會考常把本章概念放進生活情境、圖表或多段資料。作答順序：<b>讀任務 → 圈資料 → 對應概念 → 排除超出證據的選項</b>。</p></section>`;
     (app.querySelector(".course-reader") || app.querySelector(".heart-lab") || app.querySelector(".concept"))?.after(s);
   };

@@ -9,6 +9,7 @@
     社會:{method:'先定位時間、地點、角色，再連結制度、環境與影響。',trap:'不能只背名詞年份；必須回答背景、事件與改變的關係。',mode:'時間空間因果圖'}
   };
   const q=(s,r=document)=>r.querySelector(s);
+  const currentGrade=()=>Number(window.__lessonGrade||decodeURIComponent(location.hash).match(/chapter=(\d+)/)?.[1]||7);
   const sourceGuide={
     數學:['公開學生筆記常用「數線、符號表、因數樹、面積模型」整理數學；本站將它們改寫為可操作模型與原創題目。','https://www.clearnotebooks.com/zh-TW/notebooks/1228802','Clearnote｜數學B1.CH1正負數與整數的運算'],
     國文:['公開筆記常以注釋、句意重組與主張—證據框架協助閱讀；本站以原創文本與判讀流程呈現，不轉載筆記內容。','https://www.clearnotebooks.com/zh-TW/notebooks/1184257','Clearnote｜會考國文（四大句型＋狀聲詞）統整'],
@@ -24,7 +25,7 @@
       國文:['中心 → 證據 → 表達效果','先找作者或段落要說什麼，再用詞句證據回答「為什麼能這樣判斷」。'],
       社會:['時間／地點／角色 → 制度 → 影響','先定位事件或資料的時空背景，再連結制度、資源與不同群體受到的影響。']
     }[subject];
-    const facts=window.CHAPTER_STUDY_GUIDES?.[subject]?.[title]||[goal,patterns[1]];
+    const facts=window.getChapterStudyGuide?.(currentGrade(),subject,title)||window.CHAPTER_STUDY_GUIDES?.[subject]?.[title]||[goal,patterns[1]];
     return `<section class="scholar-highlight" aria-label="公開學生筆記整理法轉化"><div class="eyebrow">公開學生筆記整理法｜本站原創轉化</div><h3><mark>${title}：${patterns[0]}</mark></h3><p><b>本節被轉化並凸顯的筆記線索：</b><mark>${facts[0]}</mark></p><p><b>操作後必須能說出的推理：</b>${facts[1]}</p><p>${patterns[1]}</p><small>此區以公開筆記常見的整理框架重新撰寫，未轉載筆記原文或圖片；下方連結可查看本節關鍵字的公開筆記搜尋結果。</small></section>`;
   };
   const esc=value=>String(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
@@ -432,9 +433,9 @@
     return `<div class="flow-model">${labels.map((x,i)=>`<span class="flow-node">${x}</span>${i<labels.length-1?'<span class="flow-arrow">→</span>':''}`).join('')}</div><small>把「${title}」放入這條路徑，逐格說出它如何發生、如何被判斷。</small>`;
   }
   function studyGuide(subject,title,goal){
-    const facts=window.CHAPTER_STUDY_GUIDES?.[subject]?.[title];
+    const facts=window.getChapterStudyGuide?.(currentGrade(),subject,title)||window.CHAPTER_STUDY_GUIDES?.[subject]?.[title];
     if(!facts) return `<article><b>本節核心</b><p>${goal}</p></article><article><b>解題整理法</b><p>${subjectAdvice[subject].method}</p></article><article><b>常見誤解</b><p>${subjectAdvice[subject].trap}</p></article>`;
-    return `<article><b>① 必須說清楚的核心</b><p>${facts[0]}</p></article><article><b>② 用模型推理</b><p>${facts[1]}</p></article><article><b>③ 情境判讀</b><p>${facts[2]}</p></article><article><b>④ 最容易失分</b><p>${facts[3]}</p></article>`;
+    return facts.map((fact,index)=>`<article><b>重點 ${index+1}／${facts.length}</b><p>${fact}</p></article>`).join('');
   }
   function render(){
     if(q('.chapter-lab')) return;

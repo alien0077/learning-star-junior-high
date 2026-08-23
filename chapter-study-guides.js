@@ -1,4 +1,17 @@
 /* 各章節的原創教學骨架：不是目錄摘要，而是學生操作模型後必須能說出的事實、推理與陷阱。 */
+// 同名章節會跨年級出現（例如數學「應用問題」）。全域舊索引僅作相容
+// 用途，逐版校對的內容必須寫入年級隔離索引，避免後載入的教材覆蓋前者。
+window.CHAPTER_STUDY_GUIDES_BY_GRADE = window.CHAPTER_STUDY_GUIDES_BY_GRADE || {};
+window.setChapterStudyGuide = window.setChapterStudyGuide || ((grade, subject, title, points) => {
+  const byGrade = window.CHAPTER_STUDY_GUIDES_BY_GRADE;
+  byGrade[grade] = byGrade[grade] || {};
+  byGrade[grade][subject] = byGrade[grade][subject] || {};
+  byGrade[grade][subject][title] = [...points];
+});
+window.getChapterStudyGuide = window.getChapterStudyGuide || ((grade, subject, title) =>
+  window.CHAPTER_STUDY_GUIDES_BY_GRADE?.[grade]?.[subject]?.[title]
+  || window.CHAPTER_STUDY_GUIDES?.[subject]?.[title]
+);
 window.CHAPTER_STUDY_GUIDES={
   數學:{
     '正負數與絕對值':['正數、負數用來表示相反方向或相反量；0 不是正數也不是負數。','數線越右數值越大；絕對值是到 0 的距離，所以永遠不小於 0。','比較 −7 與 −3 時，−3 在右邊，因此 −3 較大。','不要把 |−5| 寫成 −5；絕對值不是保留原本符號。'],
