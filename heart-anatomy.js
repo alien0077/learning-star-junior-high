@@ -37,44 +37,42 @@ window.heartAnatomyLab = () => `
       <div class="heart-flow-canvas">
         <!-- 原圖保留 -->
         <img src="assets/p-anatomy-pd.svg" alt="人體心臟解剖示意圖，呈現左右心房、心室、主動脈及腔靜脈" />
-        <!-- 血液循環路徑疊加層（完全照維基百科心臟圖，血流在心臟內部） -->
+        <!-- 血液循環路徑疊加層（完全照維基百科心臟圖，白色箭頭在心臟內部） -->
         <svg class="blood-overlay" viewBox="0 0 640 640" aria-hidden="true">
           <defs>
-            <marker id="aB" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><path d="M0,0 L0,7 L9,3.5z" fill="#2d8bc9"/></marker>
-            <marker id="aR" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><path d="M0,0 L0,7 L9,3.5z" fill="#d4354e"/></marker>
+            <!-- 白色粗箭頭（依維基百科樣式） -->
+            <marker id="aw" markerWidth="12" markerHeight="9" refX="11" refY="4.5" orient="auto"><path d="M0,0 L0,9 L12,4.5z" fill="#fff"/></marker>
             <filter id="glow"><feDropShadow stdDeviation="1.5" flood-color="#fff" flood-opacity="0.95"/></filter>
           </defs>
 
           <!-- ============================================================
-               完全照維基百科《心臟》標準圖，血流在心臟輪廓內部流動
-               圖中左側 = 人體右側（藍色、含氧少）
-               圖中右側 = 人體左側（紅色、含氧多）
+               完全照維基百科《心臟》標準圖
+               白色粗箭頭標示血流方向，全部在心臟輪廓內部
                ============================================================ -->
 
-          <!-- ===== 靜態方向箭頭（依維基百科箭頭方向，畫在心臟內部） ===== -->
-          <!-- 藍色：上腔靜脈→右心房（箭頭向下） -->
-          <path d="M78,130 L88,175" stroke="#2d8bc9" stroke-width="2.5" fill="none" marker-end="url(#aB)"/>
-          <!-- 藍色：下腔靜脈→右心房（箭頭向上） -->
-          <path d="M78,400 L88,355" stroke="#2d8bc9" stroke-width="2.5" fill="none" marker-end="url(#aB)"/>
-          <!-- 藍色：右心房→右心室（箭頭向下，穿過三尖瓣） -->
-          <path d="M108,255 L118,295" stroke="#2d8bc9" stroke-width="2.5" fill="none" marker-end="url(#aB)"/>
-          <!-- 藍色：右心室→肺動脈（箭頭向上，穿過肺動脈瓣） -->
-          <path d="M150,290 L185,200" stroke="#2d8bc9" stroke-width="2.5" fill="none" marker-end="url(#aB)"/>
-          <!-- 藍色：肺動脈→肺（箭頭向右上） -->
-          <path d="M290,105 L340,80" stroke="#2d8bc9" stroke-width="2.5" fill="none" marker-end="url(#aB)"/>
+          <!-- ===== 白色方向箭頭（一一對應 wiki.png） ===== -->
+          <!-- ① 上腔大靜脈 → ↓ 右心房 -->
+          <path d="M78,115 L78,170" stroke="#fff" stroke-width="4" fill="none" marker-end="url(#aw)"/>
+          <!-- ② 下腔大靜脈 → ↑ 右心房 -->
+          <path d="M78,410 L78,355" stroke="#fff" stroke-width="4" fill="none" marker-end="url(#aw)"/>
+          <!-- ③ 右心房 → ↓ 三尖瓣 → 右心室 -->
+          <path d="M108,250 L108,300" stroke="#fff" stroke-width="4" fill="none" marker-end="url(#aw)"/>
+          <!-- ④ 右心室 → ↑ 肺動脈瓣 → 肺動脈 -->
+          <path d="M148,295 L175,210" stroke="#fff" stroke-width="4" fill="none" marker-end="url(#aw)"/>
+          <!-- ⑤ 肺動脈 → ↑ 分支到肺（左） -->
+          <path d="M250,105 L210,80" stroke="#fff" stroke-width="4" fill="none" marker-end="url(#aw)"/>
+          <!-- ⑥ 肺動脈 → ↑ 分支到肺（右） -->
+          <path d="M300,100 L340,78" stroke="#fff" stroke-width="4" fill="none" marker-end="url(#aw)"/>
+          <!-- ⑦ 肺靜脈 → ↓ 左心房（從右側進入） -->
+          <path d="M445,130 L435,175" stroke="#fff" stroke-width="4" fill="none" marker-end="url(#aw)"/>
+          <!-- ⑧ 左心房 → ↓ 二尖瓣 → 左心室 -->
+          <path d="M425,235 L420,280" stroke="#fff" stroke-width="4" fill="none" marker-end="url(#aw)"/>
+          <!-- ⑨ 左心室 → ↑ 大動脈瓣 → 大動脈 -->
+          <path d="M400,285 L365,200" stroke="#fff" stroke-width="4" fill="none" marker-end="url(#aw)"/>
+          <!-- ⑩ 大動脈 → ↑ 到全身 -->
+          <path d="M270,70 L235,48" stroke="#fff" stroke-width="4" fill="none" marker-end="url(#aw)"/>
 
-          <!-- 紅色：肺→肺靜脈（箭頭向左下） -->
-          <path d="M400,80 L430,115" stroke="#d4354e" stroke-width="2.5" fill="none" marker-end="url(#aR)"/>
-          <!-- 紅色：肺靜脈→左心房（箭頭向左下） -->
-          <path d="M440,140 L435,185" stroke="#d4354e" stroke-width="2.5" fill="none" marker-end="url(#aR)"/>
-          <!-- 紅色：左心房→左心室（箭頭向下，穿過二尖瓣） -->
-          <path d="M430,235 L420,275" stroke="#d4354e" stroke-width="2.5" fill="none" marker-end="url(#aR)"/>
-          <!-- 紅色：左心室→大動脈（箭頭向上，穿過大動脈瓣） -->
-          <path d="M400,280 L360,195" stroke="#d4354e" stroke-width="2.5" fill="none" marker-end="url(#aR)"/>
-          <!-- 紅色：大動脈→全身（箭頭向左上） -->
-          <path d="M260,68 L220,48" stroke="#d4354e" stroke-width="2.5" fill="none" marker-end="url(#aR)"/>
-
-          <!-- ===== 動態血流路徑（在心臟內部流動，白色底 + 半透明色） ===== -->
+          <!-- ===== 動態血流粒子路徑（在心臟內部流動） ===== -->
           <!-- 藍色循環：上腔靜脈→右心房→右心室→肺動脈→肺 -->
           <path id="pDeoxy"
                 d="M78,95 L78,165 C78,195 90,215 108,235 C108,250 110,265 115,280 C118,295 130,310 145,295 C155,280 165,255 175,225 C185,200 200,175 225,155 C250,135 275,115 305,100 L350,78"
@@ -89,7 +87,7 @@ window.heartAnatomyLab = () => `
           <path d="M350,78 L395,95 C415,108 430,125 438,150 C442,170 440,190 435,210 C432,225 428,245 422,265 C418,280 408,295 395,285 C380,270 365,245 350,215 C340,195 325,170 305,150 C285,130 265,108 240,88 L215,65 L195,45"
                 fill="none" stroke="#e87580" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/>
 
-          <!-- ===== 腔室標示（白底深字） ===== -->
+          <!-- ===== 腔室標示 ===== -->
           <g class="chamber-labels" filter="url(#glow)">
             <text x="72" y="230" font-size="15" font-weight="900" fill="#1a3a5c" paint-order="stroke" stroke="#fff" stroke-width="4px" stroke-linejoin="round">右心房</text>
             <text x="95" y="330" font-size="15" font-weight="900" fill="#1a3a5c" paint-order="stroke" stroke="#fff" stroke-width="4px" stroke-linejoin="round">右心室</text>
@@ -97,20 +95,20 @@ window.heartAnatomyLab = () => `
             <text x="390" y="300" font-size="15" font-weight="900" fill="#8b1a2b" paint-order="stroke" stroke="#fff" stroke-width="4px" stroke-linejoin="round">左心室</text>
           </g>
 
-          <!-- ===== 血管標示（依維基百科命名） ===== -->
-          <text x="8" y="88" font-size="12" font-weight="700" fill="#2d8bc9" paint-order="stroke" stroke="#fff" stroke-width="3px" stroke-linejoin="round">上腔靜脈</text>
-          <text x="8" y="430" font-size="12" font-weight="700" fill="#2d8bc9" paint-order="stroke" stroke="#fff" stroke-width="3px" stroke-linejoin="round">下腔靜脈</text>
+          <!-- ===== 血管標示 ===== -->
+          <text x="8" y="88" font-size="12" font-weight="700" fill="#2d8bc9" paint-order="stroke" stroke="#fff" stroke-width="3px" stroke-linejoin="round">上腔大靜脈</text>
+          <text x="8" y="430" font-size="12" font-weight="700" fill="#2d8bc9" paint-order="stroke" stroke="#fff" stroke-width="3px" stroke-linejoin="round">下腔大靜脈</text>
           <text x="248" y="98" font-size="12" font-weight="700" fill="#2d8bc9" paint-order="stroke" stroke="#fff" stroke-width="3px" stroke-linejoin="round">肺動脈</text>
-          <text x="448" y="135" font-size="12" font-weight="700" fill="#d4354e" paint-order="stroke" stroke="#fff" stroke-width="3px" stroke-linejoin="round">肺靜脈</text>
+          <text x="448" y="128" font-size="12" font-weight="700" fill="#d4354e" paint-order="stroke" stroke="#fff" stroke-width="3px" stroke-linejoin="round">肺靜脈</text>
           <text x="278" y="118" font-size="13" font-weight="700" fill="#d4354e" paint-order="stroke" stroke="#fff" stroke-width="3px" stroke-linejoin="round">大動脈</text>
           <text x="360" y="65" font-size="11" font-weight="700" fill="#2d7a3f" paint-order="stroke" stroke="#fff" stroke-width="3px" stroke-linejoin="round">肺</text>
           <text x="180" y="38" font-size="11" font-weight="700" fill="#c62828" paint-order="stroke" stroke="#fff" stroke-width="3px" stroke-linejoin="round">全身</text>
 
-          <!-- ===== 瓣膜標示 ===== -->
-          <text x="100" y="272" font-size="10" font-weight="700" fill="#4a6a8a" paint-order="stroke" stroke="#fff" stroke-width="2.5px" stroke-linejoin="round">三尖瓣</text>
-          <text x="175" y="238" font-size="10" font-weight="700" fill="#4a6a8a" paint-order="stroke" stroke="#fff" stroke-width="2.5px" stroke-linejoin="round">肺動脈瓣</text>
-          <text x="405" y="248" font-size="10" font-weight="700" fill="#8b4a5a" paint-order="stroke" stroke="#fff" stroke-width="2.5px" stroke-linejoin="round">二尖瓣</text>
-          <text x="370" y="238" font-size="10" font-weight="700" fill="#8b4a5a" paint-order="stroke" stroke="#fff" stroke-width="2.5px" stroke-linejoin="round">大動脈瓣</text>
+          <!-- ===== 瓣膜標示（照維基百科命名） ===== -->
+          <text x="55" y="310" font-size="10" font-weight="700" fill="#4a6a8a" paint-order="stroke" stroke="#fff" stroke-width="2.5px" stroke-linejoin="round">三尖瓣</text>
+          <text x="55" y="258" font-size="10" font-weight="700" fill="#4a6a8a" paint-order="stroke" stroke="#fff" stroke-width="2.5px" stroke-linejoin="round">肺動脈瓣／半月瓣</text>
+          <text x="448" y="248" font-size="10" font-weight="700" fill="#8b4a5a" paint-order="stroke" stroke="#fff" stroke-width="2.5px" stroke-linejoin="round">二尖瓣</text>
+          <text x="448" y="288" font-size="10" font-weight="700" fill="#8b4a5a" paint-order="stroke" stroke="#fff" stroke-width="2.5px" stroke-linejoin="round">大動脈瓣／半月瓣</text>
 
           <!-- ===== 動態血流粒子（白色外框 + 藍/紅填充） ===== -->
           <!-- 藍色粒子 x3 -->
