@@ -386,8 +386,7 @@
       '天文與永續':['日地月與取捨','用運動模型解釋天文現象，再以環境、社會、經濟評估方案'],
       '天文與永續':['系統取捨圖','自然證據、生活需求、社會成本需一起評估']
     }; const m=models[title]||Object.entries(models).find(([key])=>title.includes(key)||key.includes(title))?.[1]||['科學因果流程','條件 → 機制 → 可觀察結果'];
-    if(title==='動物的血液循環'&&window.heartAnatomyLab) return window.heartAnatomyLab();
-    if(title==='生物與人體系統'&&window.heartAnatomyLab) return window.heartAnatomyLab();
+    if(window.heartAnatomyLab&&(title.includes('血液循環')||title.includes('循環系統'))) return window.heartAnatomyLab();
     if(['生命現象與生物圈','細胞的構造','物質進出細胞','生物體的組成層次'].includes(title)) return cellLab(title);
     if(['探究自然的方法','基本測量','物質與密度','化學反應','酸鹼與指示劑','酸鹼鹽','化學反應速率','聲音與波動','光與色彩','溫度與熱','力與運動','壓力、浮力與機械','電與能量','電流與磁場','能源轉換','板塊與地質','天文與永續'].includes(title)) return scienceLab(title);
     if(title==='生態系與生物分類') return bodySystemLab('生態系與能量流動');
