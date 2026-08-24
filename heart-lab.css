@@ -11,12 +11,10 @@
 .free-orbit img{display:block;max-width:86%;max-height:90%;object-fit:contain;transform:rotateX(var(--orbit-y)) rotateY(var(--orbit-x));transform-style:preserve-3d;transition:transform .16s ease-out;filter:drop-shadow(0 16px 15px #0005)}
 .free-orbit.is-dragging img{transition:none}
 .heart-flow-reference{margin:0;padding:18px 20px 22px;background:linear-gradient(135deg,#f4faff,#fff4f6);border-top:1px solid #e1eaf3}
-.heart-flow-canvas{position:relative;max-width:680px;margin:0 auto;border-radius:18px;overflow:hidden;background:#fff;box-shadow:0 7px 20px #30445f17}
+.heart-flow-canvas{position:relative;max-width:700px;margin:0 auto;border-radius:18px;overflow:hidden;background:#fff;box-shadow:0 7px 20px #30445f17}
 .heart-flow-canvas>img{display:block;width:100%;height:auto;max-height:460px;object-fit:contain;background:#fff}
-.blood-particles{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
-.blood-particles path{fill:none;stroke:transparent;stroke-width:14}
-.blood-particle{filter:drop-shadow(0 0 6px currentColor)}
-.blood-particle.blue{fill:#168ed9;color:#168ed9}.blood-particle.red{fill:#e95063;color:#e95063}
+.blood-overlay{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.chamber-labels text{pointer-events:none}
 .heart-flow-reference figcaption{max-width:760px;margin:13px auto 0;color:#4f667b;line-height:1.7;text-align:center;font-size:13px}
 .heart-flow-reference figcaption b{color:#1d466a}.heart-flow-reference figcaption a{color:#5342aa}
-@media(max-width:700px){.free-orbit img{max-width:96%;max-height:86%}.heart-flow-reference{padding:14px 10px 18px}.heart-flow-reference figcaption{text-align:left}}
+@media(max-width:700px){.free-orbit img{max-width:96%;max-height:86%}.heart-flow-reference{padding:14px 10px 18px}.heart-flow-reference figcaption{text-align:left}.heart-circulation-svg{max-height:400px}.chamber-label-svg{font-size:12px!important}}
