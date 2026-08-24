@@ -37,91 +37,97 @@ window.heartAnatomyLab = () => `
       <div class="heart-flow-canvas">
         <!-- 原圖保留 -->
         <img src="assets/p-anatomy-pd.svg" alt="人體心臟解剖示意圖，呈現左右心房、心室、主動脈及腔靜脈" />
-        <!-- 血液循環路徑疊加層（依維基百科標準心臟圖佈局） -->
+        <!-- 血液循環路徑疊加層（完全照維基百科心臟圖，血流在心臟內部） -->
         <svg class="blood-overlay" viewBox="0 0 640 640" aria-hidden="true">
           <defs>
-            <marker id="aB" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3z" fill="#2d8bc9"/></marker>
-            <marker id="aR" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3z" fill="#d4354e"/></marker>
+            <marker id="aB" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><path d="M0,0 L0,7 L9,3.5z" fill="#2d8bc9"/></marker>
+            <marker id="aR" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><path d="M0,0 L0,7 L9,3.5z" fill="#d4354e"/></marker>
             <filter id="glow"><feDropShadow stdDeviation="1.5" flood-color="#fff" flood-opacity="0.95"/></filter>
           </defs>
 
           <!-- ============================================================
-               依維基百科《左心室》標準心臟圖標註
-               圖中左側 = 人體右側（藍紫色、含氧少）
+               完全照維基百科《心臟》標準圖，血流在心臟輪廓內部流動
+               圖中左側 = 人體右側（藍色、含氧少）
                圖中右側 = 人體左側（紅色、含氧多）
-               血流方向：腔靜脈→右心房→右心室→肺動脈→肺→肺靜脈→左心房→左心室→大動脈→全身
                ============================================================ -->
 
-          <!-- ▸ 藍色循環（含氧少）：全身 → 上下腔靜脈 → 右心房 → 右心室 → 肺動脈 → 肺 -->
+          <!-- ===== 靜態方向箭頭（依維基百科箭頭方向，畫在心臟內部） ===== -->
+          <!-- 藍色：上腔靜脈→右心房（箭頭向下） -->
+          <path d="M78,130 L88,175" stroke="#2d8bc9" stroke-width="2.5" fill="none" marker-end="url(#aB)"/>
+          <!-- 藍色：下腔靜脈→右心房（箭頭向上） -->
+          <path d="M78,400 L88,355" stroke="#2d8bc9" stroke-width="2.5" fill="none" marker-end="url(#aB)"/>
+          <!-- 藍色：右心房→右心室（箭頭向下，穿過三尖瓣） -->
+          <path d="M108,255 L118,295" stroke="#2d8bc9" stroke-width="2.5" fill="none" marker-end="url(#aB)"/>
+          <!-- 藍色：右心室→肺動脈（箭頭向上，穿過肺動脈瓣） -->
+          <path d="M150,290 L185,200" stroke="#2d8bc9" stroke-width="2.5" fill="none" marker-end="url(#aB)"/>
+          <!-- 藍色：肺動脈→肺（箭頭向右上） -->
+          <path d="M290,105 L340,80" stroke="#2d8bc9" stroke-width="2.5" fill="none" marker-end="url(#aB)"/>
+
+          <!-- 紅色：肺→肺靜脈（箭頭向左下） -->
+          <path d="M400,80 L430,115" stroke="#d4354e" stroke-width="2.5" fill="none" marker-end="url(#aR)"/>
+          <!-- 紅色：肺靜脈→左心房（箭頭向左下） -->
+          <path d="M440,140 L435,185" stroke="#d4354e" stroke-width="2.5" fill="none" marker-end="url(#aR)"/>
+          <!-- 紅色：左心房→左心室（箭頭向下，穿過二尖瓣） -->
+          <path d="M430,235 L420,275" stroke="#d4354e" stroke-width="2.5" fill="none" marker-end="url(#aR)"/>
+          <!-- 紅色：左心室→大動脈（箭頭向上，穿過大動脈瓣） -->
+          <path d="M400,280 L360,195" stroke="#d4354e" stroke-width="2.5" fill="none" marker-end="url(#aR)"/>
+          <!-- 紅色：大動脈→全身（箭頭向左上） -->
+          <path d="M260,68 L220,48" stroke="#d4354e" stroke-width="2.5" fill="none" marker-end="url(#aR)"/>
+
+          <!-- ===== 動態血流路徑（在心臟內部流動，白色底 + 半透明色） ===== -->
+          <!-- 藍色循環：上腔靜脈→右心房→右心室→肺動脈→肺 -->
           <path id="pDeoxy"
-                d="M25,105 C55,105 70,130 80,160 L95,210 C100,230 105,250 110,270 L125,300 C135,310 145,290 155,265 L175,210 C185,185 200,165 220,148 L260,120 C285,105 310,88 340,72 L370,58"
-                fill="none" stroke="#fff" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" opacity="0.88"/>
-          <path d="M25,105 C55,105 70,130 80,160 L95,210 C100,230 105,250 110,270 L125,300 C135,310 145,290 155,265 L175,210 C185,185 200,165 220,148 L260,120 C285,105 310,88 340,72 L370,58"
-                fill="none" stroke="#5ba8e0" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"/>
+                d="M78,95 L78,165 C78,195 90,215 108,235 C108,250 110,265 115,280 C118,295 130,310 145,295 C155,280 165,255 175,225 C185,200 200,175 225,155 C250,135 275,115 305,100 L350,78"
+                fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+          <path d="M78,95 L78,165 C78,195 90,215 108,235 C108,250 110,265 115,280 C118,295 130,310 145,295 C155,280 165,255 175,225 C185,200 200,175 225,155 C250,135 275,115 305,100 L350,78"
+                fill="none" stroke="#5ba8e0" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/>
 
-          <!-- ▸ 紅色循環（含氧多）：肺 → 肺靜脈 → 左心房 → 左心室 → 大動脈 → 全身 -->
+          <!-- 紅色循環：肺→肺靜脈→左心房→左心室→大動脈→全身 -->
           <path id="pOxy"
-                d="M370,58 C400,72 420,90 435,115 L445,155 C448,175 445,195 440,215 L430,255 C425,275 415,295 400,305 L385,290 C375,275 365,250 355,225 L340,185 C330,160 315,140 295,125 L270,108 C250,95 230,78 210,58 L195,42"
-                fill="none" stroke="#fff" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" opacity="0.88"/>
-          <path d="M370,58 C400,72 420,90 435,115 L445,155 C448,175 445,195 440,215 L430,255 C425,275 415,295 400,305 L385,290 C375,275 365,250 355,225 L340,185 C330,160 315,140 295,125 L270,108 C250,95 230,78 210,58 L195,42"
-                fill="none" stroke="#e87580" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"/>
+                d="M350,78 L395,95 C415,108 430,125 438,150 C442,170 440,190 435,210 C432,225 428,245 422,265 C418,280 408,295 395,285 C380,270 365,245 350,215 C340,195 325,170 305,150 C285,130 265,108 240,88 L215,65 L195,45"
+                fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+          <path d="M350,78 L395,95 C415,108 430,125 438,150 C442,170 440,190 435,210 C432,225 428,245 422,265 C418,280 408,295 395,285 C380,270 365,245 350,215 C340,195 325,170 305,150 C285,130 265,108 240,88 L215,65 L195,45"
+                fill="none" stroke="#e87580" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/>
 
-          <!-- ===== 方向箭頭（依維基百科箭頭方向） ===== -->
-          <!-- 藍色：上腔靜脈→右心房（向下箭頭） -->
-          <path d="M65,110 L75,150" stroke="#2d8bc9" stroke-width="2.2" fill="none" marker-end="url(#aB)"/>
-          <!-- 藍色：下腔靜脈→右心房（向上箭頭） -->
-          <path d="M65,430 L75,380" stroke="#2d8bc9" stroke-width="2.2" fill="none" marker-end="url(#aB)"/>
-          <!-- 藍色：右心房→右心室（向下箭頭） -->
-          <path d="M100,240 L115,285" stroke="#2d8bc9" stroke-width="2.2" fill="none" marker-end="url(#aB)"/>
-          <!-- 藍色：右心室→肺動脈（向上箭頭） -->
-          <path d="M155,275 L195,180" stroke="#2d8bc9" stroke-width="2.2" fill="none" marker-end="url(#aB)"/>
-          <!-- 藍色：肺動脈→肺（向右箭頭） -->
-          <path d="M300,100 L350,75" stroke="#2d8bc9" stroke-width="2.2" fill="none" marker-end="url(#aB)"/>
-
-          <!-- 紅色：肺→肺靜脈（向左箭頭） -->
-          <path d="M410,75 L430,105" stroke="#d4354e" stroke-width="2.2" fill="none" marker-end="url(#aR)"/>
-          <!-- 紅色：肺靜脈→左心房（向左下箭頭） -->
-          <path d="M445,135 L440,180" stroke="#d4354e" stroke-width="2.2" fill="none" marker-end="url(#aR)"/>
-          <!-- 紅色：左心房→左心室（向下箭頭） -->
-          <path d="M435,230 L425,275" stroke="#d4354e" stroke-width="2.2" fill="none" marker-end="url(#aR)"/>
-          <!-- 紅色：左心室→大動脈（向上箭頭） -->
-          <path d="M400,285 L365,195" stroke="#d4354e" stroke-width="2.2" fill="none" marker-end="url(#aR)"/>
-          <!-- 紅色：大動脈→全身（向左上箭頭） -->
-          <path d="M250,65 L215,48" stroke="#d4354e" stroke-width="2.2" fill="none" marker-end="url(#aR)"/>
-
-          <!-- ===== 腔室標示（白底深字，依維基百科位置） ===== -->
+          <!-- ===== 腔室標示（白底深字） ===== -->
           <g class="chamber-labels" filter="url(#glow)">
-            <text x="75" y="230" font-size="15" font-weight="900" fill="#1a3a5c" paint-order="stroke" stroke="#fff" stroke-width="4px" stroke-linejoin="round">右心房</text>
-            <text x="100" y="325" font-size="15" font-weight="900" fill="#1a3a5c" paint-order="stroke" stroke="#fff" stroke-width="4px" stroke-linejoin="round">右心室</text>
+            <text x="72" y="230" font-size="15" font-weight="900" fill="#1a3a5c" paint-order="stroke" stroke="#fff" stroke-width="4px" stroke-linejoin="round">右心房</text>
+            <text x="95" y="330" font-size="15" font-weight="900" fill="#1a3a5c" paint-order="stroke" stroke="#fff" stroke-width="4px" stroke-linejoin="round">右心室</text>
             <text x="400" y="200" font-size="15" font-weight="900" fill="#8b1a2b" paint-order="stroke" stroke="#fff" stroke-width="4px" stroke-linejoin="round">左心房</text>
-            <text x="395" y="295" font-size="15" font-weight="900" fill="#8b1a2b" paint-order="stroke" stroke="#fff" stroke-width="4px" stroke-linejoin="round">左心室</text>
+            <text x="390" y="300" font-size="15" font-weight="900" fill="#8b1a2b" paint-order="stroke" stroke="#fff" stroke-width="4px" stroke-linejoin="round">左心室</text>
           </g>
 
           <!-- ===== 血管標示（依維基百科命名） ===== -->
-          <text x="8" y="98" font-size="12" font-weight="700" fill="#2d8bc9" paint-order="stroke" stroke="#fff" stroke-width="3px" stroke-linejoin="round">上腔靜脈</text>
-          <text x="8" y="448" font-size="12" font-weight="700" fill="#2d8bc9" paint-order="stroke" stroke="#fff" stroke-width="3px" stroke-linejoin="round">下腔靜脈</text>
-          <text x="245" y="108" font-size="12" font-weight="700" fill="#2d8bc9" paint-order="stroke" stroke="#fff" stroke-width="3px" stroke-linejoin="round">肺動脈</text>
-          <text x="448" y="138" font-size="12" font-weight="700" fill="#d4354e" paint-order="stroke" stroke="#fff" stroke-width="3px" stroke-linejoin="round">肺靜脈</text>
-          <text x="280" y="128" font-size="12" font-weight="700" fill="#d4354e" paint-order="stroke" stroke="#fff" stroke-width="3px" stroke-linejoin="round">大動脈</text>
-          <text x="365" y="48" font-size="11" font-weight="700" fill="#2d7a3f" paint-order="stroke" stroke="#fff" stroke-width="3px" stroke-linejoin="round">肺</text>
-          <text x="185" y="35" font-size="11" font-weight="700" fill="#c62828" paint-order="stroke" stroke="#fff" stroke-width="3px" stroke-linejoin="round">全身</text>
+          <text x="8" y="88" font-size="12" font-weight="700" fill="#2d8bc9" paint-order="stroke" stroke="#fff" stroke-width="3px" stroke-linejoin="round">上腔靜脈</text>
+          <text x="8" y="430" font-size="12" font-weight="700" fill="#2d8bc9" paint-order="stroke" stroke="#fff" stroke-width="3px" stroke-linejoin="round">下腔靜脈</text>
+          <text x="248" y="98" font-size="12" font-weight="700" fill="#2d8bc9" paint-order="stroke" stroke="#fff" stroke-width="3px" stroke-linejoin="round">肺動脈</text>
+          <text x="448" y="135" font-size="12" font-weight="700" fill="#d4354e" paint-order="stroke" stroke="#fff" stroke-width="3px" stroke-linejoin="round">肺靜脈</text>
+          <text x="278" y="118" font-size="13" font-weight="700" fill="#d4354e" paint-order="stroke" stroke="#fff" stroke-width="3px" stroke-linejoin="round">大動脈</text>
+          <text x="360" y="65" font-size="11" font-weight="700" fill="#2d7a3f" paint-order="stroke" stroke="#fff" stroke-width="3px" stroke-linejoin="round">肺</text>
+          <text x="180" y="38" font-size="11" font-weight="700" fill="#c62828" paint-order="stroke" stroke="#fff" stroke-width="3px" stroke-linejoin="round">全身</text>
+
+          <!-- ===== 瓣膜標示 ===== -->
+          <text x="100" y="272" font-size="10" font-weight="700" fill="#4a6a8a" paint-order="stroke" stroke="#fff" stroke-width="2.5px" stroke-linejoin="round">三尖瓣</text>
+          <text x="175" y="238" font-size="10" font-weight="700" fill="#4a6a8a" paint-order="stroke" stroke="#fff" stroke-width="2.5px" stroke-linejoin="round">肺動脈瓣</text>
+          <text x="405" y="248" font-size="10" font-weight="700" fill="#8b4a5a" paint-order="stroke" stroke="#fff" stroke-width="2.5px" stroke-linejoin="round">二尖瓣</text>
+          <text x="370" y="238" font-size="10" font-weight="700" fill="#8b4a5a" paint-order="stroke" stroke="#fff" stroke-width="2.5px" stroke-linejoin="round">大動脈瓣</text>
 
           <!-- ===== 動態血流粒子（白色外框 + 藍/紅填充） ===== -->
           <!-- 藍色粒子 x3 -->
-          <circle r="7" fill="#fff" opacity="0.92"><animateMotion dur="5.5s" repeatCount="indefinite" rotate="auto"><mpath href="#pDeoxy"/></animateMotion></circle>
-          <circle r="4.5" fill="#2d8bc9"><animateMotion dur="5.5s" repeatCount="indefinite" rotate="auto"><mpath href="#pDeoxy"/></animateMotion></circle>
-          <circle r="7" fill="#fff" opacity="0.92"><animateMotion dur="5.5s" begin="-1.83s" repeatCount="indefinite" rotate="auto"><mpath href="#pDeoxy"/></animateMotion></circle>
-          <circle r="4.5" fill="#2d8bc9"><animateMotion dur="5.5s" begin="-1.83s" repeatCount="indefinite" rotate="auto"><mpath href="#pDeoxy"/></animateMotion></circle>
-          <circle r="7" fill="#fff" opacity="0.92"><animateMotion dur="5.5s" begin="-3.66s" repeatCount="indefinite" rotate="auto"><mpath href="#pDeoxy"/></animateMotion></circle>
-          <circle r="4.5" fill="#2d8bc9"><animateMotion dur="5.5s" begin="-3.66s" repeatCount="indefinite" rotate="auto"><mpath href="#pDeoxy"/></animateMotion></circle>
+          <circle r="7" fill="#fff" opacity="0.92"><animateMotion dur="5s" repeatCount="indefinite" rotate="auto"><mpath href="#pDeoxy"/></animateMotion></circle>
+          <circle r="4.5" fill="#2d8bc9"><animateMotion dur="5s" repeatCount="indefinite" rotate="auto"><mpath href="#pDeoxy"/></animateMotion></circle>
+          <circle r="7" fill="#fff" opacity="0.92"><animateMotion dur="5s" begin="-1.67s" repeatCount="indefinite" rotate="auto"><mpath href="#pDeoxy"/></animateMotion></circle>
+          <circle r="4.5" fill="#2d8bc9"><animateMotion dur="5s" begin="-1.67s" repeatCount="indefinite" rotate="auto"><mpath href="#pDeoxy"/></animateMotion></circle>
+          <circle r="7" fill="#fff" opacity="0.92"><animateMotion dur="5s" begin="-3.33s" repeatCount="indefinite" rotate="auto"><mpath href="#pDeoxy"/></animateMotion></circle>
+          <circle r="4.5" fill="#2d8bc9"><animateMotion dur="5s" begin="-3.33s" repeatCount="indefinite" rotate="auto"><mpath href="#pDeoxy"/></animateMotion></circle>
 
           <!-- 紅色粒子 x3 -->
-          <circle r="7" fill="#fff" opacity="0.92"><animateMotion dur="5.5s" repeatCount="indefinite" rotate="auto"><mpath href="#pOxy"/></animateMotion></circle>
-          <circle r="4.5" fill="#d4354e"><animateMotion dur="5.5s" repeatCount="indefinite" rotate="auto"><mpath href="#pOxy"/></animateMotion></circle>
-          <circle r="7" fill="#fff" opacity="0.92"><animateMotion dur="5.5s" begin="-1.83s" repeatCount="indefinite" rotate="auto"><mpath href="#pOxy"/></animateMotion></circle>
-          <circle r="4.5" fill="#d4354e"><animateMotion dur="5.5s" begin="-1.83s" repeatCount="indefinite" rotate="auto"><mpath href="#pOxy"/></animateMotion></circle>
-          <circle r="7" fill="#fff" opacity="0.92"><animateMotion dur="5.5s" begin="-3.66s" repeatCount="indefinite" rotate="auto"><mpath href="#pOxy"/></animateMotion></circle>
-          <circle r="4.5" fill="#d4354e"><animateMotion dur="5.5s" begin="-3.66s" repeatCount="indefinite" rotate="auto"><mpath href="#pOxy"/></animateMotion></circle>
+          <circle r="7" fill="#fff" opacity="0.92"><animateMotion dur="5s" repeatCount="indefinite" rotate="auto"><mpath href="#pOxy"/></animateMotion></circle>
+          <circle r="4.5" fill="#d4354e"><animateMotion dur="5s" repeatCount="indefinite" rotate="auto"><mpath href="#pOxy"/></animateMotion></circle>
+          <circle r="7" fill="#fff" opacity="0.92"><animateMotion dur="5s" begin="-1.67s" repeatCount="indefinite" rotate="auto"><mpath href="#pOxy"/></animateMotion></circle>
+          <circle r="4.5" fill="#d4354e"><animateMotion dur="5s" begin="-1.67s" repeatCount="indefinite" rotate="auto"><mpath href="#pOxy"/></animateMotion></circle>
+          <circle r="7" fill="#fff" opacity="0.92"><animateMotion dur="5s" begin="-3.33s" repeatCount="indefinite" rotate="auto"><mpath href="#pOxy"/></animateMotion></circle>
+          <circle r="4.5" fill="#d4354e"><animateMotion dur="5s" begin="-3.33s" repeatCount="indefinite" rotate="auto"><mpath href="#pOxy"/></animateMotion></circle>
 
           <!-- 底部說明 -->
           <text x="320" y="625" text-anchor="middle" font-size="11" fill="#60758a" font-weight="600">圖中左、右為「人體的左、右」；面對圖時方向與你自己相反</text>
