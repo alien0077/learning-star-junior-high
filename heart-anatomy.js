@@ -73,29 +73,38 @@ window.heartAnatomyLab = () => `
             <circle class="flow-particle blue" r="6"><animateMotion dur="1.35s" repeatCount="indefinite"><mpath href="#flowStep4"/></animateMotion></circle>
           </g>
           <g class="flow-segment" data-flow-segment="4">
-            <!-- 兩側肺靜脈都指向左心房；左側在圖中從心臟後方繞入，不穿越右心房。 -->
+            <!-- 兩側肺靜脈都指向左心房；虛線段代表被心臟前緣遮住的背面血管。 -->
             <path id="flowStep5" class="flow-line red" d="M505,278 C458,289 414,315 382,343" marker-end="url(#flowArrowRed)"/>
             <path class="flow-line red" d="M505,341 C458,344 414,352 382,359" marker-end="url(#flowArrowRed)"/>
-            <path class="flow-line red" d="M75,278 C120,278 160,290 185,315" marker-end="url(#flowArrowRed)"/>
-            <path class="flow-line red" d="M75,341 C120,341 157,340 185,330" marker-end="url(#flowArrowRed)"/>
+            <path class="flow-line red" d="M75,278 L175,278" marker-end="url(#flowArrowRed)"/>
+            <path id="flowStep5Left" class="flow-line red flow-line-behind" d="M175,278 C250,280 320,305 382,343" marker-end="url(#flowArrowRed)"/>
+            <path class="flow-line red" d="M75,341 L175,341" marker-end="url(#flowArrowRed)"/>
+            <path class="flow-line red flow-line-behind" d="M175,341 C250,340 320,345 382,359" marker-end="url(#flowArrowRed)"/>
+            <text class="flow-back-label" x="246" y="307">背面</text>
             <circle class="flow-particle red" r="6"><animateMotion dur="1.35s" repeatCount="indefinite"><mpath href="#flowStep5"/></animateMotion></circle>
+            <circle class="flow-particle red" r="6"><animateMotion dur="1.55s" repeatCount="indefinite"><mpath href="#flowStep5Left"/></animateMotion></circle>
           </g>
           <g class="flow-segment" data-flow-segment="5">
             <!-- 左心房 → 二尖瓣 → 左心室。 -->
-            <path id="flowStep6" class="flow-line red" d="M382,350 C380,378 369,401 356,420 C373,465 408,525 445,565" marker-end="url(#flowArrowRed)"/>
+            <path id="flowStep6" class="flow-line red" d="M382,350 C380,378 369,401 356,420 C370,456 397,500 425,548" marker-end="url(#flowArrowRed)"/>
             <circle class="flow-particle red" r="6"><animateMotion dur="1.35s" repeatCount="indefinite"><mpath href="#flowStep6"/></animateMotion></circle>
           </g>
           <g class="flow-segment" data-flow-segment="6">
-            <!-- 左心室 → 大動脈瓣 → 主動脈，不從肺動脈開始。 -->
-            <path id="flowStep7" class="flow-line red" d="M445,565 C410,525 370,462 345,420 C315,375 270,330 246,250" marker-end="url(#flowArrowRed)"/>
+            <!-- 左心室 → 大動脈瓣 → 主動脈；瓣膜後的主動脈根部在肺動脈後方。 -->
+            <path id="flowStep7" class="flow-motion" d="M425,548 C395,505 365,458 345,420 C315,375 270,330 246,250"/>
+            <path class="flow-line red" d="M425,548 C395,505 365,458 345,420" marker-end="url(#flowArrowRed)"/>
+            <path class="flow-line red flow-line-behind" d="M345,420 C315,375 270,330 246,250" marker-end="url(#flowArrowRed)"/>
+            <text class="flow-back-label" x="282" y="352">背面</text>
             <circle class="flow-particle red" r="6"><animateMotion dur="1.35s" repeatCount="indefinite"><mpath href="#flowStep7"/></animateMotion></circle>
           </g>
           <g class="flow-segment" data-flow-segment="7">
-            <!-- 主動脈幹向上分到全身，不接到紫色的肺動脈。 -->
-            <path id="flowStep8" class="flow-line red" d="M246,250 C242,215 244,180 246,155" marker-end="url(#flowArrowRed)"/>
+            <!-- 主動脈幹向上分到全身；初段在肺動脈後方。 -->
+            <path id="flowStep8" class="flow-motion" d="M246,250 C242,215 244,180 246,155"/>
+            <path class="flow-line red flow-line-behind" d="M246,250 C242,215 244,180 246,155" marker-end="url(#flowArrowRed)"/>
             <path class="flow-line red" d="M246,155 L246,88" marker-end="url(#flowArrowRed)"/>
             <path class="flow-line red" d="M252,148 L300,82" marker-end="url(#flowArrowRed)"/>
             <path class="flow-line red" d="M260,150 L352,98" marker-end="url(#flowArrowRed)"/>
+            <text class="flow-back-label" x="218" y="205">背面</text>
             <circle class="flow-particle red" r="6"><animateMotion dur="1.35s" repeatCount="indefinite"><mpath href="#flowStep8"/></animateMotion></circle>
           </g>
         </svg>
