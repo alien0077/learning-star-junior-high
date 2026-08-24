@@ -51,10 +51,11 @@ window.heartAnatomyLab = () => `
 
           <!-- 所有座標直接以 wiki.png 的 612 × 668 像素尺寸標定。 -->
           <g class="flow-segment is-active" data-flow-segment="0">
-            <!-- 上、下腔靜脈各自從右心房的開口流入，不畫成上下相通的一條線。 -->
-            <path id="flowStep1a" class="flow-line blue" d="M176,294 C181,318 190,340 201,357" marker-end="url(#flowArrowBlue)"/>
-            <path id="flowStep1b" class="flow-line blue" d="M176,435 C185,410 193,382 201,357" marker-end="url(#flowArrowBlue)"/>
+            <!-- 上、下腔靜脈各自沿管腔流入右心房的開口，不畫成上下相通的一條線。 -->
+            <path id="flowStep1a" class="flow-line blue" d="M176,112 L176,294 C181,318 190,340 201,357" marker-end="url(#flowArrowBlue)"/>
+            <path id="flowStep1b" class="flow-line blue" d="M176,626 L176,435 C185,410 193,382 201,357" marker-end="url(#flowArrowBlue)"/>
             <circle class="flow-particle blue" r="6"><animateMotion dur="1.35s" repeatCount="indefinite"><mpath href="#flowStep1a"/></animateMotion></circle>
+            <circle class="flow-particle blue" r="6"><animateMotion dur="1.5s" repeatCount="indefinite"><mpath href="#flowStep1b"/></animateMotion></circle>
           </g>
           <g class="flow-segment" data-flow-segment="1">
             <!-- 右心房 → 三尖瓣 → 右心室。 -->
@@ -67,14 +68,15 @@ window.heartAnatomyLab = () => `
             <circle class="flow-particle blue" r="6"><animateMotion dur="1.35s" repeatCount="indefinite"><mpath href="#flowStep3"/></animateMotion></circle>
           </g>
           <g class="flow-segment" data-flow-segment="3">
-            <!-- 肺動脈幹在前方結構後方上行，再於頂端分到左右兩側肺部；不穿過左心房。 -->
+            <!-- 肺動脈幹與右側分支在前景；連到左支的中段被前方結構遮住，不穿過左心房。 -->
             <path id="flowStep4" class="flow-motion" d="M288,375 L288,216 L452,216"/>
-            <path class="flow-line blue" d="M288,375 L288,285"/>
-            <path class="flow-line blue flow-line-behind" d="M288,285 L288,216"/>
+            <path class="flow-line blue" d="M288,375 L288,216"/>
             <path class="flow-line blue" d="M288,216 L452,216" marker-end="url(#flowArrowBlue)"/>
-            <path class="flow-line blue" d="M288,216 L95,216" marker-end="url(#flowArrowBlue)"/>
-            <text class="flow-back-label" x="298" y="260">背面</text>
+            <path class="flow-line blue flow-line-behind" d="M288,216 C245,216 195,216 145,216"/>
+            <path id="flowStep4Left" class="flow-line blue" d="M145,216 L86,216" marker-end="url(#flowArrowBlue)"/>
+            <text class="flow-back-label" x="205" y="205">背面</text>
             <circle class="flow-particle blue" r="6"><animateMotion dur="1.35s" repeatCount="indefinite"><mpath href="#flowStep4"/></animateMotion></circle>
+            <circle class="flow-particle blue" r="6"><animateMotion dur="1.4s" repeatCount="indefinite"><mpath href="#flowStep4Left"/></animateMotion></circle>
           </g>
           <g class="flow-segment" data-flow-segment="4">
             <!-- 兩側肺靜脈都指向左心房；虛線段代表被心臟前緣遮住的背面血管。 -->
@@ -90,21 +92,18 @@ window.heartAnatomyLab = () => `
           </g>
           <g class="flow-segment" data-flow-segment="5">
             <!-- 左心房 → 二尖瓣 → 左心室。 -->
-            <path id="flowStep6" class="flow-line red" d="M382,350 C385,377 378,401 366,420 C382,460 415,512 448,560" marker-end="url(#flowArrowRed)"/>
+            <path id="flowStep6" class="flow-line red" d="M382,350 C386,366 389,380 390,395 C401,426 423,486 448,560" marker-end="url(#flowArrowRed)"/>
             <circle class="flow-particle red" r="6"><animateMotion dur="1.35s" repeatCount="indefinite"><mpath href="#flowStep6"/></animateMotion></circle>
           </g>
           <g class="flow-segment" data-flow-segment="6">
-            <!-- 左心室 → 大動脈瓣 → 主動脈；瓣膜後的主動脈根部在肺動脈後方。 -->
-            <path id="flowStep7" class="flow-motion" d="M425,548 C395,505 365,458 345,420 C315,375 270,330 246,250"/>
-            <path class="flow-line red" d="M425,548 C395,505 365,458 345,420" marker-end="url(#flowArrowRed)"/>
-            <path class="flow-line red flow-line-behind" d="M345,420 C315,375 270,330 246,250" marker-end="url(#flowArrowRed)"/>
-            <text class="flow-back-label" x="282" y="352">背面</text>
+            <!-- 從左心室中央經大動脈瓣流入畫面前方可見的主動脈根部。 -->
+            <path id="flowStep7" class="flow-line red" d="M400,500 C382,472 365,446 350,420 C330,385 285,330 246,250" marker-end="url(#flowArrowRed)"/>
             <circle class="flow-particle red" r="6"><animateMotion dur="1.35s" repeatCount="indefinite"><mpath href="#flowStep7"/></animateMotion></circle>
           </g>
           <g class="flow-segment" data-flow-segment="7">
-            <!-- 主動脈幹向上分到全身；初段在肺動脈後方。 -->
+            <!-- 畫面前方可見的主動脈幹向上分到全身。 -->
             <path id="flowStep8" class="flow-motion" d="M246,250 C244,215 248,184 280,155"/>
-            <path class="flow-line red flow-line-behind" d="M246,250 C244,215 248,184 280,155"/>
+            <path class="flow-line red" d="M246,250 C244,215 248,184 280,155"/>
             <path class="flow-line red" d="M280,155 C270,130 252,110 246,88" marker-end="url(#flowArrowRed)"/>
             <path class="flow-line red" d="M280,155 C290,130 300,105 300,82" marker-end="url(#flowArrowRed)"/>
             <path class="flow-line red" d="M280,155 C315,130 340,110 352,98" marker-end="url(#flowArrowRed)"/>
