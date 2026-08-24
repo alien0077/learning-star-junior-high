@@ -99,7 +99,8 @@ window.heartAnatomyLab = () => `
             <!-- 左心室中央先經大動脈瓣；瓣膜後的主動脈根部藏在肺動脈後方。 -->
             <path id="flowStep7" class="flow-motion" d="M400,500 C382,472 365,446 350,420 C330,385 285,330 246,250"/>
             <path class="flow-line red" d="M400,500 C382,472 365,446 350,420"/>
-            <path class="flow-line red flow-line-behind" d="M350,420 C330,385 285,330 246,250" marker-end="url(#flowArrowRed)"/>
+            <path class="flow-line red flow-line-behind" d="M350,420 C330,385 300,350 276,305"/>
+            <path class="flow-line red" d="M276,305 C265,285 251,258 246,250" marker-end="url(#flowArrowRed)"/>
             <text class="flow-back-label" x="275" y="337">背面</text>
             <circle class="flow-particle red" r="6"><animateMotion dur="1.35s" repeatCount="indefinite"><mpath href="#flowStep7"/></animateMotion></circle>
           </g>
