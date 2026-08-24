@@ -67,9 +67,13 @@ window.heartAnatomyLab = () => `
             <circle class="flow-particle blue" r="6"><animateMotion dur="1.35s" repeatCount="indefinite"><mpath href="#flowStep3"/></animateMotion></circle>
           </g>
           <g class="flow-segment" data-flow-segment="3">
-            <!-- 肺動脈從肺動脈幹分到左右兩側肺部。 -->
-            <path id="flowStep4" class="flow-line blue" d="M288,375 C306,318 348,244 452,216" marker-end="url(#flowArrowBlue)"/>
-            <path class="flow-line blue" d="M180,216 L95,216" marker-end="url(#flowArrowBlue)"/>
+            <!-- 肺動脈幹在前方結構後方上行，再於頂端分到左右兩側肺部；不穿過左心房。 -->
+            <path id="flowStep4" class="flow-motion" d="M288,375 L288,216 L452,216"/>
+            <path class="flow-line blue" d="M288,375 L288,285"/>
+            <path class="flow-line blue flow-line-behind" d="M288,285 L288,216"/>
+            <path class="flow-line blue" d="M288,216 L452,216" marker-end="url(#flowArrowBlue)"/>
+            <path class="flow-line blue" d="M288,216 L95,216" marker-end="url(#flowArrowBlue)"/>
+            <text class="flow-back-label" x="298" y="260">背面</text>
             <circle class="flow-particle blue" r="6"><animateMotion dur="1.35s" repeatCount="indefinite"><mpath href="#flowStep4"/></animateMotion></circle>
           </g>
           <g class="flow-segment" data-flow-segment="4">
@@ -86,7 +90,7 @@ window.heartAnatomyLab = () => `
           </g>
           <g class="flow-segment" data-flow-segment="5">
             <!-- 左心房 → 二尖瓣 → 左心室。 -->
-            <path id="flowStep6" class="flow-line red" d="M382,350 C380,378 369,401 356,420 C370,456 397,500 425,548" marker-end="url(#flowArrowRed)"/>
+            <path id="flowStep6" class="flow-line red" d="M382,350 C385,377 378,401 366,420 C382,460 415,512 448,560" marker-end="url(#flowArrowRed)"/>
             <circle class="flow-particle red" r="6"><animateMotion dur="1.35s" repeatCount="indefinite"><mpath href="#flowStep6"/></animateMotion></circle>
           </g>
           <g class="flow-segment" data-flow-segment="6">
@@ -99,12 +103,12 @@ window.heartAnatomyLab = () => `
           </g>
           <g class="flow-segment" data-flow-segment="7">
             <!-- 主動脈幹向上分到全身；初段在肺動脈後方。 -->
-            <path id="flowStep8" class="flow-motion" d="M246,250 C242,215 244,180 246,155"/>
-            <path class="flow-line red flow-line-behind" d="M246,250 C242,215 244,180 246,155" marker-end="url(#flowArrowRed)"/>
-            <path class="flow-line red" d="M246,155 L246,88" marker-end="url(#flowArrowRed)"/>
-            <path class="flow-line red" d="M252,148 L300,82" marker-end="url(#flowArrowRed)"/>
-            <path class="flow-line red" d="M260,150 L352,98" marker-end="url(#flowArrowRed)"/>
-            <text class="flow-back-label" x="218" y="205">背面</text>
+            <path id="flowStep8" class="flow-motion" d="M246,250 C244,215 248,184 280,155"/>
+            <path class="flow-line red flow-line-behind" d="M246,250 C244,215 248,184 280,155"/>
+            <path class="flow-line red" d="M280,155 C270,130 252,110 246,88" marker-end="url(#flowArrowRed)"/>
+            <path class="flow-line red" d="M280,155 C290,130 300,105 300,82" marker-end="url(#flowArrowRed)"/>
+            <path class="flow-line red" d="M280,155 C315,130 340,110 352,98" marker-end="url(#flowArrowRed)"/>
+            <text class="flow-back-label" x="235" y="205">背面</text>
             <circle class="flow-particle red" r="6"><animateMotion dur="1.35s" repeatCount="indefinite"><mpath href="#flowStep8"/></animateMotion></circle>
           </g>
         </svg>
