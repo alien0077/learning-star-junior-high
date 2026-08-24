@@ -73,21 +73,21 @@ window.heartAnatomyLab = () => `
             <circle class="flow-particle blue" r="6"><animateMotion dur="1.35s" repeatCount="indefinite"><mpath href="#flowStep4"/></animateMotion></circle>
           </g>
           <g class="flow-segment" data-flow-segment="4">
-            <!-- 兩側肺靜脈都指向左心房；左側後段被心臟前緣遮住，只標示圖上可見的血管段。 -->
+            <!-- 兩側肺靜脈都指向左心房；左側在圖中從心臟後方繞入，不穿越右心房。 -->
             <path id="flowStep5" class="flow-line red" d="M505,278 C458,289 414,315 382,343" marker-end="url(#flowArrowRed)"/>
             <path class="flow-line red" d="M505,341 C458,344 414,352 382,359" marker-end="url(#flowArrowRed)"/>
-            <path class="flow-line red" d="M75,278 L175,278" marker-end="url(#flowArrowRed)"/>
-            <path class="flow-line red" d="M75,341 L175,341" marker-end="url(#flowArrowRed)"/>
+            <path class="flow-line red" d="M75,278 C120,278 160,290 185,315" marker-end="url(#flowArrowRed)"/>
+            <path class="flow-line red" d="M75,341 C120,341 157,340 185,330" marker-end="url(#flowArrowRed)"/>
             <circle class="flow-particle red" r="6"><animateMotion dur="1.35s" repeatCount="indefinite"><mpath href="#flowStep5"/></animateMotion></circle>
           </g>
           <g class="flow-segment" data-flow-segment="5">
             <!-- 左心房 → 二尖瓣 → 左心室。 -->
-            <path id="flowStep6" class="flow-line red" d="M382,350 C380,378 369,401 356,420 C368,456 386,488 405,525" marker-end="url(#flowArrowRed)"/>
+            <path id="flowStep6" class="flow-line red" d="M382,350 C380,378 369,401 356,420 C373,465 408,525 445,565" marker-end="url(#flowArrowRed)"/>
             <circle class="flow-particle red" r="6"><animateMotion dur="1.35s" repeatCount="indefinite"><mpath href="#flowStep6"/></animateMotion></circle>
           </g>
           <g class="flow-segment" data-flow-segment="6">
             <!-- 左心室 → 大動脈瓣 → 主動脈，不從肺動脈開始。 -->
-            <path id="flowStep7" class="flow-line red" d="M405,525 C384,490 362,458 345,420 C315,375 270,330 246,250" marker-end="url(#flowArrowRed)"/>
+            <path id="flowStep7" class="flow-line red" d="M445,565 C410,525 370,462 345,420 C315,375 270,330 246,250" marker-end="url(#flowArrowRed)"/>
             <circle class="flow-particle red" r="6"><animateMotion dur="1.35s" repeatCount="indefinite"><mpath href="#flowStep7"/></animateMotion></circle>
           </g>
           <g class="flow-segment" data-flow-segment="7">
