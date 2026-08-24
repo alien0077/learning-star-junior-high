@@ -21,3 +21,5 @@
   https://commons.wikimedia.org/wiki/File:CG_heart_2.gif
 - `p-anatomy-pd.svg`：Mariana Ruiz Villarreal（LadyofHats），〈P Anatomy〉，Wikimedia Commons，公開領域（PD-self）。本站僅在外層加入獨立的動態血流粒子。
   https://commons.wikimedia.org/wiki/File:P_Anatomy.svg
+- `heart-circulation-wiki.png`：維基百科〈左心室〉頁面中的心臟血流示意圖；本網站以此圖作為互動血流動畫的標示底圖。
+  https://zh.wikipedia.org/zh-tw/左心室#

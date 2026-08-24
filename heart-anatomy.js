@@ -51,44 +51,56 @@ window.heartAnatomyLab = () => `
 
           <!-- 所有座標直接以 wiki.png 的 612 × 668 像素尺寸標定。 -->
           <g class="flow-segment is-active" data-flow-segment="0">
-            <path id="flowStep1a" class="flow-line blue" d="M176,154 L176,292" marker-end="url(#flowArrowBlue)"/>
-            <path id="flowStep1b" class="flow-line blue" d="M160,620 L160,470 C160,425 170,385 186,354" marker-end="url(#flowArrowBlue)"/>
+            <!-- 上、下腔靜脈各自從右心房的開口流入，不畫成上下相通的一條線。 -->
+            <path id="flowStep1a" class="flow-line blue" d="M176,294 C181,318 190,340 201,357" marker-end="url(#flowArrowBlue)"/>
+            <path id="flowStep1b" class="flow-line blue" d="M176,435 C185,410 193,382 201,357" marker-end="url(#flowArrowBlue)"/>
             <circle class="flow-particle blue" r="6"><animateMotion dur="1.35s" repeatCount="indefinite"><mpath href="#flowStep1a"/></animateMotion></circle>
           </g>
           <g class="flow-segment" data-flow-segment="1">
-            <path id="flowStep2" class="flow-line blue" d="M186,354 C202,383 224,410 247,430 C258,462 268,497 278,528" marker-end="url(#flowArrowBlue)"/>
+            <!-- 右心房 → 三尖瓣 → 右心室。 -->
+            <path id="flowStep2" class="flow-line blue" d="M201,357 C213,391 227,438 241,478 C252,497 266,516 278,528" marker-end="url(#flowArrowBlue)"/>
             <circle class="flow-particle blue" r="6"><animateMotion dur="1.35s" repeatCount="indefinite"><mpath href="#flowStep2"/></animateMotion></circle>
           </g>
           <g class="flow-segment" data-flow-segment="2">
-            <path id="flowStep3" class="flow-line blue" d="M278,528 C282,482 280,447 290,418 C300,382 306,347 306,320" marker-end="url(#flowArrowBlue)"/>
+            <!-- 右心室 → 肺動脈瓣 → 肺動脈幹。 -->
+            <path id="flowStep3" class="flow-line blue" d="M278,528 C279,505 278,490 279,476 C281,447 284,411 288,375" marker-end="url(#flowArrowBlue)"/>
             <circle class="flow-particle blue" r="6"><animateMotion dur="1.35s" repeatCount="indefinite"><mpath href="#flowStep3"/></animateMotion></circle>
           </g>
           <g class="flow-segment" data-flow-segment="3">
-            <path id="flowStep4" class="flow-line blue" d="M306,320 C325,258 370,220 452,216" marker-end="url(#flowArrowBlue)"/>
+            <!-- 肺動脈從肺動脈幹分到左右兩側肺部。 -->
+            <path id="flowStep4" class="flow-line blue" d="M288,375 C306,318 348,244 452,216" marker-end="url(#flowArrowBlue)"/>
+            <path class="flow-line blue" d="M180,216 L95,216" marker-end="url(#flowArrowBlue)"/>
             <circle class="flow-particle blue" r="6"><animateMotion dur="1.35s" repeatCount="indefinite"><mpath href="#flowStep4"/></animateMotion></circle>
           </g>
           <g class="flow-segment" data-flow-segment="4">
+            <!-- 兩側肺靜脈都指向左心房；左側後段被心臟前緣遮住，只標示圖上可見的血管段。 -->
             <path id="flowStep5" class="flow-line red" d="M505,278 C458,289 414,315 382,343" marker-end="url(#flowArrowRed)"/>
             <path class="flow-line red" d="M505,341 C458,344 414,352 382,359" marker-end="url(#flowArrowRed)"/>
+            <path class="flow-line red" d="M75,278 L175,278" marker-end="url(#flowArrowRed)"/>
+            <path class="flow-line red" d="M75,341 L175,341" marker-end="url(#flowArrowRed)"/>
             <circle class="flow-particle red" r="6"><animateMotion dur="1.35s" repeatCount="indefinite"><mpath href="#flowStep5"/></animateMotion></circle>
           </g>
           <g class="flow-segment" data-flow-segment="5">
-            <path id="flowStep6" class="flow-line red" d="M382,350 C366,373 353,399 352,418 C368,450 383,482 397,514" marker-end="url(#flowArrowRed)"/>
+            <!-- 左心房 → 二尖瓣 → 左心室。 -->
+            <path id="flowStep6" class="flow-line red" d="M382,350 C380,378 369,401 356,420 C368,456 386,488 405,525" marker-end="url(#flowArrowRed)"/>
             <circle class="flow-particle red" r="6"><animateMotion dur="1.35s" repeatCount="indefinite"><mpath href="#flowStep6"/></animateMotion></circle>
           </g>
           <g class="flow-segment" data-flow-segment="6">
-            <path id="flowStep7" class="flow-line red" d="M397,514 C370,479 340,440 326,401 C311,341 302,278 302,230" marker-end="url(#flowArrowRed)"/>
+            <!-- 左心室 → 大動脈瓣 → 主動脈，不從肺動脈開始。 -->
+            <path id="flowStep7" class="flow-line red" d="M405,525 C384,490 362,458 345,420 C315,375 270,330 246,250" marker-end="url(#flowArrowRed)"/>
             <circle class="flow-particle red" r="6"><animateMotion dur="1.35s" repeatCount="indefinite"><mpath href="#flowStep7"/></animateMotion></circle>
           </g>
           <g class="flow-segment" data-flow-segment="7">
-            <path id="flowStep8" class="flow-line red" d="M302,230 L302,94" marker-end="url(#flowArrowRed)"/>
-            <path class="flow-line red" d="M302,145 L252,100" marker-end="url(#flowArrowRed)"/>
-            <path class="flow-line red" d="M302,145 L352,100" marker-end="url(#flowArrowRed)"/>
+            <!-- 主動脈幹向上分到全身，不接到紫色的肺動脈。 -->
+            <path id="flowStep8" class="flow-line red" d="M246,250 C242,215 244,180 246,155" marker-end="url(#flowArrowRed)"/>
+            <path class="flow-line red" d="M246,155 L246,88" marker-end="url(#flowArrowRed)"/>
+            <path class="flow-line red" d="M252,148 L300,82" marker-end="url(#flowArrowRed)"/>
+            <path class="flow-line red" d="M260,150 L352,98" marker-end="url(#flowArrowRed)"/>
             <circle class="flow-particle red" r="6"><animateMotion dur="1.35s" repeatCount="indefinite"><mpath href="#flowStep8"/></animateMotion></circle>
           </g>
         </svg>
       </div>
       <div class="flow-steps heart-flow-steps" role="group" aria-label="八步驟血液流動">${['全身 → 上、下腔大靜脈 → 右心房','右心房 → 三尖瓣 → 右心室','右心室 → 肺動脈瓣 → 肺動脈','肺動脈 → 肺部','肺靜脈 → 左心房','左心房 → 二尖瓣 → 左心室','左心室 → 大動脈瓣 → 主動脈','主動脈 → 全身'].map((name,index)=>`<button type="button" class="flow-step ${index===0?'active':''}" data-heart-flow-step="${index}" aria-pressed="${index===0?'true':'false'}"><small>${index + 1}</small>${name}</button>`).join('')}</div>
-      <figcaption id="heartFlowCaption"><b>動態血流示意</b>：底圖就是你指定的 wiki.png；因此所有構造名稱與位置直接沿用該圖，不再由程式重畫或猜測位置。藍色為含氧較少的血液，紅色為含氧較多的血液。</figcaption>
+      <figcaption id="heartFlowCaption"><b>動態血流示意</b>：底圖就是你指定的 wiki.png；因此所有構造名稱與位置直接沿用該圖，不再由程式重畫或猜測位置。藍色為含氧較少的血液，紅色為含氧較多的血液。圖示出處：<a href="https://zh.wikipedia.org/zh-tw/左心室#" target="_blank" rel="noopener">維基百科〈左心室〉</a>。</figcaption>
     </figure>
   </section>`;
